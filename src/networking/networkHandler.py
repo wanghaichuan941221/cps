@@ -4,38 +4,24 @@ from random import randint
 import time
 import struct
 
-UDP_IP = "130.89.180.208"
-UDP_PORT = 5005
-MESSAGE = "Hello, World!"
-
-print("UDP IP:", UDP_IP)
-print("UDP port:", UDP_PORT)
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((UDP_IP, UDP_PORT))
 
 class NetworkHandler(Thread):
-    def __init__(self, sock):
+    def __init__(self, ip, port):
+        # Run constructor of parent
         Thread.__init__(self)
-        self.sock = sock
+
+        # Create a socket
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.bind((ip, port))
 
     def run(self):
         while True:
-            print("start rec")
-            data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
-            print("received message:", data, time.time())
+            # Constantly receive a message
+            print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Start receiving...'))
+            data, addr = self.sock.recvfrom(1024)
+            print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Received message ' + str(data.decode) + ' from ' + str(addr)))
 
     def send_msg(self, msg, ip, port):
-        sock.sendto(msg, (ip, port))
-        print("message sent")
-
-net_hand = NetworkHandler(sock)
-net_hand.setName('Network Handler')
-
-net_hand.start()
-
-time.sleep(2)
-
-net_hand.join()
-
-print('Main Terminating...')
+        # Send a message
+        self.sock.sendto(msg, (ip, port))
+        print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Sent message: ' + msg))
