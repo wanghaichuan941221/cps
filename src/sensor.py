@@ -17,8 +17,10 @@ net_hand.start()
 
 # Do stuff here
 time.sleep(1)
-for i in range(0, 10000):
-    net_hand.send_msg('HOI' + str(i), UDP_IP, UDP_PORT)
+for i in range(0, 256):
+    bmsg = bytearray(b'\x01\x02\x03')
+    bmsg.append(i)
+    net_hand.send_msg(bmsg, UDP_IP, UDP_PORT)
 
 
 # Wait for the network handler before terminating

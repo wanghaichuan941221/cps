@@ -17,9 +17,10 @@ class NetworkHandler(Thread):
             # Constantly receive a message
             log.log('networkHandler', 'Now receiving...')
             data, addr = self.sock.recvfrom(1024)
-            log.log('networkHandler', 'Received message ' + str(data.decode()) + ' from ' + str(addr))
+            log.log('networkHandler', 'Received message ' + str(data) + ' from ' + str(addr))
 
+    # msg is a bytearray
     def send_msg(self, msg, ip, port):
         # Send a message
-        self.sock.sendto(msg.encode(), (ip, port))
-        log.log('networkHandler', 'Sent message: ' + msg)
+        self.sock.sendto(msg, (ip, port))
+        log.log('networkHandler', 'Sent message: ' + str(msg))
