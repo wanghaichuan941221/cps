@@ -1,8 +1,6 @@
 import socket
 from threading import Thread
-from random import randint
-import time
-import struct
+import log
 
 
 class NetworkHandler(Thread):
@@ -17,11 +15,11 @@ class NetworkHandler(Thread):
     def run(self):
         while True:
             # Constantly receive a message
-            print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Start receiving...'))
+            log.log('networkHandler', 'Now receiving...')
             data, addr = self.sock.recvfrom(1024)
-            print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Received message ' + str(data.decode) + ' from ' + str(addr)))
+            log.log('networkHandler', 'Received message ' + str(data.decode()) + ' from ' + str(addr))
 
     def send_msg(self, msg, ip, port):
         # Send a message
-        self.sock.sendto(msg, (ip, port))
-        print('{:<21}'.format(str(time.time())), '{:<24}'.format('networkHandler'), ('Sent message: ' + msg))
+        self.sock.sendto(msg.encode(), (ip, port))
+        log.log('networkHandler', 'Sent message: ' + msg)
