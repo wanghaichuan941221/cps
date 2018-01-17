@@ -18,9 +18,9 @@ class NetworkHandlerUDP(Thread):
             # Constantly receive a message
             log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
-            if addr[0] not in self.connections.keys():
-                self.connections[addr[0]] = Connection(addr[0], addr[1], self)
-                self.connections[addr[0]].send_msg('HOI BAI'.encode())
+            if addr not in self.connections.keys():
+                self.connections[addr] = Connection(addr[0], addr[1], self)
+                self.connections[addr].send_msg('HOI BAI'.encode())
             log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
     # msg is a bytearray
