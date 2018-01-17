@@ -36,6 +36,7 @@ class NetworkHandlerUDP(Thread):
     # msg is bytes
     def multisend(self, msg):
         for key, conn in self.connections.items():
+            print(conn, 'multisend')
             conn.send_msg(msg)
 
     # msg is bytes
@@ -46,6 +47,7 @@ class NetworkHandlerUDP(Thread):
 
     def add_connection(self, ip, port):
         self.connections[(ip, port)] = Connection(ip, port, self)
+        print(self.connections, 'add_connection')
 
 class Connection:
     def __init__(self, ip, port, nwh:'NetworkHandlerUDP'):
@@ -55,6 +57,7 @@ class Connection:
 
     def send_msg(self, msg):
         # Send a message
+        print(msg, 'conn.send_msg')
         self.nwh.send_msg(msg, self.ip, self.port)
 
     def __str__(self):
