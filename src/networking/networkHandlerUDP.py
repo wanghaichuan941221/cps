@@ -44,6 +44,9 @@ class NetworkHandlerUDP(Thread):
             if not not_conn == conn:
                 conn.send_msg(msg)
 
+    def add_connection(self, ip, port):
+        self.connections[(ip, port)] = Connection(addr[0], addr[1], self)
+
 class Connection:
     def __init__(self, ip, port, nwh:'NetworkHandlerUDP'):
         self.ip = ip
