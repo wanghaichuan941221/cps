@@ -21,7 +21,8 @@ class NetworkHandlerUDP(Thread):
             log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
             if addr not in self.connections.keys():
                 self.connections[addr] = Connection(addr[0], addr[1], self)
-                self.connections[addr].send_msg('HOI BAI'.encode())
+                rmsg = 'Added ' + str(self.connections[addr]) + ' to dictionary'
+                self.connections[addr].send_msg(rmsg.encode())
 
     # msg is a bytearray
     def send_msg(self, msg, ip, port):
@@ -43,3 +44,6 @@ class Connection:
     def send_msg(self, msg):
         # Send a message
         self.nwh.send_msg(msg, self.ip, self.port)
+
+    def __str__(self):
+        return 'Connection(' + self.ip + ', ' + str(self.port) + ')'
