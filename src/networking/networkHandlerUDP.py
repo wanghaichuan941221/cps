@@ -21,7 +21,7 @@ class NetworkHandlerUDP(Thread):
             log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
             if addr not in self.connections.keys():
                 self.connections[addr] = Connection(addr[0], addr[1], self)
-                rmsg = 'Added ' + str(self.connections[addr]) + ' to dictionary'
+                rmsg = str(self.connections[addr]) + ' acknowledged'
                 self.connections[addr].send_msg(rmsg.encode())
 
     # msg is a bytearray
