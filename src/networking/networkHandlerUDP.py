@@ -3,7 +3,7 @@ from threading import Thread
 import log
 
 
-class NetworkHandler(Thread):
+class NetworkHandlerUDP(Thread):
     def __init__(self, ip, port):
         # Run constructor of parent
         Thread.__init__(self)
@@ -15,12 +15,12 @@ class NetworkHandler(Thread):
     def run(self):
         while True:
             # Constantly receive a message
-            log.log('networkHandler', 'Now receiving...')
+            log.log('networkHandlerUDP', 'Now receiving...')
             data, addr = self.sock.recvfrom(1024)
-            log.log('networkHandler', 'Received message ' + str(data) + ' from ' + str(addr))
+            log.log('networkHandlerUDP', 'Received message ' + str(data) + ' from ' + str(addr))
 
     # msg is a bytearray
     def send_msg(self, msg, ip, port):
         # Send a message
         self.sock.sendto(msg, (ip, port))
-        log.log('networkHandler', 'Sent message: ' + str(msg))
+        log.log('networkHandlerUDP', 'Sent message: ' + str(msg))
