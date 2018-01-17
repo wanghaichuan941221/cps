@@ -10,7 +10,7 @@ class NetworkHandlerUDP(Thread):
 
         # Create a socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind((ip, port))
+        self.sock.bind(('', port))
         self.connections = dict()
 
     def run(self):

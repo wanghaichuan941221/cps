@@ -31,6 +31,11 @@ for i in range(0, 10):
 for sensor in sensors:
     sensor.join()
 
+#pw = cpsgroup1
+#ssid = CPSRSACRPU
+#own ip = 10.0.0.1
+#range ip = 10.0.0.2-10.0.0.255
+
 
 
 
