@@ -45,7 +45,7 @@ class NetworkHandlerUDP(Thread):
                 conn.send_msg(msg)
 
     def add_connection(self, ip, port):
-        self.connections[(ip, port)] = Connection(addr[0], addr[1], self)
+        self.connections[(ip, port)] = Connection(ip, port, self)
 
 class Connection:
     def __init__(self, ip, port, nwh:'NetworkHandlerUDP'):
