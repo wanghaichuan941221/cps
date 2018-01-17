@@ -4,7 +4,7 @@ import log
 
 
 class NetworkHandlerUDP(Thread):
-    def __init__(self, ip, port):
+    def __init__(self, port):
         # Run constructor of parent
         Thread.__init__(self)
 
