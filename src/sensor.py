@@ -42,5 +42,5 @@ for i in range(0, 256):
     tcp_client.send_msg(bmsg)
 
 # Wait for the network handlers before terminating
-net_hand_udp.join()
+# net_hand_udp.join()
 tcp_client.join()
