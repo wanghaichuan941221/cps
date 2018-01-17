@@ -22,8 +22,10 @@ chinkie = ChinkieClient(net_hand_udp)
 chinkie.setName('Chinkie Client')
 
 # Start the UDP network handler
+chinkie.start()
 net_hand_udp.start()
 net_hand_udp.join()
+chinkie.join()
 
 # # Create the UDP network handlers
 # sensors = []
