@@ -10,6 +10,7 @@ class ChinkieClient(Thread):
         self.nwh = nwh
 
     def run(self):
-        msg = input()
-        bmsg = msg.encode()
-        self.nwh.multisend(bmsg)
+        while True:
+            msg = input()
+            bmsg = msg.encode()
+            self.nwh.multisend(bmsg)
