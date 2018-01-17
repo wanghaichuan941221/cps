@@ -19,7 +19,7 @@ class NetworkHandlerTCPServer(Thread):
             while True:
                 # Constantly receive a message
                 log.log('networkHandlerTCPServer', 'Now receiving...')
-                data = self.sock.rec(1024)
+                data = conn.recv(1024)
                 log.log('networkHandlerTCPServer', 'Received message ' + str(data) + ' from ' + str(addr))
         finally:
             conn.close()
