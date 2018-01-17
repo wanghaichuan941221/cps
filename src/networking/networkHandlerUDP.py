@@ -28,7 +28,7 @@ class NetworkHandlerUDP(Thread):
     def send_msg(self, msg, ip, port):
         # Send a message
         self.sock.sendto(msg, (ip, port))
-        log.log('networkHandlerUDP', self.getName() + ' Sent message: ' + str(msg))
+        log.log('networkHandlerUDP', self.getName() + ' Sent message ' + str(msg) + ' to ' + str((ip, port)))
 
     # msg is bytearray
     def multisend(self, msg):

@@ -15,7 +15,7 @@ log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
 sensors = []
 for i in range(0, 1):
     net_hand_udp = NetworkHandlerUDP(UDP_PORT + i)
-    net_hand_udp.setName('Network Handler UDP Client ' + str(i))
+    net_hand_udp.setName('UDP Client ' + str(i))
     sensors.append(net_hand_udp)
     # Start the UDP network handler
     net_hand_udp.start()
