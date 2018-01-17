@@ -19,7 +19,6 @@ class NetworkHandlerUDP(Thread):
             log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
 
-            protocol.decide()
             log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
             if addr not in self.connections.keys():
