@@ -1,5 +1,6 @@
 import time
 import log
+from networking.chinkieClient import ChinkieClient
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
 # Specify own IP and port
@@ -12,23 +13,35 @@ T_UDP_PORT = 5005
 log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
 
 # Create the UDP network handlers
-sensors = []
-for i in range(0, 1):
-    net_hand_udp = NetworkHandlerUDP(UDP_PORT + i)
-    net_hand_udp.setName('UDP Client ' + str(i))
-    sensors.append(net_hand_udp)
-    # Start the UDP network handler
-    net_hand_udp.start()
 
-time.sleep(1)
-for i in range(0, 10):
-    for sensor in sensors:
-        bmsg = bytearray(b'\x01\x02\x03')
-        bmsg.append(i)
-        sensor.send_msg(bmsg, T_UDP_IP, T_UDP_PORT)
+net_hand_udp = NetworkHandlerUDP(UDP_PORT)
+net_hand_udp.setName('UDP Client')
 
-for sensor in sensors:
-    sensor.join()
+chinkie = ChinkieClient(net_hand_udp)
+chinkie.setName('Chinkie Client')
+
+# Start the UDP network handler
+net_hand_udp.start()
+net_hand_udp.join()
+
+# # Create the UDP network handlers
+# sensors = []
+# for i in range(0, 1):
+#     net_hand_udp = NetworkHandlerUDP(UDP_PORT + i)
+#     net_hand_udp.setName('UDP Client ' + str(i))
+#     sensors.append(net_hand_udp)
+#     # Start the UDP network handler
+#     net_hand_udp.start()
+#
+# time.sleep(1)
+# for i in range(0, 10):
+#     for sensor in sensors:
+#         bmsg = bytearray(b'\x01\x02\x03')
+#         bmsg.append(i)
+#         sensor.send_msg(bmsg, T_UDP_IP, T_UDP_PORT)
+#
+# for sensor in sensors:
+#     sensor.join()
 
 #pw = cpsgroup1
 #ssid = CPSRSACRPU
