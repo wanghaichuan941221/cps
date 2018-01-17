@@ -1,5 +1,5 @@
 import time
-from networking.networkHandler import *
+from networking.networkHandlerUDP import *
 
 # Specify own IP and port
 UDP_IP = '130.89.178.11'
