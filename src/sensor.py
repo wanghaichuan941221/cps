@@ -5,7 +5,7 @@ from networking.networkHandlerUDP import NetworkHandlerUDP
 # Specify own IP and port
 UDP_PORT = 5005
 
-T_UDP_IP = '130.89.136.245' # <---- only thing we need to change
+T_UDP_IP = '10.0.0.1'  # <---- only thing we need to change
 T_UDP_PORT = 5005
 
 log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
