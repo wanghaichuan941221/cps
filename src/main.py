@@ -1,5 +1,5 @@
 from logger import Logger
-from networking.chinkieServer import ChinkieServer
+from networking.chinkieHandlerServer import ChinkieHandlerServer
 from networking.networkHandlerUDP import NetworkHandlerUDP
 from networking.protocol import ChinkieServerProtocol
 
@@ -15,7 +15,7 @@ log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
 # Create the UDP network handler
 net_hand_udp = NetworkHandlerUDP(UDP_PORT)
 net_hand_udp.setName('UDP Server')
-chinkie = ChinkieServer(net_hand_udp)
+chinkie = ChinkieHandlerServer(net_hand_udp)
 chinkie.setName('Chinkie Server')
 
 if CHINKIE:
