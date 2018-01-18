@@ -2,7 +2,7 @@ import time
 from logger import Logger
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.networkHandlerUDP import NetworkHandlerUDP
-from networking.protocol import ChinkieClientProtocol
+from networking.protocol import ClientProtocol
 
 
 CHINKIE = True
@@ -25,7 +25,7 @@ chinkie = ChinkieHandlerClient(net_hand_udp)
 chinkie.setName('Chinkie Client')
 
 if CHINKIE:
-    net_hand_udp.add_protocol(ChinkieClientProtocol(net_hand_udp, chinkie))
+    net_hand_udp.add_protocol(ClientProtocol(net_hand_udp, chinkie))
     chinkie.start()
 
 # Start the UDP network handler

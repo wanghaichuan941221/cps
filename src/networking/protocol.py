@@ -1,5 +1,6 @@
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.chinkieHandlerServer import ChinkieHandlerServer
+from networking.networkHandlerUDP import NetworkHandlerUDP
 
 
 class Protocol:
@@ -9,12 +10,18 @@ class Protocol:
     def rec_prot(self, data, addr):
         pass
 
-    def wrap(self, prot, msg):
-        return prot + msg
+    def get_byte(self, b: bytes, i: int):
+        return bytes([b[i]])
+
+    # MESSAGE packet
+    # - 1 byte header (\x00)
+    # - rest for utf-8 encoded string
+    def wrap_msg(self, msg):
+        return b'\x00' + msg.encode('utf-8')
 
 
-class ChinkieClientProtocol(Protocol):
-    def __init__(self, nwh, chinkie: 'ChinkieHandlerClient'):
+class ClientProtocol(Protocol):
+    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerClient'):
         # Run constructor of parent
         Protocol.__init__(self)
 
@@ -22,17 +29,17 @@ class ChinkieClientProtocol(Protocol):
         self.chinkie = chinkie
 
     def rec_prot(self, data, addr):
-        prot = data[0]
-        print('DEBUG (Client): ', prot, data[0], data)
-        if prot == b'\x00':
-            print('DEBUG (Client): forwarded to chinkieClientHandler')
-            self.chinkie.rec_msg(data[1:], addr)
-        elif prot == b'\x01':
+        header = self.get_byte(data, 0)
+
+        if header == b'\x00':
+            msg = str(data[1:], 'utf-8')
+            self.chinkie.rec_msg(msg)
+        elif header == b'\x01':
             pass
 
 
-class ChinkieServerProtocol(Protocol):
-    def __init__(self, nwh, chinkie: 'ChinkieHandlerServer'):
+class ServerProtocol(Protocol):
+    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer'):
         # Run constructor of parent
         Protocol.__init__(self)
 
@@ -40,10 +47,9 @@ class ChinkieServerProtocol(Protocol):
         self.chinkie = chinkie
 
     def rec_prot(self, data, addr):
-        prot = data[0]
-        print('DEBUG (Server): ', prot, data[0], data)
-        if prot == b'\x00':
-            print('DEBUG (Server): forwarded to chinkieServerHandler')
-            self.chinkie.rec_msg(data[1:], addr)
-        elif prot == b'\x01':
+        header = self.get_byte(data, 0)
+
+        if header == b'\x00':
+            self.chinkie.rec_msg(str(data[1:], 'utf-8'), addr)
+        elif header == b'\x01':
             pass

@@ -4,7 +4,7 @@ from logger import Logger
 
 
 class NetworkHandlerUDP(Thread):
-    def __init__(self, port):
+    def __init__(self, port, log: 'Logger'):
         # Run constructor of parent
         Thread.__init__(self)
 
@@ -13,7 +13,7 @@ class NetworkHandlerUDP(Thread):
         self.sock.bind(('', port))
         self.connections = dict()
         self.protocol = None
-        self.log = Logger()
+        self.log = log
 
     def add_protocol(self, protocol):
         self.protocol = protocol
