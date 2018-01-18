@@ -18,10 +18,10 @@ T_UDP_PORT = 5005
 log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
 
 # Create the UDP network handlers
-net_hand_udp = NetworkHandlerUDP(UDP_PORT)
+net_hand_udp = NetworkHandlerUDP(UDP_PORT, log)
 net_hand_udp.setName('UDP Client')
 net_hand_udp.add_connection(T_UDP_IP, T_UDP_PORT)
-chinkie = ChinkieHandlerClient(net_hand_udp)
+chinkie = ChinkieHandlerClient(net_hand_udp, log)
 chinkie.setName('Chinkie Client')
 
 if CHINKIE:
