@@ -1,7 +1,7 @@
 from threading import Thread
 
 
-class ChinkieClient(Thread):
+class ChinkieServer(Thread):
     def __init__(self, nwh):
         # Run constructor of parent
         Thread.__init__(self)

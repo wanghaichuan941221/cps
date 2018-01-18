@@ -13,7 +13,7 @@ class NetworkHandlerUDP(Thread):
         self.sock.bind(('', port))
         self.connections = dict()
         self.protocol = None
-        self.logger = Logger()
+        self.log = Logger()
 
     def add_protocol(self, protocol):
         self.protocol = protocol
@@ -21,9 +21,9 @@ class NetworkHandlerUDP(Thread):
     def run(self):
         while True:
             # Constantly receive a message
-            Logger.log('networkHandlerUDP', self.getName() + ' Now receiving...')
+            log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
-            Logger.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
+            log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
             self.protocol.rec_prot(data)
 
@@ -36,7 +36,7 @@ class NetworkHandlerUDP(Thread):
     def send_msg(self, msg, ip, port):
         # Send a message
         self.sock.sendto(msg, (ip, port))
-        Logger.log('networkHandlerUDP', self.getName() + ' Sent message ' + str(msg) + ' to ' + str((ip, port)))
+        log.log('networkHandlerUDP', self.getName() + ' Sent message ' + str(msg) + ' to ' + str((ip, port)))
 
     # msg is bytes
     def multisend(self, msg):
