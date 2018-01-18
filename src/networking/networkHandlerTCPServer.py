@@ -1,6 +1,6 @@
 import socket
 from threading import Thread
-import log
+import logger
 
 
 class NetworkHandlerTCPServer(Thread):
@@ -18,9 +18,9 @@ class NetworkHandlerTCPServer(Thread):
         try:
             while True:
                 # Constantly receive a message
-                log.log('networkHandlerTCPServer', 'Now receiving...')
+                logger.log('networkHandlerTCPServer', 'Now receiving...')
                 data = conn.recv(1024)
-                log.log('networkHandlerTCPServer', 'Received message ' + str(data) + ' from ' + str(addr))
+                logger.log('networkHandlerTCPServer', 'Received message ' + str(data) + ' from ' + str(addr))
         finally:
             conn.close()
 
@@ -28,4 +28,4 @@ class NetworkHandlerTCPServer(Thread):
     def send_msg(self, msg):
         # Send a message
         self.sock.send(msg)
-        log.log('networkHandlerTCPServer', 'Sent message: ' + str(msg))
+        logger.log('networkHandlerTCPServer', 'Sent message: ' + str(msg))

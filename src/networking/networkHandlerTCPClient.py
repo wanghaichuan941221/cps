@@ -1,6 +1,6 @@
 import socket
 from threading import Thread
-import log
+import logger
 
 
 class NetworkHandlerTCPClient(Thread):
@@ -13,16 +13,16 @@ class NetworkHandlerTCPClient(Thread):
 
         # Create a socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        log.log('networkHandlerTCPClient', 'Now connecting...')
+        logger.log('networkHandlerTCPClient', 'Now connecting...')
         self.sock.connect((sip, sport))
 
     def run(self):
         try:
             while True:
                 # Constantly receive a message
-                log.log('networkHandlerTCPClient', 'Now receiving...')
+                logger.log('networkHandlerTCPClient', 'Now receiving...')
                 data = self.sock.recv(1024)
-                log.log('networkHandlerTCPClient', 'Received message ' + str(data) + ' from ' + str(self.sip))
+                logger.log('networkHandlerTCPClient', 'Received message ' + str(data) + ' from ' + str(self.sip))
         finally:
             self.sock.close()
 
@@ -30,4 +30,4 @@ class NetworkHandlerTCPClient(Thread):
     def send_msg(self, msg):
         # Send a message
         self.sock.send(msg)
-        log.log('networkHandlerTCPClient', 'Sent message: ' + str(msg))
+        logger.log('networkHandlerTCPClient', 'Sent message: ' + str(msg))

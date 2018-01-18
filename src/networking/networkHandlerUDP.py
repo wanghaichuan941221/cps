@@ -1,6 +1,6 @@
 import socket
 from threading import Thread
-import log
+from logger import Logger
 
 
 class NetworkHandlerUDP(Thread):
@@ -12,25 +12,31 @@ class NetworkHandlerUDP(Thread):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind(('', port))
         self.connections = dict()
+        self.protocol = None
+        self.logger = Logger()
+
+    def add_protocol(self, protocol):
+        self.protocol = protocol
 
     def run(self):
         while True:
             # Constantly receive a message
-            log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
+            Logger.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
+            Logger.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
-            log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
+            self.protocol.rec_prot(data)
 
             if addr not in self.connections.keys():
                 self.connections[addr] = Connection(addr[0], addr[1], self)
-                rmsg = str(self.connections[addr]) + ' acknowledged'
+                rmsg = str(self.connections[addr]) + ' ACK'
                 self.connections[addr].send_msg(rmsg.encode())
 
     # msg is bytes
     def send_msg(self, msg, ip, port):
         # Send a message
         self.sock.sendto(msg, (ip, port))
-        log.log('networkHandlerUDP', self.getName() + ' Sent message ' + str(msg) + ' to ' + str((ip, port)))
+        Logger.log('networkHandlerUDP', self.getName() + ' Sent message ' + str(msg) + ' to ' + str((ip, port)))
 
     # msg is bytes
     def multisend(self, msg):
