@@ -16,8 +16,18 @@ class ChinkieHandlerServer(Thread):
         while True:
             msg = input()
 
-            packet = self.nwh.protocol.wrap_msg(msg)
-            self.nwh.multisend(packet)
+            if msg.startswith('/'):
+                command = msg.split(' ')[0][1:]
+
+                if command == 'log':
+                    self.log.log_on = not self.log.log_on
+                    if self.log.log_on:
+                        print('Enabled logger')
+                    else:
+                        print('Disabled logger')
+            else:
+                packet = self.nwh.protocol.wrap_msg(msg)
+                self.nwh.multisend(packet)
 
     def rec_msg(self, msg, addr):
         print(msg)
