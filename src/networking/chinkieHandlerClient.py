@@ -15,7 +15,7 @@ class ChinkieHandlerClient(Thread):
     def run(self):
         while True:
             msg = input()
-
+            print('DEBUG: Read input')
             packet = self.nwh.protocol.wrap_msg(msg)
             self.nwh.multisend(packet)
 

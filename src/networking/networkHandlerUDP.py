@@ -25,11 +25,12 @@ class NetworkHandlerUDP(Thread):
             data, addr = self.sock.recvfrom(1024)
             self.log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
-            self.protocol.rec_prot(data, addr)
-
             if addr not in self.connections.keys():
                 self.connections[addr] = Connection(addr[0], addr[1], self)
                 #TODO ACK MESSAGE
+
+            self.protocol.rec_prot(data, addr)
+
 
     # msg is bytes
     def send_msg(self, msg, ip, port):
