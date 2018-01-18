@@ -1,7 +1,8 @@
 from threading import Thread
-
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
+
+import platform
 
 
 class ChinkieHandlerServer(Thread):
@@ -26,7 +27,7 @@ class ChinkieHandlerServer(Thread):
                     else:
                         print('Disabled logger')
             else:
-                packet = self.nwh.protocol.wrap_msg(msg)
+                packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
                 self.nwh.multisend(packet)
 
     def rec_msg(self, msg, addr):
