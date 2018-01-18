@@ -23,9 +23,9 @@ class ChinkieClientProtocol(Protocol):
 
     def rec_prot(self, data, addr):
         prot = data[0]
-        if prot == 0:
+        if prot == b'0':
             self.chinkie.rec_msg(data[1:], addr)
-        elif prot == 1:
+        elif prot == b'1':
             pass
 
 
@@ -39,7 +39,7 @@ class ChinkieServerProtocol(Protocol):
 
     def rec_prot(self, data, addr):
         prot = data[0]
-        if prot == 0:
+        if prot == b'0':
             self.chinkie.rec_msg(data[1:], addr)
-        elif prot == 1:
+        elif prot == b'1':
             pass
