@@ -24,10 +24,10 @@ class ChinkieClientProtocol(Protocol):
     def rec_prot(self, data, addr):
         prot = data[0]
         print('DEBUG (Client): ', prot, data[0], data)
-        if prot == b'0':
+        if prot == b'\x00':
             print('DEBUG (Client): forwarded to chinkieClientHandler')
             self.chinkie.rec_msg(data[1:], addr)
-        elif prot == b'1':
+        elif prot == b'\x01':
             pass
 
 
@@ -42,8 +42,8 @@ class ChinkieServerProtocol(Protocol):
     def rec_prot(self, data, addr):
         prot = data[0]
         print('DEBUG (Server): ', prot, data[0], data)
-        if prot == b'0':
+        if prot == b'\x00':
             print('DEBUG (Server): forwarded to chinkieServerHandler')
             self.chinkie.rec_msg(data[1:], addr)
-        elif prot == b'1':
+        elif prot == b'\x01':
             pass

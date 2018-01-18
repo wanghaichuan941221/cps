@@ -11,7 +11,7 @@ class ChinkieHandlerClient(Thread):
     def run(self):
         while True:
             msg = input()
-            bmsg = self.nwh.protocol.wrap(b'0', msg.encode())
+            bmsg = self.nwh.protocol.wrap(b'\x00', msg.encode())
             self.nwh.multisend(bmsg)
 
     def rec_msg(self, msg, addr):

@@ -29,8 +29,7 @@ class NetworkHandlerUDP(Thread):
 
             if addr not in self.connections.keys():
                 self.connections[addr] = Connection(addr[0], addr[1], self)
-                rmsg = str(self.connections[addr]) + ' ACK'
-                self.connections[addr].send_msg(rmsg.encode())
+                #TODO ACK MESSAGE
 
     # msg is bytes
     def send_msg(self, msg, ip, port):
