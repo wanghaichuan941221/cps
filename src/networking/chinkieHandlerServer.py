@@ -15,7 +15,7 @@ class ChinkieHandlerServer(Thread):
 
     def run(self):
         while True:
-            print(platform.node() + ': ', end='')
+            # print(platform.node() + ': ', end='')
             msg = input()
 
             if msg.startswith('/'):
