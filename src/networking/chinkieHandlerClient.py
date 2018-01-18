@@ -1,8 +1,8 @@
 from threading import Thread
-
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
+import platform
 
 class ChinkieHandlerClient(Thread):
     def __init__(self, nwh: 'NetworkHandlerUDP', log: 'Logger'):
@@ -14,7 +14,7 @@ class ChinkieHandlerClient(Thread):
 
     def run(self):
         while True:
-            msg = input()
+            msg = platform.node() + ': ' + input()
 
             if msg.startswith('/'):
                 command = msg.split(' ')[0][1:]
