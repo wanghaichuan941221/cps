@@ -24,15 +24,17 @@ class ChinkieHandlerServer(Thread):
                 if command == 'log':
                     self.log.log_on = not self.log.log_on
                     if self.log.log_on:
-                        print('Enabled logger')
+                        self.log.print('Enabled logger')
                     else:
-                        print('Disabled logger')
+                        self.log.print('Disabled logger')
+                elif command == 'exit':
+                    exit()
             else:
                 packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
                 self.nwh.multisend(packet)
 
     def rec_msg(self, msg, addr):
-        print(msg)
+        self.log.print(msg)
 
         packet = self.nwh.protocol.wrap_msg(msg)
         self.nwh.forward_exclude(packet, self.nwh.connections[addr])
