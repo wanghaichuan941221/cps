@@ -35,6 +35,8 @@ class ChinkieHandlerClient(Thread):
         else:
             command = ''
 
+        print(command)
+
         if command == '' or command == 'log':
             self.log.log_on = not self.log.log_on
             if self.log.log_on:
