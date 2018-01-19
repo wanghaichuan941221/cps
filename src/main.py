@@ -20,7 +20,7 @@ net_hand_udp.setName('UDP Server')
 chinkie = ChinkieHandlerServer(net_hand_udp, log)
 chinkie.setName('Chinkie Server')
 
-hbc = HeartbeatChecker(2, net_hand_udp)
+hbc = HeartbeatChecker(3, net_hand_udp)
 hbc.setName('Heartbeat Checker')
 
 net_hand_udp.add_protocol(ServerProtocol(net_hand_udp, chinkie, hbc))

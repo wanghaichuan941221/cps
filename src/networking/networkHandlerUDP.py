@@ -21,17 +21,11 @@ class NetworkHandlerUDP(Thread):
         self.protocol = protocol
 
     def run(self):
+        self.log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
         while self.running:
             # Constantly receive a message
-            self.log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
             self.log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
-
-            # self.lock.acquire()
-            # if addr not in self.connections.keys():
-            #     self.connections[addr] = Connection(addr[0], addr[1], self)
-            #     #TODO ACK MESSAGE
-            # self.lock.release()
 
             self.protocol.rec_prot(data, addr)
 
