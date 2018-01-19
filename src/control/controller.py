@@ -3,7 +3,7 @@ import operator
 import usbarm
 import math
 
-setpoints_ = [1*math.pi, 1*math.pi, 0*math.pi, 0*math.pi]
+setpoints_ = [-1*math.pi, -1*math.pi, 0*math.pi, 0*math.pi]
 angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 gripper = 0
 light = 0
