@@ -1,6 +1,7 @@
 from threading import Thread
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
+from networking.inputHandler import getch
 
 import platform
 
@@ -16,7 +17,7 @@ class ChinkieHandlerClient(Thread):
     def run(self):
         while self.running:
             # print(platform.node() + ': ', end='')
-            msg = input()
+            msg = self.input()
 
             if msg.startswith('/'):
                 command = msg.split(' ')[0][1:]
@@ -27,9 +28,20 @@ class ChinkieHandlerClient(Thread):
                         print('Enabled logger')
                     else:
                         print('Disabled logger')
+                elif command == 'exit':
+                    exit()
+
             else:
                 packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
                 self.nwh.multisend(packet)
 
     def rec_msg(self, msg):
         print(msg)
+
+    def input(self):
+        while True:
+            ch = getch()
+            if ch is not None:
+                if ch == '\n':
+                    return self.log.flush_usr_input()
+                self.log.add_usr_input(ch)
