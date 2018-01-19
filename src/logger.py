@@ -13,6 +13,7 @@ class Logger:
     def flush_usr_input(self):
         r = self.usr_input
         self.usr_input = ''
+        print()
         return r
 
     def log(self, src, msg):

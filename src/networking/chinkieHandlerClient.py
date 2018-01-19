@@ -18,6 +18,7 @@ class ChinkieHandlerClient(Thread):
         while self.running:
             # print(platform.node() + ': ', end='')
             msg = self.input()
+            print('GOT INPUT: ', msg)
 
             if msg.startswith('/'):
                 command = msg.split(' ')[0][1:]
@@ -42,6 +43,6 @@ class ChinkieHandlerClient(Thread):
         while True:
             ch = getch()
             if ch is not None:
-                if ch == '\n':
+                if ch == '\n\r':
                     return self.log.flush_usr_input()
                 self.log.add_usr_input(ch)
