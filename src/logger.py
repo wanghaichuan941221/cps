@@ -7,4 +7,4 @@ class Logger:
 
     def log(self, src, msg):
         if self.log_on:
-            print('{:<21}'.format(str(time.time())), '{:<24}'.format(src), msg)
+            print('\r{:<21}'.format(str(time.time())), '{:<24}'.format(src), msg)
