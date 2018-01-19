@@ -19,21 +19,39 @@ class ChinkieHandlerClient(Thread):
             msg = input()
 
             if msg.startswith('/'):
-                command = msg.split(' ')[0][1:]
-
-                if command == 'log':
-                    self.log.log_on = not self.log.log_on
-                    if self.log.log_on:
-                        self.log.print('Enabled logger')
-                    else:
-                        self.log.print('Disabled logger')
-                elif command == 'exit':
-                    exit()
+                self.command(msg)
 
             else:
-                packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
-                self.nwh.multisend(packet)
+                self.log.print('Type /help for a list of commands')
 
     def rec_msg(self, msg):
         self.log.print(msg)
 
+    def command(self, line):
+        split_msg = line.split(' ')[0]
+
+        if len(split_msg[0]) > 1:
+            command = split_msg[0][1:]
+        else:
+            command = ''
+
+        if command == '' or command == 'log':
+            self.log.log_on = not self.log.log_on
+            if self.log.log_on:
+                self.log.print('Enabled logger')
+            else:
+                self.log.print('Disabled logger')
+        elif command == 'exit':
+            exit()
+        elif command == 'r' or command == 'remote':
+            if len(split_msg) < 2:
+                self.log.print('USAGE:')
+                self.log.print('  /remote <host_name> <command> [<arguments>] ')
+            #TODO implement dis shiit
+
+        elif command == 'help':
+            self.log.print('COMMANDS:')
+            self.log.print('  /        toggle logging')
+            self.log.print('  /log     toggle logging')
+            self.log.print('  /exit    exit program')
+            self.log.print('  /help    show list of commands')
