@@ -81,10 +81,13 @@ class NetworkHandlerUDP(Thread):
     def remove_dead_clients(self, alive):
         self.lock.acquire()
         try:
-            for key, value in self.connections.items():
-                if key not in alive:
-                    conn = self.connections.pop(key)
-                    self.log.log('networkHandlerUDP', str(conn) + ' disconnected')
+            remove_list = []
+            remove_list.extend(self.connections.keys())
+            for key in alive:
+                remove_list.remove(key)
+            for key in remove_list:
+                conn = self.connections.pop(key)
+                self.log.log('networkHandlerUDP', str(conn) + ' disconnected')
         finally:
             self.lock.release()
 
