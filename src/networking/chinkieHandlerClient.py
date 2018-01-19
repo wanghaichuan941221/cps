@@ -30,6 +30,7 @@ class ChinkieHandlerClient(Thread):
     def command(self, line):
         split_msg = line.split(' ')[0]
 
+        command = ''
         if len(split_msg[0]) > 1:
             command = split_msg[0][1:]
         else:
