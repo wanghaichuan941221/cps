@@ -7,9 +7,9 @@ class Logger:
 
     def log(self, src, msg):
         if self.log_on:
-            curses.initscr()
-            y, x = curses.getsyx()
-            curses.setsyx(y, 0)
+            window = curses.initscr()
+            y, x = window.getyx()
+            window.move(y, 0)
             print('{:<21}'.format(str(time.time())), '{:<24}'.format(src), msg)
-            curses.setsyx(y + 1, x)
+            window.move(y + 1, x)
             curses.endwin()
