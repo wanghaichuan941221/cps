@@ -3,6 +3,7 @@ from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
 import platform
+import os
 
 class ChinkieHandlerClient(Thread):
     def __init__(self, nwh: 'NetworkHandlerUDP', log: 'Logger'):
@@ -20,7 +21,6 @@ class ChinkieHandlerClient(Thread):
 
             if msg.startswith('/'):
                 self.command(msg)
-
             else:
                 self.log.print('Type /help for a list of commands')
 
@@ -28,15 +28,13 @@ class ChinkieHandlerClient(Thread):
         self.log.print(msg)
 
     def command(self, line):
-        split_msg = line.split(' ')[0]
+        split_msg = line.split(' ')
 
-        command = ''
         if len(split_msg[0]) > 1:
             command = split_msg[0][1:]
         else:
             command = ''
 
-        print('DEBUG: ', line, split_msg, command)
 
         if command == '' or command == 'log':
             self.log.log_on = not self.log.log_on
@@ -45,7 +43,13 @@ class ChinkieHandlerClient(Thread):
             else:
                 self.log.print('Disabled logger')
         elif command == 'exit':
-            exit()
+            self.log.print('Exiting...')
+            os._exit(0)
+        elif command == 'connections':
+            conns = self.nwh.connections.copy().values()
+            self.log.print('CONNECTIONS:')
+            for conn in conns:
+                self.log.print('  ' + conn.name + ' (' + conn.ip + ':' + str(conn.port) + ')')
         elif command == 'r' or command == 'remote':
             if len(split_msg) < 2:
                 self.log.print('USAGE:')
@@ -54,7 +58,8 @@ class ChinkieHandlerClient(Thread):
 
         elif command == 'help':
             self.log.print('COMMANDS:')
-            self.log.print('  /        toggle logging')
-            self.log.print('  /log     toggle logging')
-            self.log.print('  /exit    exit program')
-            self.log.print('  /help    show list of commands')
+            self.log.print('  /log or /      toggle logging')
+            self.log.print('  /exit          exit program')
+            self.log.print('  /connections   list the current connections')
+            self.log.print('  /remote or /r  execute a command on a connected device')
+            self.log.print('  /help          show list of commands')
