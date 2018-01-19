@@ -11,9 +11,10 @@ class ChinkieHandlerClient(Thread):
 
         self.log = log
         self.nwh = nwh
+        self.running = True
 
     def run(self):
-        while True:
+        while self.running:
             # print(platform.node() + ': ', end='')
             msg = input()
 

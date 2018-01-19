@@ -1,11 +1,11 @@
 import socket
-from threading import Thread
+from threading import Thread, RLock
 from logger import Logger
 
 
 class NetworkHandlerUDP(Thread):
     def __init__(self, port, log: 'Logger'):
-        # Run constructor of parent
+        # Run constructor of super class
         Thread.__init__(self)
 
         # Create a socket
@@ -14,20 +14,24 @@ class NetworkHandlerUDP(Thread):
         self.connections = dict()
         self.protocol = None
         self.log = log
+        self.lock = RLock()
+        self.running = True
 
     def add_protocol(self, protocol):
         self.protocol = protocol
 
     def run(self):
-        while True:
+        while self.running:
             # Constantly receive a message
             self.log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
             self.log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
 
-            if addr not in self.connections.keys():
-                self.connections[addr] = Connection(addr[0], addr[1], self)
-                #TODO ACK MESSAGE
+            # self.lock.acquire()
+            # if addr not in self.connections.keys():
+            #     self.connections[addr] = Connection(addr[0], addr[1], self)
+            #     #TODO ACK MESSAGE
+            # self.lock.release()
 
             self.protocol.rec_prot(data, addr)
 
@@ -40,20 +44,41 @@ class NetworkHandlerUDP(Thread):
 
     # msg is bytes
     def multisend(self, msg):
-        for key, conn in self.connections.items():
-            conn.send_msg(msg)
+        self.lock.acquire()
+        try:
+            for key, conn in self.connections.items():
+                conn.send_msg(msg)
+        finally:
+            self.lock.release()
 
     # msg is bytes
     def forward_exclude(self, msg, not_conn):
-        for key, conn in self.connections.items():
-            if not not_conn == conn:
-                conn.send_msg(msg)
+        self.lock.acquire()
+        try:
+            for key, conn in self.connections.items():
+                if not not_conn == conn:
+                    conn.send_msg(msg)
+        finally:
+            self.lock.release()
+
+    def get_connection(self, key):
+        self.lock.acquire()
+        try:
+            r = self.connections[key]
+        finally:
+            self.lock.release()
+        return r
 
     def add_connection(self, ip, port):
-        self.connections[(ip, port)] = Connection(ip, port, self)
+        self.lock.acquire()
+        try:
+            self.connections[(ip, port)] = Connection(ip, port, self)
+        finally:
+            self.lock.release()
+
 
 class Connection:
-    def __init__(self, ip, port, nwh:'NetworkHandlerUDP'):
+    def __init__(self, ip, port, nwh: 'NetworkHandlerUDP'):
         self.ip = ip
         self.port = port
         self.nwh = nwh

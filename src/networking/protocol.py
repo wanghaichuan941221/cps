@@ -15,9 +15,15 @@ class Protocol:
 
     # MESSAGE packet
     # - 1 byte header (\x00)
-    # - rest for utf-8 encoded string
+    # - rest for utf-8 encoded string (message)
     def wrap_msg(self, msg):
         return b'\x00' + msg.encode('utf-8')
+
+    # HEARTBEAT packet
+    # - 1 byte header (\x01)
+    # - rest for utf-8 encoded string (name)
+    def wrap_hb(self, name):
+        return b'\x01' + name.encode('utf-8')
 
 
 class ClientProtocol(Protocol):
