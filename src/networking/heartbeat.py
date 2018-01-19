@@ -15,11 +15,10 @@ class Heartbeat(Thread):
         self.interval = interval
         self.nwh = nwh
         self.running = True
-        self.hb_packet = self.nwh.protocol.wrap_hb(node())
 
     def run(self):
         while self.running:
-            self.nwh.multisend(self.hb_packet)
+            self.nwh.multisend(self.nwh.protocol.wrap_hb(node()))
             sleep(self.interval)
 
 
