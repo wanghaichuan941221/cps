@@ -74,7 +74,7 @@ class NetworkHandlerUDP(Thread):
         try:
             conn = Connection(ip, port, name, self)
             self.connections[(ip, port)] = conn
-            self.log.log('networkHandlerUDP', conn + ' connected')
+            self.log.log('networkHandlerUDP', str(conn) + ' connected')
         finally:
             self.lock.release()
 
@@ -84,7 +84,7 @@ class NetworkHandlerUDP(Thread):
             for key, value in self.connections.items():
                 if key not in alive:
                     conn = self.connections.pop(key)
-                    self.log.log('networkHandlerUDP', conn + ' disconnected')
+                    self.log.log('networkHandlerUDP', str(conn) + ' disconnected')
         finally:
             self.lock.release()
 
@@ -101,7 +101,7 @@ class Connection:
         self.nwh.send_msg(msg, self.ip, self.port)
 
     def __str__(self):
-        return 'Connection(' + self.ip + ', ' + str(self.port) + ')'
+        return 'Connection(' + self.ip + ', ' + str(self.port) + ', ' + self.name + ')'
 
     def __eq__(self, other):
         return (self.ip == other.ip) and (self.port == other.port) and (self.nwh == other.nwh)
