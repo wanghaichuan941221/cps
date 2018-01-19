@@ -14,3 +14,6 @@ class Logger:
     def print(self, msg):
         print('\r' + msg)
         print(node() + ': ', end='')
+
+    def reset_cmd_line(self):
+        print(node() + ': ', end='')

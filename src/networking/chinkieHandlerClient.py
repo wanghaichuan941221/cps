@@ -17,6 +17,7 @@ class ChinkieHandlerClient(Thread):
         while self.running:
             # print(platform.node() + ': ', end='')
             msg = input()
+            self.log.reset_cmd_line()
 
             if msg.startswith('/'):
                 command = msg.split(' ')[0][1:]
