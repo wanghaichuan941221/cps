@@ -69,18 +69,31 @@ class NetworkHandlerUDP(Thread):
             self.lock.release()
         return r
 
-    def add_connection(self, ip, port):
+    def add_connection(self, ip, port, name):
         self.lock.acquire()
         try:
-            self.connections[(ip, port)] = Connection(ip, port, self)
+            conn = Connection(ip, port, name, self)
+            self.connections[(ip, port)] = conn
+            self.log.log('networkHandlerUDP', conn + ' connected')
+        finally:
+            self.lock.release()
+
+    def remove_dead_clients(self, alive):
+        self.lock.acquire()
+        try:
+            for key, value in self.connections.items():
+                if key not in alive:
+                    conn = self.connections.pop(key)
+                    self.log.log('networkHandlerUDP', conn + ' disconnected')
         finally:
             self.lock.release()
 
 
 class Connection:
-    def __init__(self, ip, port, nwh: 'NetworkHandlerUDP'):
+    def __init__(self, ip, port, name, nwh: 'NetworkHandlerUDP'):
         self.ip = ip
         self.port = port
+        self.name = name
         self.nwh = nwh
 
     def send_msg(self, msg):
@@ -95,5 +108,3 @@ class Connection:
 
     def __ne__(self, other):
         return (self.ip != other.ip) or (self.port != other.port) or (self.nwh != other.nwh)
-
-    # PROTOCOL: 0=chat 1=data

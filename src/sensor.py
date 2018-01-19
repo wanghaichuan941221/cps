@@ -1,6 +1,7 @@
 import time
 from logger import Logger
 from networking.chinkieHandlerClient import ChinkieHandlerClient
+from networking.heartbeat import Heartbeat
 from networking.networkHandlerUDP import NetworkHandlerUDP
 from networking.protocol import ClientProtocol
 
@@ -20,20 +21,25 @@ log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
 # Create the UDP network handlers
 net_hand_udp = NetworkHandlerUDP(UDP_PORT, log)
 net_hand_udp.setName('UDP Client')
-net_hand_udp.add_connection(T_UDP_IP, T_UDP_PORT)
+
 chinkie = ChinkieHandlerClient(net_hand_udp, log)
 chinkie.setName('Chinkie Client')
 
-if CHINKIE:
-    net_hand_udp.add_protocol(ClientProtocol(net_hand_udp, chinkie))
-    chinkie.start()
+hb = Heartbeat(1, net_hand_udp)
+hb.setName('Heartbeat')
+
+net_hand_udp.add_protocol(ClientProtocol(net_hand_udp, chinkie, hb))
+net_hand_udp.add_connection(T_UDP_IP, T_UDP_PORT, 'CPS1-0')
+
 
 # Start the UDP network handler
 net_hand_udp.start()
-net_hand_udp.join()
+chinkie.start()
+hb.start()
 
-if CHINKIE:
-    chinkie.join()
+net_hand_udp.join()
+chinkie.join()
+hb.join()
 
 
 
