@@ -1,5 +1,4 @@
 import time
-from platform import node
 
 
 class Logger:
@@ -8,12 +7,7 @@ class Logger:
 
     def log(self, src, msg):
         if self.log_on:
-            print('\r{:<21}'.format(str(time.time())), '{:<24}'.format(src), msg)
-            print(node() + ': ', end='')
+            print('{:<21}'.format(str(time.time())), '{:<24}'.format(src), msg)
 
     def print(self, msg):
-        print('\r' + msg)
-        print(node() + ': ', end='')
-
-    def reset_cmd_line(self):
-        print(node() + ': ', end='')
+        print(msg)
