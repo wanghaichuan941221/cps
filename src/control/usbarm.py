@@ -35,8 +35,8 @@ def connect():
         return True
 
 # Define commands to control arm
-rotate_ccw = [0,1,0] # Rotate base counter-clockwise
-rotate_cw = [0,2,0] # Rotate base clockwise
+rotate_ccw = [0,2,0] # Rotate base counter-clockwise
+rotate_cw = [0,1,0] # Rotate base clockwise
 shoulder_up = [128,0,0] # Shoulder up
 shoulder_down = [64,0,0] # Shoulder down
 elbow_up = [16,0,0] # Elbow up
@@ -58,8 +58,8 @@ def safe_setpoints(setpoints):
             setpoints[x]=save_angles[2*x]
         elif setpoints[x]<=save_angles[(2*x)+1]:
             setpoints[x]=save_angles[(2*x)+1]
-        else:
-            print("no unsafe setpoint found", x, setpoints[x])
+        #else:
+            #print("no unsafe setpoint found", x, setpoints[x])
 
     return setpoints
 
@@ -158,13 +158,34 @@ def get_direction(error):
             direction_[x] = 2
     return direction_
 
+# translate direction to motor control values
+def get_motor_control_values(_direction):
+    rotate1 = rotate(_direction[0])
+    shoulder1 = shoulder(_direction[1])
+    elbow1 = elbow(_direction[2])
+    wrist1 = wrist(_direction[3])
+    return rotate1, shoulder1, elbow1, wrist1
+
+def get_usb_direction(setpoints, angles):
+    setpoints_old = setpoints
+    setpoints = safe_setpoints(setpoints)
+    if setpoints_old != setpoints:
+        print("new setpoints"), setpoints
+    error = get_error(setpoints, angles)
+    print("error    (1 2 3 4)", error)
+    direction = get_direction(error)
+    print("direction is ", direction)
+    usb_direction =  get_motor_control_values(direction)
+    #print("rotate, shoulder, elbow, wrist",usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+    return usb_direction
+
 # Translate motor directions to one command for the arm
 def get_total_movement(_rotate, _shoulder, _elbow, _wrist):
-    total_movement_temp1 = [x1 + x2 for (x1, x2) in zip(rotate(_rotate),  shoulder(_shoulder))]
-    total_movement_temp2 = [x1 + x2 for (x1, x2) in zip(total_movement_temp1,  elbow(_elbow))]
-    total_movement = [x1 + x2 for (x1, x2) in zip(total_movement_temp2,  wrist(_wrist))]
+    total_movement_temp1 = [x1 + x2 for (x1, x2) in zip(_rotate, _shoulder)]
+    total_movement_temp2 = [x1 + x2 for (x1, x2) in zip(total_movement_temp1, _elbow)]
+    total_movement = [x1 + x2 for (x1, x2) in zip(total_movement_temp2, _wrist)]
 
-    print("total movement is",total_movement)
+    #print("total movement is",total_movement)
     return total_movement
 
 
