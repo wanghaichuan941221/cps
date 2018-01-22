@@ -32,12 +32,15 @@ class ChinkieHandlerServer(Thread):
         self.nwh.forward_exclude(packet, self.nwh.connections[addr])
 
         split_msg = msg.split(' ')
+        print(split_msg, 'split msg')
         if len(split_msg[0]) > 0:
             if split_msg[0] == '/remote' or split_msg[0] == '/r':
                 if platform.node() == split_msg [1]:
                     comm = ''
                     for i in range(2, len(split_msg) - 1):
                         comm = comm + split_msg[i]
+
+                    print(comm.strip(), 'strip')
                     self.command(comm.strip())
 
     def command(self, line):
