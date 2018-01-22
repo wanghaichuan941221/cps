@@ -30,6 +30,15 @@ class Protocol:
     def wrap_top_view(self, x1, y1, x2, y2, x3, y3, xb, yb):
         return b'\x02'
 
+    def int_to_bytes2(self, n):
+        b = [0, 0]
+        b[1] = n & 0xFF
+        b[0] = (n >> 8) & 0xFF
+        return bytes(b)
+
+    def bytes2_to_int(self, b, offset):
+        return (b[offset] << 8) + b[offset+1]
+
 
 class ClientProtocol(Protocol):
     def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerClient', hb: 'Heartbeat'):
