@@ -3,6 +3,7 @@ import operator
 import usbarm
 import math
 import statemachine
+import forwardkinematics
 
 setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
@@ -10,17 +11,8 @@ endeffector_to_box_ = 2
 endeffector_to_droppoint_ = 2
 
 
-def control(time, setpoints, angles, endeffector_to_box, endeffector_to_droppoint):
+def control(time, setpoints, angles, endeffector_to_box, endeffector_to_droppoint, top_points):
     print("start control")
-
-
-
-
-
-    # usbarm.set_motors(rotate, shoulder, elbow, wrist, grip, light)
-    # 0 = off, 1 = clockwise, 2 = counterclockwise for motors
-    # 0 = off, 1 = on, 2 = off
-    #print "total movement", total_movement
 
 
 
@@ -37,7 +29,7 @@ while True:
     duration = float(input())  # Fetch the input from the terminal#
     print("duration =", duration)
 
-    control(duration, setpoints_, angles_, endeffector_to_box_, endeffector_to_droppoint_)
+    control(duration, setpoints_, angles_, endeffector_to_box_, endeffector_to_droppoint_, top_points_)
 
 
 
