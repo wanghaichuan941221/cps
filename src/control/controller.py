@@ -3,7 +3,7 @@ import operator
 import usbarm
 import math
 import statemachine
-import forwardkinematics
+import pixaltoangle
 
 setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
