@@ -2,7 +2,7 @@ from time import sleep
 import operator
 import usbarm
 import math
-import statemachine2
+import statemachine
 
 setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
@@ -24,7 +24,7 @@ def control(time, setpoints, angles, endeffector_to_box, endeffector_to_droppoin
 
 
 
-    state = statemachine2.state0  # initial state
+    state = statemachine.state0  # initial state
     while state: state = state(angles, setpoints, endeffector_to_box, endeffector_to_droppoint)  # launch state machine
     print("Done with states")
 
