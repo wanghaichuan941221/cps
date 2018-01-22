@@ -26,9 +26,18 @@ class Protocol:
     def wrap_hb(self, name):
         return b'\x01' + name.encode('utf-8')
 
-    # x1,y1,x2,y2,x3,y3,xb,yb
-    def wrap_top_view(self, x1, y1, x2, y2, x3, y3, xb, yb):
-        return b'\x02'
+    # TOP-VIEW-DATA packet
+    # - 1 byte header (\x02)
+    # - 16 bytes data (x1,y1,x2,y2,x3,y3,xb,yb)
+    #   - 2 bytes for every integer (8 integers)
+    def wrap_top_view(self, coords):
+        if len(coords) == 8:
+            res = b'\x02'
+            for i in range(0, len(coords)):
+                res = res + self.int_to_bytes2(coords[i])
+            return res
+        else:
+            raise ValueError("Coordinate array is not 8: length was " + str(len(coords)))
 
     def int_to_bytes2(self, n):
         b = [0, 0]
