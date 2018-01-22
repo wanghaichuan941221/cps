@@ -47,6 +47,7 @@ class ChinkieHandlerServer(Thread):
                 self.log.print('Disabled logger')
         elif command == 'exit':
             self.log.print('Exiting...')
+            #TODO stop motors
             os._exit(0)
         elif command == 'connections':
             conns = self.nwh.connections.copy().values()

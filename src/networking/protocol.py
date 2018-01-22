@@ -26,6 +26,10 @@ class Protocol:
     def wrap_hb(self, name):
         return b'\x01' + name.encode('utf-8')
 
+    # x1,y1,x2,y2,x3,y3,xb,yb
+    def wrap_top_view(self, x1, y1, x2, y2, x3, y3, xb, yb):
+        return b'\x02'
+
 
 class ClientProtocol(Protocol):
     def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerClient', hb: 'Heartbeat'):
