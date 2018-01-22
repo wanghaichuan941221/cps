@@ -22,8 +22,7 @@ class ChinkieHandlerServer(Thread):
             if msg.startswith('/'):
                 self.command(msg)
             else:
-                packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
-                self.nwh.multisend(packet)
+                self.log.print('Type /help for a list of commands.')
 
     def rec_msg(self, msg, addr):
         self.log.print(msg)
@@ -32,7 +31,6 @@ class ChinkieHandlerServer(Thread):
         self.nwh.forward_exclude(packet, self.nwh.connections[addr])
 
         split_msg = msg.split(' ')
-        print(split_msg, 'split msg')
         if len(split_msg[0]) > 0:
             if split_msg[0] == '/remote' or split_msg[0] == '/r':
                 if platform.node() == split_msg [1]:
@@ -40,7 +38,6 @@ class ChinkieHandlerServer(Thread):
                     for i in range(2, len(split_msg)):
                         comm = comm + split_msg[i]
 
-                    print(comm.strip(), 'strip')
                     self.command(comm.strip())
 
     def command(self, line):
