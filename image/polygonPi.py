@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import matplotlib.pyplot as plt
 import imutils
 import math as m
@@ -25,10 +27,19 @@ direction =""
 (x2,y2,w2,h2)=(1,0,0,0)
 (x3,y3,w3,h3)=(1,0,0,0)
 
-camera = cv2.VideoCapture(1)
+imgWidth = 640
+imgHeight = 480
+
+camera = PiCamera()
+camera.rotation = 180
+camera.resolution = (imgWidth, imgHeight)
+camera.framerate = 32
+rawCapture = PiRGBArray(camera, size=(imgWidth, imgHeight))
+
 while(1):
-    (grabbed,frame) = camera.read()
-    frame = imutils.resize(frame,width=600)
+    camera.capture(rawCapture, format="bgr", use_video_port=True)
+    frame = rawCapture.array
+    
     blurred = cv2.GaussianBlur(frame,(11,11),0)
     hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
 
@@ -73,16 +84,17 @@ while(1):
         # print "blue"
         # print (x3,y3,w3,h3)
 
-    l1 = m.sqrt(m.pow((x2-x3),2)+m.pow((y2-y3),2))
-    l2 = m.sqrt(m.pow((x1-x3),2)+m.pow((y1-y3),2))
-    l3 = m.sqrt(m.pow((x1-x2),2)+m.pow((y1-y2),2))
-    a = m.acos((m.pow(l2,2)+m.pow(l3,2)-m.pow(l1,2))/(2*l2*l3))
-    print a
-    cv2.imshow("frame",frame)
-    cv2.imshow("mask_green",mask_green)
-    cv2.imshow("mask_red",mask_red)
-    cv2.imshow("mask_blue",mask_blue)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-camera.release()
-cv2.destroyAllWindows()
+    # l1 = m.sqrt(m.pow((x2-x3),2)+m.pow((y2-y3),2))
+    # l2 = m.sqrt(m.pow((x1-x3),2)+m.pow((y1-y3),2))
+    # l3 = m.sqrt(m.pow((x1-x2),2)+m.pow((y1-y2),2))
+    # a = m.acos((m.pow(l2,2)+m.pow(l3,2)-m.pow(l1,2))/(2*l2*l3))
+    # print a
+    # cv2.imshow("frame",frame)
+    # cv2.imshow("mask_green",mask_green)
+    # cv2.imshow("mask_red",mask_red)
+    # cv2.imshow("mask_blue",mask_blue)
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #         break
+    rawCapture.truncate(0)
+camera.close()
+# cv2.destroyAllWindows()

@@ -1,4 +1,3 @@
-import time
 from logger import Logger
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.heartbeat import Heartbeat
@@ -6,77 +5,48 @@ from networking.networkHandlerUDP import NetworkHandlerUDP
 from networking.protocol import ClientProtocol
 
 
-CHINKIE = True
+# Create a program-wide logger.
 log = Logger()
 
-# Specify own IP and port
+# Specify own IP and port.
 UDP_PORT = 5005
 
-T_UDP_IP = '10.0.0.1'  # <---- only thing we need to change
-# T_UDP_IP = '130.89.136.245'  # <---- only thing we need to change
+# Specify server IP and port.
+T_UDP_IP = '10.0.0.1'
 T_UDP_PORT = 5005
-
 log.log('sensor', 'Init UDP PORT: ' + str(UDP_PORT))
+log.log('sensor', 'Init Target UDP IP: ' + str(T_UDP_IP))
+log.log('sensor', 'Init Target UDP PORT: ' + str(T_UDP_PORT))
 
-# Create the UDP network handlers
+# Create the UDP network handler.
 net_hand_udp = NetworkHandlerUDP(UDP_PORT, log)
 net_hand_udp.setName('UDP Client')
 
+# Create the Chinkie (commands) handler.
 chinkie = ChinkieHandlerClient(net_hand_udp, log)
 chinkie.setName('Chinkie Client')
 
+# Create the heartbeat.
 hb = Heartbeat(1, net_hand_udp)
 hb.setName('Heartbeat')
 
+# Add a protocol to the network handler.
 net_hand_udp.add_protocol(ClientProtocol(net_hand_udp, chinkie, hb))
+
+# Add the server to the connections of the network handler.
 net_hand_udp.add_connection(T_UDP_IP, T_UDP_PORT, 'CPS1-0')
 
 
-# Start the UDP network handler
+# Start the several threads.
 net_hand_udp.start()
 chinkie.start()
 hb.start()
 
+
+# TODO Stuff goes here!
+
+
+# Wait for the threads to finish.
 net_hand_udp.join()
 chinkie.join()
 hb.join()
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Create the UDP network handlers
-# sensors = []
-# for i in range(0, 1):
-#     net_hand_udp = NetworkHandlerUDP(UDP_PORT + i)
-#     net_hand_udp.setName('UDP Client ' + str(i))
-#     sensors.append(net_hand_udp)
-#     # Start the UDP network handler
-#     net_hand_udp.start()
-#
-# time.sleep(1)
-# for i in range(0, 10):
-#     for sensor in sensors:
-#         bmsg = bytearray(b'\x01\x02\x03')
-#         bmsg.append(i)
-#         sensor.send_msg(bmsg, T_UDP_IP, T_UDP_PORT)
-#
-# for sensor in sensors:
-#     sensor.join()
-
-#pw = cpsgroup1
-#ssid = CPSRSACRPU
-#own ip = 10.0.0.1
-#range ip = 10.0.0.2-10.0.0.255
-
-
-
-
