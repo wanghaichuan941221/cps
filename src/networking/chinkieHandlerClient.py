@@ -63,7 +63,7 @@ class ChinkieHandlerClient(Thread):
                 self.log.print('USAGE:')
                 self.log.print('  /remote <host_name> <command> [<arguments>] ')
             else:
-                self.nwh.multisend(line)
+                self.nwh.multisend(self.nwh.protocol.wrap_msg(line))
         elif command == 'help':
             self.log.print('COMMANDS:')
             self.log.print('  /log or /      toggle logging')
