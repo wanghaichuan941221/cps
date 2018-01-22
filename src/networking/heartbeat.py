@@ -15,11 +15,10 @@ class Heartbeat(Thread):
         self.interval = interval
         self.nwh = nwh
         self.running = True
-        self.hb_packet = self.nwh.protocol.wrap_hb(node())
 
     def run(self):
         while self.running:
-            self.nwh.multisend(self.hb_packet)
+            self.nwh.multisend(self.nwh.protocol.wrap_hb(node()))
             sleep(self.interval)
 
 
@@ -31,10 +30,21 @@ class HeartbeatChecker(Thread):
 
         self.interval = interval
         self.nwh = nwh
-        self.alive = []
+        self.alive = set()
         self.running = True
 
     def run(self):
         while self.running:
-            self.alive = []
+            self.alive = set()
             sleep(self.interval)
+            self.nwh.remove_dead_clients(self.alive)
+
+    def add_alive(self, key):
+        self.alive.add(key)
+
+    def rec_hb(self, name, addr):
+        try:
+            self.nwh.get_connection(addr)
+        except KeyError:
+            self.nwh.add_connection(addr[0], addr[1], name)
+        self.alive.add(addr)

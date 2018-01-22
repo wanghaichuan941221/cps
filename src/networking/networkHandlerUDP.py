@@ -21,17 +21,11 @@ class NetworkHandlerUDP(Thread):
         self.protocol = protocol
 
     def run(self):
+        self.log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
         while self.running:
             # Constantly receive a message
-            self.log.log('networkHandlerUDP', self.getName() + ' Now receiving...')
             data, addr = self.sock.recvfrom(1024)
             self.log.log('networkHandlerUDP', self.getName() + ' Received message ' + str(data) + ' from ' + str(addr))
-
-            # self.lock.acquire()
-            # if addr not in self.connections.keys():
-            #     self.connections[addr] = Connection(addr[0], addr[1], self)
-            #     #TODO ACK MESSAGE
-            # self.lock.release()
 
             self.protocol.rec_prot(data, addr)
 
@@ -69,18 +63,34 @@ class NetworkHandlerUDP(Thread):
             self.lock.release()
         return r
 
-    def add_connection(self, ip, port):
+    def add_connection(self, ip, port, name):
         self.lock.acquire()
         try:
-            self.connections[(ip, port)] = Connection(ip, port, self)
+            conn = Connection(ip, port, name, self)
+            self.connections[(ip, port)] = conn
+            self.log.log('networkHandlerUDP', str(conn) + ' connected')
+        finally:
+            self.lock.release()
+
+    def remove_dead_clients(self, alive):
+        self.lock.acquire()
+        try:
+            remove_list = []
+            remove_list.extend(self.connections.keys())
+            for key in alive:
+                remove_list.remove(key)
+            for key in remove_list:
+                conn = self.connections.pop(key)
+                self.log.log('networkHandlerUDP', str(conn) + ' disconnected')
         finally:
             self.lock.release()
 
 
 class Connection:
-    def __init__(self, ip, port, nwh: 'NetworkHandlerUDP'):
+    def __init__(self, ip, port, name, nwh: 'NetworkHandlerUDP'):
         self.ip = ip
         self.port = port
+        self.name = name
         self.nwh = nwh
 
     def send_msg(self, msg):
@@ -88,12 +98,10 @@ class Connection:
         self.nwh.send_msg(msg, self.ip, self.port)
 
     def __str__(self):
-        return 'Connection(' + self.ip + ', ' + str(self.port) + ')'
+        return 'Connection(' + self.ip + ', ' + str(self.port) + ', ' + self.name + ')'
 
     def __eq__(self, other):
         return (self.ip == other.ip) and (self.port == other.port) and (self.nwh == other.nwh)
 
     def __ne__(self, other):
         return (self.ip != other.ip) or (self.port != other.port) or (self.nwh != other.nwh)
-
-    # PROTOCOL: 0=chat 1=data

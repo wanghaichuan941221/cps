@@ -3,6 +3,7 @@ from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
 import platform
+import os
 
 
 class ChinkieHandlerServer(Thread):
@@ -19,21 +20,50 @@ class ChinkieHandlerServer(Thread):
             msg = input()
 
             if msg.startswith('/'):
-                command = msg.split(' ')[0][1:]
-
-                if command == 'log':
-                    self.log.log_on = not self.log.log_on
-                    if self.log.log_on:
-                        print('Enabled logger')
-                    else:
-                        print('Disabled logger')
+                self.command(msg)
             else:
                 packet = self.nwh.protocol.wrap_msg(platform.node() + ': ' + msg)
                 self.nwh.multisend(packet)
 
     def rec_msg(self, msg, addr):
-        print(msg)
+        self.log.print(msg)
 
         packet = self.nwh.protocol.wrap_msg(msg)
         self.nwh.forward_exclude(packet, self.nwh.connections[addr])
 
+    def command(self, line):
+        split_msg = line.split(' ')
+
+        if len(split_msg[0]) > 1:
+            command = split_msg[0][1:]
+        else:
+            command = ''
+
+        if command == '' or command == 'log':
+            self.log.log_on = not self.log.log_on
+            if self.log.log_on:
+                self.log.print('Enabled logger')
+            else:
+                self.log.print('Disabled logger')
+        elif command == 'exit':
+            self.log.print('Exiting...')
+            #TODO stop motors
+            os._exit(0)
+        elif command == 'connections':
+            conns = self.nwh.connections.copy().values()
+            self.log.print('CONNECTIONS:')
+            for conn in conns:
+                self.log.print('  ' + conn.name + ' (' + conn.ip + ':' + str(conn.port) + ')')
+        elif command == 'r' or command == 'remote':
+            if len(split_msg) < 2:
+                self.log.print('USAGE:')
+                self.log.print('  /remote <host_name> <command> [<arguments>] ')
+            #TODO implement dis shiit
+
+        elif command == 'help':
+            self.log.print('COMMANDS:')
+            self.log.print('  /log or /      toggle logging')
+            self.log.print('  /exit          exit program')
+            self.log.print('  /connections   list the current connections')
+            self.log.print('  /remote or /r  execute a command on a connected device')
+            self.log.print('  /help          show list of commands')
