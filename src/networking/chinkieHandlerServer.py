@@ -37,7 +37,7 @@ class ChinkieHandlerServer(Thread):
             if split_msg[0] == '/remote' or split_msg[0] == '/r':
                 if platform.node() == split_msg [1]:
                     comm = ''
-                    for i in range(2, len(split_msg) - 1):
+                    for i in range(2, len(split_msg)):
                         comm = comm + split_msg[i]
 
                     print(comm.strip(), 'strip')
