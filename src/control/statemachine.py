@@ -1,7 +1,5 @@
 from time import sleep
-import numpy as np
-import operator
-import usbarm
+import control.usbarm as usbarm
 import math
 
 # Each of the state functions below performs some action and then implements
