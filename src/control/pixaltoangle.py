@@ -1,30 +1,42 @@
 import math
+def phytagoras(x1,y1,x2,y2):
+    length = math.sqrt(math.pow((x1-x2),2)+math.pow((y1-y2),2))
+    return length
+
+def angle(x1,y1,x2,y2,x3,y3):
+    l1 = phytagoras(x2,y2,x3,y3)
+    l2 = phytagoras(x1,y1,x2,y2)
+    l3 = phytagoras(x1,y1,x3,y3)
+    omega = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
+    return omega
 
 def get_theta1_setpoint1(pixal_cordinates_top):
     x4 = (pixal_cordinates_top[4]+pixal_cordinates_top[0])/2
     y4 = (pixal_cordinates_top[5]+pixal_cordinates_top[1])/2
 
-    l1 = math.sqrt(math.pow((pixal_cordinates_top[2]-pixal_cordinates_top[4]),2)+math.pow((pixal_cordinates_top[3]-pixal_cordinates_top[5]),2))
-    l2 = math.sqrt(math.pow((x4-pixal_cordinates_top[2]),2)+math.pow((y4-pixal_cordinates_top[3]),2))
-    l3 = math.sqrt(math.pow((x4-pixal_cordinates_top[4]),2)+math.pow((y4-pixal_cordinates_top[5]),2))
-    theta1 = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
-
+    theta1 = angle(x4,y4,pixal_cordinates_top[2],pixal_cordinates_top[3],pixal_cordinates_top[4],pixal_cordinates_top[5])
     if pixal_cordinates_top[3]<pixal_cordinates_top[5]:
         theta1 = -1*theta1
 
-    l1 = math.sqrt(math.pow((pixal_cordinates_top[6]-pixal_cordinates_top[4]),2)+math.pow((pixal_cordinates_top[7]-pixal_cordinates_top[5]),2))
-    l2 = math.sqrt(math.pow((x4-pixal_cordinates_top[6]),2)+math.pow((y4-pixal_cordinates_top[7]),2))
-    l3 = math.sqrt(math.pow((x4-pixal_cordinates_top[4]),2)+math.pow((y4-pixal_cordinates_top[5]),2))
-    setpoint1 = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
-
+    setpoint1 = angle(x4,y4,pixal_cordinates_top[6],pixal_cordinates_top[7],pixal_cordinates_top[4],pixal_cordinates_top[5])
     if pixal_cordinates_top[7]<pixal_cordinates_top[5]:
         setpoint1 = -1*setpoint1
     print("theta1, setpoint1", theta1,setpoint1)
     return theta1,setpoint1
 
-def get_theta234_side1(pixal_cordinates_side1):
-    x4 = (pixal_cordinates_top[4]+pixal_cordinates_top[0])/2
-    y4 = (pixal_cordinates_top[5]+pixal_cordinates_top[1])/2
+def get_theta234_side1(pixal_cordinates_side1, theta1):
+    x6 = (pixal_cordinates_top[8]+pixal_cordinates_top[0])/2
+    y6 = (pixal_cordinates_top[9]+pixal_cordinates_top[1])/2
+
+    theta2_temp = angle(x6,y6,pixal_cordinates_top[2],pixal_cordinates_top[3],pixal_cordinates_top[8],pixal_cordinates_top[9])
+    theta2 = (1/2)*math.pi
+
+    x7 = (pixal_cordinates_top[2])
+    y7 = pixal_cordinates_top[3] - (pixal_cordinates_top[3]-y6)
+
+
+    theta2_temp = angle(x7,y7,pixal_cordinates_top[2],pixal_cordinates_top[3],pixal_cordinates_top[4],pixal_cordinates_top[5])
+
 
     return theta2, theta3, theta4
 
