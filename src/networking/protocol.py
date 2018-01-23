@@ -1,3 +1,4 @@
+from control.controller import Controller
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.chinkieHandlerServer import ChinkieHandlerServer
 from networking.heartbeat import Heartbeat, HeartbeatChecker
@@ -71,13 +72,14 @@ class ClientProtocol(Protocol):
 
 
 class ServerProtocol(Protocol):
-    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker'):
+    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker', con: 'Controller'):
         # Run constructor of parent
         Protocol.__init__(self)
 
         self.nwh = nwh
         self.chinkie = chinkie
         self.hb = hb
+        self.con = con
 
     def rec_prot(self, data, addr):
         header = self.get_byte(data, 0)
@@ -91,4 +93,4 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 8):
                 res.append(self.bytes2_to_int(values, i*2))
-            # TODO give to controller
+            self.con.control(values)

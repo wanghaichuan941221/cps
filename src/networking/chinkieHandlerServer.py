@@ -1,4 +1,6 @@
 from threading import Thread
+
+from control.controller import Controller
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 import platform
@@ -10,7 +12,7 @@ class ChinkieHandlerServer(Thread):
     also handles any remote commands that are received by the network handler.
     """
 
-    def __init__(self, nwh: 'NetworkHandlerUDP', log: 'Logger'):
+    def __init__(self, nwh: 'NetworkHandlerUDP', log: 'Logger', con: 'Controller'):
         """Constructor of the ChinkieHandlerClient class, which is an extension of the threading.Thread class."""
 
         # Run the constructor of parent.
@@ -19,6 +21,7 @@ class ChinkieHandlerServer(Thread):
         # Create a logger, network handler and set the "running" variable to be True.
         self.log = log
         self.nwh = nwh
+        self.con = con
         self.running = True
 
     def run(self):
@@ -33,8 +36,16 @@ class ChinkieHandlerServer(Thread):
                 # If the message is a command, call the command() function to execute the command.
                 self.command(msg)
             else:
-                # If the message is not a command, notify the user.
-                self.log.print('Type /help for a list of commands.')
+                # If the message equals 's' then hit the kill switch
+                if msg.strip() == 's':
+                    # Quick shutdown
+                    self.log.print('Stopping Robot Arm...')
+                    self.con.stop_motors()
+                    self.log.print('Exiting...')
+                    os._exit(0)
+                else:
+                    # If the message is not a command, notify the user.
+                    self.log.print('Type /help for a list of commands.')
 
     def rec_msg(self, msg, addr):
         """When a message is received by the network handler and the protocol indicates that it is a command message,
@@ -88,6 +99,8 @@ class ChinkieHandlerServer(Thread):
                 self.log.print('Disabled logger')
         elif command == 'exit':
             # If the command is "exit", shut down the system. //TODO Make it neater.
+            self.log.print('Stopping Robot Arm...')
+            self.con.stop_motors()
             self.log.print('Exiting...')
             os._exit(0)
         elif command == 'connections':
