@@ -63,12 +63,14 @@ def forward_kinematics(t2, t3, t4):
     return [[x1, y1], [x2, y2], [x3, y3]]
 
 
-def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,height):
+def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,calibration_distance_in_cm,height_object_in_cm):
     x4, y4 = get_xy_between_two_points(pixal_cordinates_top[4],pixal_cordinates_top[5],pixal_cordinates_top[0],pixal_cordinates_top[1])
 
-    multi1 = calibration_distance/phytagoras(pixal_cordinates_top[0],pixal_cordinates_top[1],pixal_cordinates_top[4],pixal_cordinates_top[5])/phytagoras(pixal_cordinates_side1[0],pixal_cordinates_side1[1],pixal_cordinates_side1[8],pixal_cordinates_side1[9])
-    x_distance_to_object_in_side1_view = phytagoras(x4,y4,pixal_cordinates_top[6],pixal_cordinates_top[7])*multi1
-    y_distance_to_object_in_side1_view = height
+    multi1 = calibration_distance_in_cm/phytagoras(pixal_cordinates_top[0],pixal_cordinates_top[1],pixal_cordinates_top[4],pixal_cordinates_top[5])
+    multi2 = phytagoras(pixal_cordinates_side1[0],pixal_cordinates_side1[1],pixal_cordinates_side1[8],pixal_cordinates_side1[9])/calibration_distance_in_cm
 
-    distance_to_object =  phytagoras(x_distance_to_object_in_side1_view, y_distance_to_object_in_side1_view, pixal_cordinates_side1[6], pixal_cordinates_side1[7])
-    return distance_to_object
+    x_distance_to_object_in_side1_view = phytagoras(x4,y4,pixal_cordinates_top[6],pixal_cordinates_top[7])*multi1*multi2
+    y_distance_to_object_in_side1_view = height_object_in_cm*multi2
+
+    distance_to_object_in_cm =  phytagoras(x_distance_to_object_in_side1_view, y_distance_to_object_in_side1_view, pixal_cordinates_side1[6], pixal_cordinates_side1[7])/multi2
+    return distance_to_object_in_cm
