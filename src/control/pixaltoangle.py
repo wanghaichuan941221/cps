@@ -45,6 +45,7 @@ def get_theta234_side1(pixal_cordinates_side1):
 
     theta4_temp = angle(pixal_cordinates_side1[4],pixal_cordinates_side1[5], pixal_cordinates_side1[2],pixal_cordinates_side1[3],pixal_cordinates_side1[6],pixal_cordinates_side1[7])
     theta4 = math.pi-theta4_temp
+    print("theta2, theta3, theta4", theta2, theta3, theta4)
     return theta2, theta3, theta4
 
 
