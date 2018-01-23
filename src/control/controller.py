@@ -18,7 +18,6 @@ endeffector_to_droppoint_ = 10
 class Controller:
 
     def control(self, pixel_coords_top):
-        self.var
         print("start control with ", str(pixel_coords_top))
         #
         # theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)

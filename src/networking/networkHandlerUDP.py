@@ -2,6 +2,11 @@ import socket
 from threading import Thread, RLock
 from logger import Logger
 
+# Wi-Fi
+# SSID: CPSRSACRPU
+# password: cpsgroup1
+# ip: 10.0.0.1
+
 
 class NetworkHandlerUDP(Thread):
     """The NetworkHandlerUPD class is used to manage all the connections for a client or server node. The class

@@ -101,7 +101,8 @@ class ChinkieHandlerClient(Thread):
             else:
                 self.nwh.multisend(self.nwh.protocol.wrap_msg(line))
         elif connand == 'dummydata':
-            self.nwh.multisend(self.nwh.protocol.wrap_top_view([]))
+            self.log.print('Sending dummy data: ' + str([0,300,450,450,600,300,450,150]))
+            self.nwh.multisend(self.nwh.protocol.wrap_top_view([0,300,450,450,600,300,450,150]))
         elif command == 'help':
             # If the command is "help", show a list of possible commands and their usages.
             self.log.print('COMMANDS:')
