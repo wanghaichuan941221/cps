@@ -93,4 +93,4 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 8):
                 res.append(self.bytes2_to_int(values, i*2))
-            self.con.control(values)
+            self.con.control(res)

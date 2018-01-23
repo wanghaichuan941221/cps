@@ -8,7 +8,7 @@ angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 #  pixalcordinates = [0,300,450,450,600,300,450,450]
 #  pixalcordinates = [150,150,450,300,450,450,300,600]
 
-pixalcordinates = [0,300,450,300,600,300,300,600]
+pixalcordinates = [0,300,450,450,600,300,450,150]
 #  pixalcordinates = [150,450,300,0,450,150,300,600]
 
 endeffector_to_object_ = 10
@@ -19,9 +19,9 @@ class Controller:
 
     def control(self, pixel_coords_top):
         print("start control with ", str(pixel_coords_top))
-        #
-        # theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
-        # print("theta1 and setpoint1", theta1, setpoint1)
+
+        theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
+        print("theta1 and setpoint1", theta1, setpoint1)
         # state = statemachine.state0  # initial state
         #
         # only_first_angle = [theta1, 0, 0, 0]
@@ -31,6 +31,9 @@ class Controller:
         #
         # sleep(time)
         # stopmotors = usbarm.stop_motors()
+
+    def connect_usb_arm(self):
+        usbarm.connect_usb_arm()
 
     def stop_motors(self):
         usbarm.stop_motors()
