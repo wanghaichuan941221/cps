@@ -15,6 +15,7 @@ log.log('main', 'Init UDP PORT: ' + str(UDP_PORT))
 
 # Create the Controller
 controller = Controller()
+controller.connect_usb_arm()
 
 # Create the UDP network handler.
 net_hand_udp = NetworkHandlerUDP(UDP_PORT, log)

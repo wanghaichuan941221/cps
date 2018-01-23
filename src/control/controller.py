@@ -32,6 +32,9 @@ class Controller:
         # sleep(time)
         # stopmotors = usbarm.stop_motors()
 
+    def connect_usb_arm(self):
+        usbarm.connect_usb_arm()
+
     def stop_motors(self):
         usbarm.stop_motors()
 

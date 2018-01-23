@@ -222,10 +222,10 @@ def open_close_gripper(_grip):
     elif _grip == 0 or _grip == 2:
         return False
 
-
-print("Connecting to USBarm")
-statusconnection = connect()
-print("Status Connection =", statusconnection)
+def connect_usb_arm():
+    print("Connecting to USBarm")
+    statusconnection = connect()
+    print("Status Connection =", statusconnection)
 
 if __name__ == "__main__":
     raise Exception("Cannot run standalone - use 'import usbarm' to utlise this module")
