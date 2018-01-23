@@ -65,7 +65,9 @@ class ClientProtocol(Protocol):
             msg = str(data[1:], 'utf-8')
             self.chinkie.rec_msg(msg)
         elif header == b'\x01':
-            pass
+            pass  # Not needed for client
+        elif header == b'\x02':
+            pass  # Not needed for client
 
 
 class ServerProtocol(Protocol):
@@ -84,3 +86,9 @@ class ServerProtocol(Protocol):
             self.chinkie.rec_msg(str(data[1:], 'utf-8'), addr)
         elif header == b'\x01':
             self.hb.rec_hb(str(data[1:], 'utf-8'), addr)
+        elif header == b'\x02':
+            res = []
+            values = data[1:]
+            for i in range(0, 8):
+                res.append(self.bytes2_to_int(values, i*2))
+            # TODO give to controller
