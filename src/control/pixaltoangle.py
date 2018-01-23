@@ -1,39 +1,38 @@
 import math
 
-def get_theta1_setpoint1(pixal_cordinates):
-    x4 = (pixal_cordinates[0]-pixal_cordinates[4])/2
-    y4 = (pixal_cordinates[1]-pixal_cordinates[5])/2
+def get_theta1_setpoint1(pixal_cordinates_top):
+    x4 = (pixal_cordinates_top[4]+pixal_cordinates_top[0])/2
+    y4 = (pixal_cordinates_top[5]+pixal_cordinates_top[1])/2
 
-    x2 = pixal_cordinates[2] - x4
-    y2 = pixal_cordinates[3] - y4
+    l1 = math.sqrt(math.pow((pixal_cordinates_top[2]-pixal_cordinates_top[4]),2)+math.pow((pixal_cordinates_top[3]-pixal_cordinates_top[5]),2))
+    l2 = math.sqrt(math.pow((x4-pixal_cordinates_top[2]),2)+math.pow((y4-pixal_cordinates_top[3]),2))
+    l3 = math.sqrt(math.pow((x4-pixal_cordinates_top[4]),2)+math.pow((y4-pixal_cordinates_top[5]),2))
+    theta1 = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
 
-    x3 = pixal_cordinates[4] - x4
-    y3 = pixal_cordinates[5] - y4
+    if pixal_cordinates_top[3]<pixal_cordinates_top[5]:
+        theta1 = -1*theta1
 
-    alpha1 = math.atan(y2/x2)
-    alpha2 = math.atan(y3/x3)
-    theta1 = alpha1+alpha2
+    l1 = math.sqrt(math.pow((pixal_cordinates_top[6]-pixal_cordinates_top[4]),2)+math.pow((pixal_cordinates_top[7]-pixal_cordinates_top[5]),2))
+    l2 = math.sqrt(math.pow((x4-pixal_cordinates_top[6]),2)+math.pow((y4-pixal_cordinates_top[7]),2))
+    l3 = math.sqrt(math.pow((x4-pixal_cordinates_top[4]),2)+math.pow((y4-pixal_cordinates_top[5]),2))
+    setpoint1 = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
 
-    xp = pixal_cordinates[6] - x4
-    yp = pixal_cordinates[7] - y4
+    if pixal_cordinates_top[7]<pixal_cordinates_top[5]:
+        setpoint1 = -1*setpoint1
+    print("theta1, setpoint1", theta1,setpoint1)
+    return theta1,setpoint1
 
-    alpha3 = math.atan(yp/xp)
-    setpoint1 = alpha2 + alpha3
+def get_theta234_side1(pixal_cordinates_side1):
+    x4 = (pixal_cordinates_top[4]+pixal_cordinates_top[0])/2
+    y4 = (pixal_cordinates_top[5]+pixal_cordinates_top[1])/2
 
-
-    '''    
-    l1 = math.sqrt(math.pow((x2-x3),2)+math.pow((y2-y3),2))
-    l2 = math.sqrt(math.pow((x1-x3),2)+math.pow((y1-y3),2))
-    l3 = math.sqrt(math.pow((x1-x2),2)+math.pow((y1-y2),2))
-    a = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
-    '''
-    print theta1, setpoint1
+    return theta2, theta3, theta4
 
 def get_real_distance_from_base_to_object(pixal_coridinates,calibration_distance,object_higth_in_cm):
-    x13 = pixal_cordinates[0] - pixal_cordinates[4]
+    x13 = pixal_cordinates[4] - pixal_cordinates[0]
     multi = calibration_distance/x13
-    x13_2 = (pixal_cordinates[0]-pixal_cordinates[4])/2
-    y13_2= (pixal_cordinates[1]-pixal_cordinates[5])/2
+    x13_2 = (pixal_cordinates[4] + pixal_cordinates[0])/2
+    y13_2 = (pixal_cordinates[5] + pixal_cordinates[1])/2
     radius_from_base_to_object =  (math.sqrt(math.pow((pixal_coridinates[6]-x13_2),2)+math.pow((y13_2-pixal_coridinates[7]),2)))*multi
     object_cordinates = [0]*2
     object_cordinates[0]=radius_from_base_to_object
