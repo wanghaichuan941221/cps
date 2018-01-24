@@ -14,10 +14,10 @@ from networking.networkHandlerUDP import NetworkHandlerUDP
 # cam 2
 green_lower = np.array([47, 104, 78])
 green_upper = np.array([152, 255, 255])
-red_lower = np.array([159, 77, 146])
-red_upper = np.array([178, 255, 255])
-yellow_lower = np.array([27, 157, 76])
-yellow_upper = np.array([38, 254, 159])
+red_lower = np.array([126, 64, 144])
+red_upper = np.array([179, 191, 250])
+yellow_lower = np.array([25, 136, 86])
+yellow_upper = np.array([45, 255, 132])
 
 
 # cam 7
