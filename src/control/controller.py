@@ -21,13 +21,14 @@ class Controller:
         print("start control with ", str(pixel_coords_top))
 
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
+        # theta2, theta3, theta4 = pixaltoangle.get_theta234(pixel_coords_side) # TODO integrate this
         print("theta1 and setpoint1", theta1, setpoint1)
-        # state = statemachine.state0  # initial state
-        #
-        # only_first_angle = [theta1, 0, 0, 0]
-        # only_first_setpoint = [setpoint1, 0, 0, 0]
-        # while state: state = state(only_first_angle, only_first_setpoint, endeffector_to_object_, endeffector_to_droppoint_)  # launch state machine
-        # print("Done with states")
+        state = statemachine.state0  # initial state
+
+        only_first_angle = [theta1, 0, 0, 0]
+        only_first_setpoint = [setpoint1, 0, 0, 0]
+        while state: state = state(only_first_angle, only_first_setpoint, endeffector_to_object_, endeffector_to_droppoint_)  # launch state machine
+        print("Done with states")
         #
         # sleep(time)
         # stopmotors = usbarm.stop_motors()

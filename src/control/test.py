@@ -1,4 +1,4 @@
-import pixaltoangle
+import pixaltoangle as pixaltoangle
 
 #  pixalcordinates = [0,300,450,450,600,300,450,450]
 #  pixalcordinates = [150,150,450,300,450,450,300,600]
