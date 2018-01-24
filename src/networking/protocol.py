@@ -36,7 +36,7 @@ class Protocol:
         if len(coords) == 8:
             res = b'\x02'
             for i in range(0, len(coords)):
-                res = res + self.int_to_bytes2(int(coords[i]))
+                res = res + self.int_to_bytes2(coords[i])
             return res
         else:
             raise ValueError("Top view coordinate array is not 8: length was " + str(len(coords)))
@@ -49,7 +49,7 @@ class Protocol:
         if len(coords) == 10:
             res = b'\x03'
             for i in range(0, len(coords)):
-                res = res + self.int_to_bytes2(int(coords[i]))
+                res = res + self.int_to_bytes2(coords[i])
             return res
         else:
             raise ValueError("Side view coordinate array is not 8: length was " + str(len(coords)))
@@ -64,7 +64,7 @@ class Protocol:
             return bytes(b)
         except TypeError:
             print("SUPER RARE ERRROR OCCURED=======================================================")
-            print("SUPER RARE ERRROR OCCURED with ", n)
+            print("SUPER RARE ERRROR OCCURED with ", n, "with type", type(n))
             print("SUPER RARE ERRROR OCCURED=======================================================")
 
     def bytes2_to_int(self, b, offset):
