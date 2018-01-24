@@ -29,17 +29,6 @@ def get_linear_line(x1, y1, x2, y2):
     b = y1 - a * x1
     return a, b
 
-def get_difference_between_two_points(x1,y1,x2,y2):
-    x = x2-x1
-    y = y2-y1
-
-    agnitude = phytagoras(0,0,x_temp,y_temp)
-
-    x = x_temp/magnitude
-    y = y_temp/magnitude
-
-    return x, y
-
 def get_theta1_setpoint1(pixal_cordinates_top):
     x4, y4 = get_xy_between_two_points(pixal_cordinates_top[4],pixal_cordinates_top[5],pixal_cordinates_top[0],pixal_cordinates_top[1])
 
@@ -83,22 +72,6 @@ def get_theta234(pixal_cordinates):
     return theta2, theta3, theta4
 
 
-
-def forward_kinematics(t2, t3, t4):
-    L1 = 9
-    L2 = 11.5
-    L3 = 10
-
-    x1 = L1 * math.sin(t2)
-    y1 = L1 * math.cos(t2)
-    x2 = P1x + L2 * math.sin(t2 + t3)
-    y2 = P1y + L2 * math.cos(t2 + t3)
-    x3 = P2x + L3 * math.sin(t2 + t3 + t4)
-    y3 = P2y + L3 * math.cos(t2 + t3 + t4)
-
-    return [[x1, y1], [x2, y2], [x3, y3]]
-
-
 def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,calibration_distance_in_cm,height_object_in_cm):
     x4, y4 = get_xy_between_two_points(pixal_cordinates_top[4],pixal_cordinates_top[5],pixal_cordinates_top[0],pixal_cordinates_top[1])
     x6, y6 = get_xy_between_two_points(pixal_cordinates_side1[8], pixal_cordinates_side1[9], pixal_cordinates_side1[0], pixal_cordinates_side1[1])
@@ -114,3 +87,18 @@ def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,calibrati
 
     distance_to_object_in_cm =  phytagoras(x_distance_to_object_in_side1_view, y_distance_to_object_in_side1_view, pixal_cordinates_side1[6], pixal_cordinates_side1[7])/multi2
     return distance_to_object_in_cm
+
+
+def forward_kinematics(t2, t3, t4):
+    L1 = 9
+    L2 = 11.5
+    L3 = 10
+
+    x1 = L1 * math.sin(t2)
+    y1 = L1 * math.cos(t2)
+    x2 = P1x + L2 * math.sin(t2 + t3)
+    y2 = P1y + L2 * math.cos(t2 + t3)
+    x3 = P2x + L3 * math.sin(t2 + t3 + t4)
+    y3 = P2y + L3 * math.cos(t2 + t3 + t4)
+
+    return [[x1, y1], [x2, y2], [x3, y3]]
