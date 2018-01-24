@@ -55,7 +55,9 @@ class ImageProcessor(Thread):
 
     def run(self):
         if self.is_top_view:
+            imgNr = 0
             while self.running:
+                imgNr += 1
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_lower, red_upper)
                 mask_yellow = self.filter_hsv_image(img, yellow_lower, yellow_upper)
@@ -63,9 +65,9 @@ class ImageProcessor(Thread):
                 circles_object = self.find_circles(mask_yellow)
                 for cir in circles:
                     cv2.circle(img, cir, 10, (255,0,0), 3)
-                cv2.imshow('image', img)
-                # cv2.imshow('red', mask_red)
-                # cv2.imshow('yellow', mask_yellow)
+                cv2.write('~/Desktop/Images/img' + str(imgNr), img)
+                cv2.write('~/Desktop/Images/mask_red' + str(imgNr), mask_red)
+                cv2.write('~/Desktop/Images/mask_yellow' + str(imgNr), mask_yellow)
                 if len(circles) == 3:
                     circles.sort()
                     if len(circles_object) > 0:
