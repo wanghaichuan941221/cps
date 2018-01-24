@@ -76,7 +76,7 @@ class ImageProcessor(Thread):
                     if len(circles_object) > 0:
                         points = circles + [circles_object[0]]
                     else:
-                        points = circles + [(imgWidth, img)]
+                        points = circles + [(imgWidth, imgHeight)]
                     try:
                         self.nwh.multisend(self.nwh.protocol.wrap_top_view(self.unzip_list(points)))
                     except TypeError:
