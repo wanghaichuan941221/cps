@@ -85,7 +85,7 @@ class ImageProcessor(Thread):
 
     def find_circles(self, mask):
         res = []
-        contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
         for contour in contours:
             (x, y), r = cv2.minEnclosingCircle(contour)
             if r > 20:
