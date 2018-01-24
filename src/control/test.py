@@ -13,5 +13,5 @@ calibration_distance_in_cm = 40
 height_object_in_cm = 5
 
 pixaltoangle.get_theta1_setpoint1(pixalcordinates_top)
-pixaltoangle.get_theta234_side1(pixalcordinates_side1)
+pixaltoangle.get_theta234(pixalcordinates_side1)
 print("distance",pixaltoangle.get_distance_to_object(pixalcordinates_top,pixalcordinates_side1,calibration_distance_in_cm,height_object_in_cm))

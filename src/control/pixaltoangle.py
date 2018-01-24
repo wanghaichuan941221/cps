@@ -15,6 +15,15 @@ def get_xy_between_two_points(x1,y1,x2,y2):
     y = (y1+y2)/2
     return x,y
 
+def get_linear_line(x1, y1, x2, y2):
+    delta_x = x2 - x1
+    delta_y = y2 - y1
+
+    a = delta_y / delta_x
+    b = y1 - a * x1
+    return a, b
+
+
 def get_theta1_setpoint1(pixal_cordinates_top):
     x4, y4 = get_xy_between_two_points(pixal_cordinates_top[4],pixal_cordinates_top[5],pixal_cordinates_top[0],pixal_cordinates_top[1])
 
@@ -27,26 +36,48 @@ def get_theta1_setpoint1(pixal_cordinates_top):
     if pixal_cordinates_top[7]<pixal_cordinates_top[5]:
         setpoint1 = -1*setpoint1
     print("theta1, setpoint1", theta1,setpoint1)
-
-
     return theta1,setpoint1
 
 
+def get_difference_between_two_points(x1,y1,x2,y2):
+    x = x2-x1
+    y = y2-y1
 
-def get_theta234_side1(pixal_cordinates_side1):
-    x6, y6 = get_xy_between_two_points(pixal_cordinates_side1[8],pixal_cordinates_side1[9],pixal_cordinates_side1[0],pixal_cordinates_side1[1])
+    agnitude = phytagoras(0,0,x_temp,y_temp)
+
+    x = x_temp/magnitude
+    y = y_temp/magnitude
+
+    return x, y
+
+
+
+def get_theta234(pixal_cordinates):
+    x6, y6 = get_xy_between_two_points(pixal_cordinates[8], pixal_cordinates[9], pixal_cordinates[0], pixal_cordinates[1])
 
     # take note of the fact that it if you want to know the angle P2P0P1 you have to fill in P0P2P1 or P0P1P2
-    theta2_temp = angle(x6,y6,pixal_cordinates_side1[2],pixal_cordinates_side1[3],pixal_cordinates_side1[8],pixal_cordinates_side1[9])
+    theta2_temp = angle(x6, y6, pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[8], pixal_cordinates[9])
     theta2 = (1/2)*math.pi-theta2_temp
+    a, b = get_linear_line(pixal_cordinates[0], pixal_cordinates[1], pixal_cordinates[8], pixal_cordinates[9])
+    if pixal_cordinates[3] < (a * pixal_cordinates[2] + b):
+        theta2 = -1 * theta2
 
-    theta3_temp = angle(pixal_cordinates_side1[2],pixal_cordinates_side1[3],x6,y6,pixal_cordinates_side1[4],pixal_cordinates_side1[5])
+
+    theta3_temp = angle(pixal_cordinates[2], pixal_cordinates[3], x6, y6, pixal_cordinates[4], pixal_cordinates[5])
     theta3 = math.pi-theta3_temp
+    a, b = get_linear_line(x6, y6, pixal_cordinates[2], pixal_cordinates[3])
+    if pixal_cordinates[4] < (a * pixal_cordinates[5] + b):
+        theta3 = -1 * theta3
 
-    theta4_temp = angle(pixal_cordinates_side1[4],pixal_cordinates_side1[5], pixal_cordinates_side1[2],pixal_cordinates_side1[3],pixal_cordinates_side1[6],pixal_cordinates_side1[7])
+    theta4_temp = angle(pixal_cordinates[4], pixal_cordinates[5], pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[6], pixal_cordinates[7])
     theta4 = math.pi-theta4_temp
+    a, b = get_linear_line(pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[4], pixal_cordinates[5])
+    if pixal_cordinates[6] < (a * pixal_cordinates[7] + b):
+        theta4 = -1 * theta4
+
     print("theta2, theta3, theta4", theta2, theta3, theta4)
     return theta2, theta3, theta4
+
 
 
 def forward_kinematics(t2, t3, t4):
