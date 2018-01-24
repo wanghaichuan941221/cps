@@ -42,7 +42,6 @@ def get_theta1_setpoint1(pixal_cordinates_top):
     if pixal_cordinates_top[7]<a * pixal_cordinates_top[2] + b:
         setpoint1 = -1*setpoint1
 
-    print("theta1, setpoint1", theta1,setpoint1)
     return theta1,setpoint1
 
 
