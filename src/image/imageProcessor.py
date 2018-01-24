@@ -57,6 +57,7 @@ class ImageProcessor(Thread):
         if self.is_top_view:
             imgNr = 0
             while self.running:
+                time.sleep(1)
                 imgNr += 1
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_lower, red_upper)
