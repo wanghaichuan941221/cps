@@ -11,15 +11,22 @@ from picamera import PiCamera
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
+# cam 2
 green_lower = np.array([47, 104, 78])
 green_upper = np.array([152, 255, 255])
-
-# red color
 red_lower = np.array([159, 77, 146])
 red_upper = np.array([178, 255, 255])
-
 yellow_lower = np.array([27, 157, 76])
 yellow_upper = np.array([38, 254, 159])
+
+
+# cam 7
+# green_lower = np.array([47, 104, 78])
+# green_upper = np.array([152, 255, 255])
+# red_lower = np.array([159, 77, 146])
+# red_upper = np.array([178, 255, 255])
+# yellow_lower = np.array([27, 157, 76])
+# yellow_upper = np.array([38, 254, 159])
 
 imgWidth = 640
 imgHeight = 480
