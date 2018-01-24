@@ -1,6 +1,7 @@
 from control.controller import Controller
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.chinkieHandlerServer import ChinkieHandlerServer
+from networking.dataHandler import DataHandler
 from networking.heartbeat import Heartbeat, HeartbeatChecker
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
@@ -38,7 +39,22 @@ class Protocol:
                 res = res + self.int_to_bytes2(coords[i])
             return res
         else:
-            raise ValueError("Coordinate array is not 8: length was " + str(len(coords)))
+            raise ValueError("Top view coordinate array is not 8: length was " + str(len(coords)))
+
+    # SIDE-VIEW-DATA packet
+    # - 1 byte header (\x03)
+    # - 20 bytes data (clx, cly, x2, y2, x3, y3, x4, y4, crx, cry)
+    #   - 2 bytes for every integer (10 integers)
+    def wrap_side_view(self, coords):
+        if len(coords) == 10:
+            res = b'\x03'
+            for i in range(0, len(coords)):
+                res = res + self.int_to_bytes2(coords[i])
+            return res
+        else:
+            raise ValueError("Side view coordinate array is not 8: length was " + str(len(coords)))
+
+
 
     def int_to_bytes2(self, n):
         b = [0, 0]
@@ -69,17 +85,19 @@ class ClientProtocol(Protocol):
             pass  # Not needed for client
         elif header == b'\x02':
             pass  # Not needed for client
+        elif header == b'\x03':
+            pass  # Not needed for client
 
 
 class ServerProtocol(Protocol):
-    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker', con: 'Controller'):
+    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker', dh: 'DataHandler'):
         # Run constructor of parent
         Protocol.__init__(self)
 
         self.nwh = nwh
         self.chinkie = chinkie
         self.hb = hb
-        self.con = con
+        self.dh = dh
 
     def rec_prot(self, data, addr):
         header = self.get_byte(data, 0)
@@ -93,4 +111,10 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 8):
                 res.append(self.bytes2_to_int(values, i*2))
-            self.con.control(res)
+            self.dh.on_top_view_data(res)
+        elif header == b'\x03':
+            res = []
+            values = data[1:]
+            for i in range(0, 10):
+                res.append(self.bytes2_to_int(values, i * 2))
+            self.dh.on_side_view_data(res)
