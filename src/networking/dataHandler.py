@@ -29,4 +29,5 @@ class DataHandler:
         self.con.update_data(self.top_view_data, [0,0,0,0,0,0,0,0,0,0])
         self.top_view_data = None
         self.side_view_data = None
+        self.timer = Timer(0.5, self.con.stop_motors())
         self.timer.start()
