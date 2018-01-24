@@ -35,12 +35,14 @@ def get_theta1_setpoint1(pixal_cordinates_top):
 
     # take note of the fact that it if you want to know the angle P2P0P1 you have to fill in P0P2P1 or P0P1P2
     theta1 = angle(x4,y4,pixal_cordinates_top[2],pixal_cordinates_top[3],pixal_cordinates_top[4],pixal_cordinates_top[5])
-    if pixal_cordinates_top[3]<pixal_cordinates_top[5]:
+    a,b = get_linear_line(pixal_cordinates_top[0],pixal_cordinates_top[1],pixal_cordinates_top[4],pixal_cordinates_top[5])
+    if pixal_cordinates_top[3]<a * pixal_cordinates_top[2] + b:
         theta1 = -1*theta1
 
     setpoint1 = angle(x4,y4,pixal_cordinates_top[6],pixal_cordinates_top[7],pixal_cordinates_top[4],pixal_cordinates_top[5])
-    if pixal_cordinates_top[7]<pixal_cordinates_top[5]:
+    if pixal_cordinates_top[7]<a * pixal_cordinates_top[2] + b:
         setpoint1 = -1*setpoint1
+
     print("theta1, setpoint1", theta1,setpoint1)
     return theta1,setpoint1
 
