@@ -49,15 +49,15 @@ class ImageProcessor(Thread):
         self.camera.resolution = (imgWidth, imgHeight)
         self.camera.framerate = 32
         self.rawCapture = PiRGBArray(self.camera, size=(imgWidth, imgHeight))
+        cv2.namedWindow('image')
+        cv2.namedWindow('red')
+        cv2.namedWindow('yellow')
 
         time.sleep(0.5)  # give the camera some time to setup
         self.log.log('ImageProcessor', 'Camera opened')
 
     def run(self):
         if self.is_top_view:
-            cv2.namedWindow('image')
-            cv2.namedWindow('red')
-            cv2.namedWindow('yellow')
             while self.running:
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_lower, red_upper)
