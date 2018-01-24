@@ -65,7 +65,9 @@ class ImageProcessor(Thread):
                 circles = self.find_circles(mask_red)
                 circles_object = self.find_circles(mask_yellow)
                 for cir in circles:
-                    cv2.circle(img, cir, 10, (255,0,0), 3)
+                    cv2.circle(img, cir, 10, (255, 0, 0), 3)
+                for cir in circles_object:
+                    cv2.circle(img, cir, 10, (0, 255, 0), 3)
                 cv2.imwrite('/home/pi/Desktop/Images/img' + str(imgNr) + '.png', img)
                 cv2.imwrite('/home/pi/Desktop/Images/mask_red' + str(imgNr) + '.png', mask_red)
                 cv2.imwrite('/home/pi/Desktop/Images/mask_yellow' + str(imgNr) + '.png', mask_yellow)
