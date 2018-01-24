@@ -61,6 +61,11 @@ class ImageProcessor(Thread):
                 mask_yellow = self.filter_hsv_image(img, yellow_lower, yellow_upper)
                 circles = self.find_circles(mask_red)
                 circles_object = self.find_circles(mask_yellow)
+                for cir in circles:
+                    cv2.circle(img, cir, 10, (255,0,0), 3)
+                cv2.imshow('image', img)
+                cv2.imshow('red', mask_red)
+                cv2.imshow('yellow', mask_yellow)
                 if len(circles) == 3:
                     circles.sort()
                     if len(circles_object) > 0:
