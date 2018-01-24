@@ -49,9 +49,6 @@ class ImageProcessor(Thread):
         self.camera.resolution = (imgWidth, imgHeight)
         self.camera.framerate = 32
         self.rawCapture = PiRGBArray(self.camera, size=(imgWidth, imgHeight))
-        cv2.namedWindow('image')
-        cv2.namedWindow('red')
-        cv2.namedWindow('yellow')
 
         time.sleep(0.5)  # give the camera some time to setup
         self.log.log('ImageProcessor', 'Camera opened')
@@ -67,8 +64,8 @@ class ImageProcessor(Thread):
                 for cir in circles:
                     cv2.circle(img, cir, 10, (255,0,0), 3)
                 cv2.imshow('image', img)
-                cv2.imshow('red', mask_red)
-                cv2.imshow('yellow', mask_yellow)
+                # cv2.imshow('red', mask_red)
+                # cv2.imshow('yellow', mask_yellow)
                 if len(circles) == 3:
                     circles.sort()
                     if len(circles_object) > 0:
