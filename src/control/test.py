@@ -3,7 +3,9 @@ import pixaltoangle as pixaltoangle
 #  pixalcordinates = [0,300,450,450,600,300,450,450]
 #  pixalcordinates = [150,150,450,300,450,450,300,600]
 
-pixalcordinates_top = [0,300,450,450,600,300,450,150] # theta1 = (1/4)*pi and setpoint1 = -(1/4)*pi
+# pixalcordinates_top = [0,300,450,450,600,300,450,150] # theta1 = (1/4)*pi and setpoint1 = -(1/4)*pi
+pixalcordinates_top = [0,300,450,450,600,300,599,300] # theta1 = (1/4)*pi and setpoint1 = 0
+
 #  pixalcordinates = [150,450,300,0,450,150,300,600]
 # pixalcordinates_side1 = [0,300,300,200,300,150,300,50,600,300]  # theta2 = 0, theta3 = 0, theta4 = 0
 # pixalcordinates_side1 = [0,300,400,300,450,300,500,300,600,300]  # theta2 = 1/2 * pi, theta3 = 0, theta4 = 0
