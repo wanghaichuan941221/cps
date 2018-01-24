@@ -55,6 +55,9 @@ class ImageProcessor(Thread):
 
     def run(self):
         if self.is_top_view:
+            cv2.namedWindow('image')
+            cv2.namedWindow('red')
+            cv2.namedWindow('yellow')
             while self.running:
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_lower, red_upper)
