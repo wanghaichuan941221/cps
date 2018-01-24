@@ -77,7 +77,16 @@ class ImageProcessor(Thread):
                         points = circles + [circles_object[0]]
                     else:
                         points = circles + [(imgWidth, img)]
-                    self.nwh.multisend(self.nwh.protocol.wrap_top_view(self.unzip_list(points)))
+                    try:
+                        self.nwh.multisend(self.nwh.protocol.wrap_top_view(self.unzip_list(points)))
+                    except TypeError:
+                        print("SUPER RARE ERRROR OCCURED=======================================================")
+                        print("SUPER RARE ERRROR OCCURED points ", points)
+                        print("SUPER RARE ERRROR OCCURED circles ", circles)
+                        print("SUPER RARE ERRROR OCCURED circles_objects ", circles_object)
+                        cv2.imwrite('/home/pi/Desktop/Images/rareError' + str(imgNr) + '.png', img)
+                        print("SUPER RARE ERRROR OCCURED=======================================================")
+
                 else:
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
