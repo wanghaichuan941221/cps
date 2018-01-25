@@ -31,6 +31,8 @@ yellow_upper = np.array([40, 252, 240])
 imgWidth = 640
 imgHeight = 480
 
+kernel = np.ones((5,5),np.uint8)
+
 
 class ImageProcessor(Thread):
 
@@ -60,6 +62,7 @@ class ImageProcessor(Thread):
                 imgNr += 1
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_lower, red_upper)
+                mask_red = cv2.morphologyEx(mask_red, cv2.MORPH_CLOSE, kernel)
                 mask_yellow = self.filter_hsv_image(img, yellow_lower, yellow_upper)
                 circles = self.find_circles(mask_red)
                 circles_object = self.find_circles(mask_yellow)
