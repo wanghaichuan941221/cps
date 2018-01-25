@@ -7,7 +7,7 @@ class DataHandler:
 
     def __init__(self, con: 'Controller'):
         self.con = con
-        self.timer = Timer(0.5, self.kill_switch)
+        self.timer = Timer(0.1, self.kill_switch)
         self.top_view_data = None
         self.side_view_data = None
         self.lock = RLock()
