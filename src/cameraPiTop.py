@@ -23,17 +23,17 @@ log.log('sensor', 'Init Target UDP PORT: ' + str(T_UDP_PORT))
 net_hand_udp = NetworkHandlerUDP(UDP_PORT, log)
 net_hand_udp.setName('UDP Client')
 
+# Create the image processor
+imgProcessor = ImageProcessor(net_hand_udp, log, True)
+imgProcessor.setName('Image Processor')
+
 # Create the Chinkie (commands) handler.
-chinkie = ChinkieHandlerClient(net_hand_udp, log)
+chinkie = ChinkieHandlerClient(net_hand_udp, imgProcessor, log)
 chinkie.setName('Chinkie Client')
 
 # Create the heartbeat.
 hb = Heartbeat(1, net_hand_udp)
 hb.setName('Heartbeat')
-
-# Create the image processor
-imgProcessor = ImageProcessor(net_hand_udp, log, True)
-imgProcessor.setName('Image Processor')
 
 # Add a protocol to the network handler.
 net_hand_udp.add_protocol(ClientProtocol(net_hand_udp, chinkie, hb))

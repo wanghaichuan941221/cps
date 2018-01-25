@@ -1,4 +1,3 @@
-from time import sleep
 import control.usbarm as usbarm
 import math
 
@@ -30,7 +29,6 @@ def state1(angles, setpoints, endeffector_to_box, endeffector_to_droppoint):
     print("state1 determine angle motor1 for initial setpoint")
     # delay and decision path to simulate some application logic
     error = usbarm.get_error(setpoints_initial, angles)
-    sleep(.5)
     if abs(error[0])>=buffer:
         return state2
     if abs(error[0])<buffer:

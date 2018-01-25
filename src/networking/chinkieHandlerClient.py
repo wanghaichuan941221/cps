@@ -1,5 +1,6 @@
 from threading import Thread
 from logger import Logger
+from image.imageProcessor import ImageProcessor
 from networking.networkHandlerUDP import NetworkHandlerUDP
 import platform
 import os
@@ -10,7 +11,7 @@ class ChinkieHandlerClient(Thread):
     also handles any remote commands that are received by the network handler.
     """
 
-    def __init__(self, nwh: 'NetworkHandlerUDP', log: 'Logger'):
+    def __init__(self, nwh: 'NetworkHandlerUDP', img_proc: 'ImageProcessor', log: 'Logger'):
         """Constructor of the ChinkieHandlerClient class, which is an extension of the threading.Thread class."""
 
         # Run the constructor of parent.
@@ -18,6 +19,7 @@ class ChinkieHandlerClient(Thread):
 
         # Create a logger, network handler and set the "running" variable to be True.
         self.log = log
+        self.img_proc = img_proc
         self.nwh = nwh
         self.running = True
 
@@ -100,9 +102,12 @@ class ChinkieHandlerClient(Thread):
                 self.log.print('  /remote <host_name> <command> [<arguments>] ')
             else:
                 self.nwh.multisend(self.nwh.protocol.wrap_msg(line))
-        elif command == 'dummydata':
-            self.log.print('Sending dummy data: ' + str([0,300,450,450,600,300,450,150]))
-            self.nwh.multisend(self.nwh.protocol.wrap_top_view([0,300,450,450,600,300,450,150]))
+        elif command == 'img':
+            self.img_proc.toggle_write_img()
+            if self.img_proc.write_img:
+                self.log.print('Enabled image writing')
+            else:
+                self.log.print('Disabled image writing')
         elif command == 'help':
             # If the command is "help", show a list of possible commands and their usages.
             self.log.print('COMMANDS:')
@@ -114,6 +119,8 @@ class ChinkieHandlerClient(Thread):
             self.log.print('     Usage: /connections')
             self.log.print('  /remote or /r  execute a command on any other connected device')
             self.log.print('     Usage: /remote(/r) <host_name> <command> [<arguments>]')
+            self.log.print('  /img           toggles the writing of images')
+            self.log.print('     Usage: /img')
             self.log.print('  /help          show list of commands')
             self.log.print('     Usage: /help')
         else:

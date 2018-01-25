@@ -67,7 +67,6 @@ def get_theta234(pixal_cordinates):
     if pixal_cordinates[6] < (a * pixal_cordinates[4] + b):
         theta4 = -1 * theta4
 
-    print("theta2, theta3, theta4", theta2, theta3, theta4)
     return theta2, theta3, theta4
 
 

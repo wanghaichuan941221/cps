@@ -11,27 +11,27 @@ from picamera import PiCamera
 from logger import Logger
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
-# cam 2
-green_lower = np.array([47, 104, 78])
-green_upper = np.array([152, 255, 255])
-red_lower = np.array([154, 98, 185])
-red_upper = np.array([179, 228, 255])
-yellow_lower = np.array([29, 163, 95])
-yellow_upper = np.array([40, 252, 240])
+# top view
+red_top_lower = np.array([154, 98, 185])
+red_top_upper = np.array([179, 228, 255])
+yellow_top_lower = np.array([29, 163, 95])
+yellow_top_upper = np.array([40, 252, 240])
 
+# side view
+red_side_lower = np.array([154, 98, 185])
+red_side_upper = np.array([179, 228, 255])
+green_side_lower = np.array([47, 104, 78])    # TODO calibrate
+green_side_upper = np.array([152, 255, 255])  # TODO calibrate
+blue_side_lower = np.array([47, 104, 78])     # TODO calibrate
+blue_side_upper = np.array([152, 255, 255])   # TODO calibrate
+yellow_side_lower = np.array([29, 163, 95])   # TODO calibrate
+yellow_side_upper = np.array([40, 252, 240])  # TODO calibrate
 
-# cam 7
-# green_lower = np.array([47, 104, 78])
-# green_upper = np.array([152, 255, 255])
-# red_lower = np.array([159, 77, 146])
-# red_upper = np.array([178, 255, 255])
-# yellow_lower = np.array([27, 157, 76])
-# yellow_upper = np.array([38, 254, 159])
 
 imgWidth = 640
 imgHeight = 480
 
-kernel = np.ones((5,5),np.uint8)
+kernel = np.ones((5, 5), np.uint8)
 
 
 class ImageProcessor(Thread):
@@ -44,6 +44,7 @@ class ImageProcessor(Thread):
         self.is_top_view = is_top_view
 
         self.running = True
+        self.write_img = False
 
         self.log.log('ImageProcessor', 'Opening camera...')
         self.camera = PiCamera()
@@ -56,50 +57,70 @@ class ImageProcessor(Thread):
         self.log.log('ImageProcessor', 'Camera opened')
 
     def run(self):
+        imgNr = 0
         if self.is_top_view:
-            imgNr = 0
             while self.running:
                 imgNr += 1
                 img = self.capture_hsv_image()
-                mask_red = self.filter_hsv_image(img, red_lower, red_upper)
-                mask_red = cv2.morphologyEx(mask_red, cv2.MORPH_CLOSE, kernel)
-                mask_yellow = self.filter_hsv_image(img, yellow_lower, yellow_upper)
+                mask_red = self.filter_hsv_image(img, red_top_lower, red_top_upper)
+                mask_yellow_obj = self.filter_hsv_image(img, yellow_top_lower, yellow_top_upper)
                 circles = self.find_circles(mask_red)
-                circles_object = self.find_one_circle(mask_yellow)
-                for cir in circles:
-                    cv2.circle(img, cir, 10, (255, 0, 0), 3)
-                if circles_object is not None:
-                    cv2.circle(img, (circles_object[0], circles_object[1]), 10, (0, 255, 0), 3)
-                cv2.imwrite('/home/pi/Desktop/Images/img' + str(imgNr) + '.png', img)
-                cv2.imwrite('/home/pi/Desktop/Images/mask_red' + str(imgNr) + '.png', mask_red)
-                cv2.imwrite('/home/pi/Desktop/Images/mask_yellow' + str(imgNr) + '.png', mask_yellow)
+                circles_object = self.find_one_circle(mask_yellow_obj)
+
+                if self.write_img:
+                    for cir in circles:
+                        cv2.circle(img, cir, 10, (255, 0, 0), 3)
+                    if circles_object is not None:
+                        cv2.circle(img, (circles_object[0], circles_object[1]), 10, (0, 255, 0), 3)
+                    cv2.imwrite('/home/pi/Desktop/Images/img' + str(imgNr) + '.png', img)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_red' + str(imgNr) + '.png', mask_red)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_yellow_obj' + str(imgNr) + '.png', mask_yellow_obj)
+
                 if len(circles) == 3:
                     circles.sort()
                     if circles_object is not None:
                         points = self.unzip_list(circles) + circles_object
                     else:
                         points = self.unzip_list(circles) + [(imgWidth, imgHeight)]
-                    try:
-                        self.nwh.multisend(self.nwh.protocol.wrap_top_view(points))
-                    except TypeError:
-                        print("SUPER RARE ERRROR OCCURED=======================================================")
-                        print("SUPER RARE ERRROR OCCURED points ", points)
-                        print("SUPER RARE ERRROR OCCURED circles ", circles)
-                        print("SUPER RARE ERRROR OCCURED circles_objects ", circles_object)
-                        cv2.imwrite('/home/pi/Desktop/Images/rareError' + str(imgNr) + '.png', img)
-                        print("SUPER RARE ERRROR OCCURED=======================================================")
 
+                    self.nwh.multisend(self.nwh.protocol.wrap_top_view(points))
                 else:
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
             while self.running:
+                imgNr += 1
                 img = self.capture_hsv_image()
-                mask_green = self.filter_hsv_image(img, green_lower, green_upper)
-                circles = self.find_circles(mask_green)
-                if len(circles) == 5:
-                    self.nwh.multisend(self.nwh.protocol.wrap_side_view(self.unzip_list(circles)))
+                mask_red = self.filter_hsv_image(img, red_side_lower, red_side_upper)
+                mask_yellow = self.filter_hsv_image(img, yellow_side_lower, yellow_side_upper)
+                mask_green = self.filter_hsv_image(img, green_side_lower, green_side_upper)
+                mask_blue = self.filter_hsv_image(img, blue_side_lower, blue_side_upper)
+                cal_points = self.find_circles(mask_red)
+                cal_points.sort()
+                p2 = self.find_one_circle(mask_yellow)
+                p3 = self.find_one_circle(mask_green)
+                p4 = self.find_one_circle(mask_blue)
+                arm_points = [p2, p3, p4]
+
+                if self.write_img:
+                    for point in cal_points:
+                        cv2.circle(img, point, 10, (0, 0, 255), 3)
+                    for point in arm_points:
+                        if point is not None:
+                            cv2.circle(img, (point[0], point[1]), 10, (255, 0, 0), 3)
+                    cv2.imwrite('/home/pi/Desktop/Images/img' + str(imgNr) + '.png', img)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_red' + str(imgNr) + '.png', mask_red)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_yellow' + str(imgNr) + '.png', mask_yellow)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_green' + str(imgNr) + '.png', mask_green)
+                    cv2.imwrite('/home/pi/Desktop/Images/mask_blue' + str(imgNr) + '.png', mask_blue)
+
+                if len(cal_points) == 2 and None not in arm_points:
+                    points = [cal_points[0][0], cal_points[0][1]]
+                    for point in arm_points:
+                        points = points + point
+                    points = points + [cal_points[1][0], cal_points[1][1]]
+                    self.nwh.multisend(self.nwh.protocol.wrap_side_view(points))
                 else:
-                    self.log.log('ImageProcessor', '5 data points are required, found: ' + str(circles))
+                    self.log.log('ImageProcessor', '5 data points are required, found: cal=' + str(cal_points) + ' and arm=' + str(arm_points))
 
     def capture_hsv_image(self):
         self.rawCapture.truncate(0)
@@ -109,7 +130,9 @@ class ImageProcessor(Thread):
         return cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     def filter_hsv_image(self, img, lower_bounds, upper_bounds):
-        return cv2.inRange(img, lower_bounds, upper_bounds) # TODO maybe do open / close
+        mask = cv2.inRange(img, lower_bounds, upper_bounds)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        return mask
 
     def find_one_circle(self, mask):
         contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -138,5 +161,8 @@ class ImageProcessor(Thread):
             res.append(x)
             res.append(y)
         return res
+
+    def toggle_write_img(self):
+        self.write_img = not self.write_img
 
 

@@ -57,15 +57,10 @@ class Protocol:
 
 
     def int_to_bytes2(self, n: 'int'):
-        # try:
         b = [0, 0]
         b[1] = int(n & 0xFF)
         b[0] = int((n >> 8) & 0xFF)
         return bytes(b)
-        # except TypeError:
-        #     print("SUPER RARE ERRROR OCCURED=======================================================")
-        #     print("SUPER RARE ERRROR OCCURED with ", n, "with type", type(n))
-        #     print("SUPER RARE ERRROR OCCURED=======================================================")
 
     def bytes2_to_int(self, b, offset):
         return (b[offset] << 8) + b[offset+1]
