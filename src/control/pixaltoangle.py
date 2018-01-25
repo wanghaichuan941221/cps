@@ -51,20 +51,20 @@ def get_theta234(pixal_cordinates):
     # take note of the fact that it if you want to know the angle P2P0P1 you have to fill in P0P2P1 or P0P1P2
     theta2_temp = angle(x6, y6, pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[8], pixal_cordinates[9])
     theta2 = (1/2)*math.pi-theta2_temp
-    if pixal_cordinates[2] < x6:
+    if pixal_cordinates[2] > x6:
         theta2 = -1 * theta2
 
 
     theta3_temp = angle(pixal_cordinates[2], pixal_cordinates[3], x6, y6, pixal_cordinates[4], pixal_cordinates[5])
     theta3 = math.pi-theta3_temp
     a, b = get_linear_line(x6, y6, pixal_cordinates[2], pixal_cordinates[3])
-    if pixal_cordinates[5] < (a * pixal_cordinates[4] + b):
+    if pixal_cordinates[5] > (a * pixal_cordinates[4] + b):
         theta3 = -1 * theta3
 
     theta4_temp = angle(pixal_cordinates[4], pixal_cordinates[5], pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[6], pixal_cordinates[7])
     theta4 = math.pi-theta4_temp
     a, b = get_linear_line(pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[4], pixal_cordinates[5])
-    if pixal_cordinates[6] < (a * pixal_cordinates[4] + b):
+    if pixal_cordinates[6] > (a * pixal_cordinates[4] + b):
         theta4 = -1 * theta4
 
     return theta2, theta3, theta4
