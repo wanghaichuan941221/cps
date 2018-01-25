@@ -1,9 +1,12 @@
 import math
 from threading import Thread, Condition
 
+import time
+
 import control.statemachine as statemachine
 import control.pixaltoangle as pixaltoangle
 from control import usbarm
+from control.inverseKinematics import inverse_kinematics
 
 # setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 # angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
@@ -17,7 +20,7 @@ endeffector_to_object_ = 2
 endeffector_to_droppoint_ = 2
 
 calibration_distance_in_cm = 60
-height_object_in_cm = 5
+height_object_in_cm = 2
 
 
 class Controller(Thread):
@@ -53,16 +56,20 @@ class Controller(Thread):
 
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
         theta2, theta3, theta4 = pixaltoangle.get_theta234(pixel_coords_side)
-        endeffector_to_object = pixaltoangle.get_distance_to_object(pixel_coords_top, pixel_coords_side, calibration_distance_in_cm,
+        endeffector_to_object, tx, ty = pixaltoangle.get_distance_to_object(pixel_coords_top, pixel_coords_side, calibration_distance_in_cm,
                                            height_object_in_cm)
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
         print("CONTROLLER endeffector_to_object", endeffector_to_object)
+        start_time = time.time()
+        setpoint2, setpoint3, setpoint4 = inverse_kinematics(theta2, theta3, theta4, tx, ty)
+        print("CONTROLLER INVERSE KIN TOOK ", (time.time() - start_time), "seconds")
+
         state = statemachine.state0  # initial state
 
-        only_first_angle = [theta1, theta2, theta3, theta4]
-        only_first_setpoint = [setpoint1, 0, 0.5*math.pi, 0]
-        while state: state = state(only_first_angle, only_first_setpoint, endeffector_to_object_,
+        measured_angels = [theta1, theta2, theta3, theta4]
+        setpoints = [setpoint1, setpoint2, setpoint3, setpoint4]
+        while state: state = state(measured_angels, setpoints, endeffector_to_object,
                                    endeffector_to_droppoint_)  # launch state machine
         print("Done with states")
         #
