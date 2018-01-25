@@ -14,7 +14,7 @@ pixalcordinates = [0,300,450,450,600,300,450,150]
 #  pixalcordinates = [150,450,300,0,450,150,300,600]
 
 endeffector_to_object_ = 2
-endeffector_to_droppoint_ = 10
+endeffector_to_droppoint_ = 2
 
 calibration_distance_in_cm = 40
 height_object_in_cm = 5
