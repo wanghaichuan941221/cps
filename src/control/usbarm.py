@@ -2,6 +2,8 @@ from time import sleep
 import operator
 import atexit
 
+usb_arm = None
+
 # Define the exit handler
 def exithandler():
     if usb_arm == None:
