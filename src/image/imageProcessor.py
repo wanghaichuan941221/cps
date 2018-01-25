@@ -65,22 +65,22 @@ class ImageProcessor(Thread):
                 mask_red = cv2.morphologyEx(mask_red, cv2.MORPH_CLOSE, kernel)
                 mask_yellow = self.filter_hsv_image(img, yellow_lower, yellow_upper)
                 circles = self.find_circles(mask_red)
-                circles_object = self.find_circles(mask_yellow)
+                circles_object = self.find_one_circle(mask_yellow)
                 for cir in circles:
                     cv2.circle(img, cir, 10, (255, 0, 0), 3)
-                for cir in circles_object:
-                    cv2.circle(img, cir, 10, (0, 255, 0), 3)
+                if circles_object is not None:
+                    cv2.circle(img, (circles_object[0], circles_object[1]), 10, (0, 255, 0), 3)
                 cv2.imwrite('/home/pi/Desktop/Images/img' + str(imgNr) + '.png', img)
                 cv2.imwrite('/home/pi/Desktop/Images/mask_red' + str(imgNr) + '.png', mask_red)
                 cv2.imwrite('/home/pi/Desktop/Images/mask_yellow' + str(imgNr) + '.png', mask_yellow)
                 if len(circles) == 3:
                     circles.sort()
-                    if len(circles_object) > 0:
-                        points = circles + [circles_object[0]]
+                    if circles_object is not None:
+                        points = self.unzip_list(circles) + circles_object
                     else:
-                        points = circles + [(imgWidth, imgHeight)]
+                        points = self.unzip_list(circles) + [(imgWidth, imgHeight)]
                     try:
-                        self.nwh.multisend(self.nwh.protocol.wrap_top_view(self.unzip_list(points)))
+                        self.nwh.multisend(self.nwh.protocol.wrap_top_view(points))
                     except TypeError:
                         print("SUPER RARE ERRROR OCCURED=======================================================")
                         print("SUPER RARE ERRROR OCCURED points ", points)
@@ -110,6 +110,15 @@ class ImageProcessor(Thread):
 
     def filter_hsv_image(self, img, lower_bounds, upper_bounds):
         return cv2.inRange(img, lower_bounds, upper_bounds) # TODO maybe do open / close
+
+    def find_one_circle(self, mask):
+        contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+        if len(contours) > 0:
+            biggest_contour = max(contours, key=cv2.contourArea)
+            (x, y), r = cv2.minEnclosingCircle(biggest_contour)
+            return [x, y]
+        else:
+            return None
 
     def find_circles(self, mask):
         res = []
