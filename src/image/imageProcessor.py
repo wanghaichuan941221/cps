@@ -60,7 +60,6 @@ class ImageProcessor(Thread):
         imgNr = 0
         if self.is_top_view:
             while self.running:
-                imgNr += 1
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_top_lower, red_top_upper)
                 mask_yellow_obj = self.filter_hsv_image(img, yellow_top_lower, yellow_top_upper)
@@ -68,6 +67,7 @@ class ImageProcessor(Thread):
                 circles_object = self.find_one_circle(mask_yellow_obj)
 
                 if self.write_img:
+                    imgNr += 1
                     for cir in circles:
                         cv2.circle(img, cir, 10, (255, 0, 0), 3)
                     if circles_object is not None:
@@ -88,7 +88,6 @@ class ImageProcessor(Thread):
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
             while self.running:
-                imgNr += 1
                 img = self.capture_hsv_image()
                 mask_red = self.filter_hsv_image(img, red_side_lower, red_side_upper)
                 mask_yellow = self.filter_hsv_image(img, yellow_side_lower, yellow_side_upper)
@@ -102,6 +101,7 @@ class ImageProcessor(Thread):
                 arm_points = [p2, p3, p4]
 
                 if self.write_img:
+                    imgNr += 1
                     for point in cal_points:
                         cv2.circle(img, point, 10, (0, 0, 255), 3)
                     for point in arm_points:
