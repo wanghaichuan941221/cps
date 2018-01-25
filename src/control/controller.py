@@ -68,7 +68,7 @@ class Controller(Thread):
 
         measured_angels = [theta1, theta2, theta3, theta4]
         setpoints = [setpoint1, 0, 0, 0]
-        while state: state = state(measured_angels, setpoints, endeffector_to_object,
+        while state: state = state(measured_angels, setpoints, endeffector_to_object_,
                                    endeffector_to_droppoint_, tx, ty)  # launch state machine
         print("Done with states")
         #
