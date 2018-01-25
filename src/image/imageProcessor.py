@@ -116,7 +116,7 @@ class ImageProcessor(Thread):
         if len(contours) > 0:
             biggest_contour = max(contours, key=cv2.contourArea)
             (x, y), r = cv2.minEnclosingCircle(biggest_contour)
-            return [x, y]
+            return [int(x), int(y)]
         else:
             return None
 
