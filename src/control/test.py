@@ -1,5 +1,5 @@
 import pixaltoangle as pixaltoangle
-
+import math
 #  pixalcordinates = [0,300,450,450,600,300,450,450]
 #  pixalcordinates = [150,150,450,300,450,450,300,600]
 
@@ -20,7 +20,8 @@ calibration_distance_in_cm = 40
 height_object_in_cm = 5
 
 pixaltoangle.get_theta1_setpoint1(pixalcordinates_top)
-pixaltoangle.get_theta234(pixalcordinates_side1)
+theta2, theta3, theta4 = pixaltoangle.get_theta234(pixalcordinates_side1)
 print("theta2, theta3, theta4",pixaltoangle.get_theta234(pixalcordinates_side1))
+print("theta2, theta3, theta4",math.degrees(theta2), math.degrees(theta3), math.degrees(theta4))
 
 print("distance",pixaltoangle.get_distance_to_object(pixalcordinates_top,pixalcordinates_side1,calibration_distance_in_cm,height_object_in_cm))
