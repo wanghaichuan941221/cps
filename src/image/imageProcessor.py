@@ -20,12 +20,12 @@ yellow_top_upper = np.array([40, 252, 240])
 # side view
 red_side_lower = np.array([154, 98, 185])
 red_side_upper = np.array([179, 228, 255])
-green_side_lower = np.array([47, 104, 78])    # TODO calibrate
-green_side_upper = np.array([152, 255, 255])  # TODO calibrate
-blue_side_lower = np.array([47, 104, 78])     # TODO calibrate
-blue_side_upper = np.array([152, 255, 255])   # TODO calibrate
-yellow_side_lower = np.array([29, 163, 95])   # TODO calibrate
-yellow_side_upper = np.array([40, 252, 240])  # TODO calibrate
+green_side_lower = np.array([53, 200, 33])
+green_side_upper = np.array([81, 255, 184])
+blue_side_lower = np.array([85, 7, 1])
+blue_side_upper = np.array([138, 153, 135])
+yellow_side_lower = np.array([21, 232, 161])
+yellow_side_upper = np.array([48, 255, 199])
 
 
 imgWidth = 640
