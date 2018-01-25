@@ -64,7 +64,7 @@ def get_theta234(pixal_cordinates):
     theta4_temp = angle(pixal_cordinates[4], pixal_cordinates[5], pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[6], pixal_cordinates[7])
     theta4 = math.pi-theta4_temp
     a, b = get_linear_line(pixal_cordinates[2], pixal_cordinates[3], pixal_cordinates[4], pixal_cordinates[5])
-    if pixal_cordinates[6] > (a * pixal_cordinates[4] + b):
+    if pixal_cordinates[7] > (a * pixal_cordinates[6] + b):
         theta4 = -1 * theta4
 
     return theta2, theta3, theta4
