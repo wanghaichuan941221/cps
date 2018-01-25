@@ -58,13 +58,13 @@ class Controller(Thread):
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
         print("CONTROLLER endeffector_to_object", endeffector_to_object)
-        # state = statemachine.state0  # initial state
-        #
-        # only_first_angle = [theta1, 0, 0, 0]
-        # only_first_setpoint = [setpoint1, 0, 0, 0]
-        # while state: state = state(only_first_angle, only_first_setpoint, endeffector_to_object_,
-        #                            endeffector_to_droppoint_)  # launch state machine
-        # print("Done with states")
+        state = statemachine.state0  # initial state
+
+        only_first_angle = [theta1, theta2, theta3, theta4]
+        only_first_setpoint = [setpoint1, 0, 0.5*math.pi, 0]
+        while state: state = state(only_first_angle, only_first_setpoint, endeffector_to_object_,
+                                   endeffector_to_droppoint_)  # launch state machine
+        print("Done with states")
         #
         # sleep(time)
         # stopmotors = usbarm.stop_motors()
