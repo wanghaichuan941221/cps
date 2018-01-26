@@ -120,7 +120,7 @@ def get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right):
     elif theta1 >= -(3/4)*math.pi and theta1 < -(1/4)*math.pi:
         correct_pixal_coords = pixel_coords_right
     else:
-        print"error: Theta1 should be between [-pi, pi]"
+        print("error: Theta1 should be between [-pi, pi]")
 
     if inverse_angles == True:
         theta2, theta3, theta4 = get_theta234(correct_pixal_coords)
