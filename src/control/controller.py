@@ -56,7 +56,7 @@ class Controller(Thread):
 
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
 
-        theta2, theta3, theta4 = get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right)
+        theta2, theta3, theta4 = pixaltoangle.get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right)
         endeffector_to_object, tx, ty = pixaltoangle.get_distance_to_object(pixel_coords_top, pixel_coords_side, calibration_distance_in_cm,
                                            height_object_in_cm)
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
