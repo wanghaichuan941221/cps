@@ -51,25 +51,24 @@ class Controller(Thread):
         self.new_data.notify()
         self.new_data.release()
 
-    def control(self, pixel_coords_top, pixel_coords_side):
+    def control(self, pixel_coords_top, pixel_coords_side, pixel_coords_right):
         print("CONTROLLER start control with ", str(pixel_coords_top))
 
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
-        theta2, theta3, theta4 = pixaltoangle.get_theta234(pixel_coords_side)
+
+        theta2, theta3, theta4 = get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right)
         endeffector_to_object, tx, ty = pixaltoangle.get_distance_to_object(pixel_coords_top, pixel_coords_side, calibration_distance_in_cm,
                                            height_object_in_cm)
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
-        print("CONTROLLER endeffector_to_object = ", endeffector_to_object)
-        print("CONTROLLER tx ty = ", endeffector_to_object)
+        print("CONTROLLER tx ty = ", tx, ty)
 
 
         state = statemachine.state0  # initial state
 
         measured_angels = [theta1, theta2, theta3, theta4]
         setpoints = [setpoint1, 0, 0, 0]
-        while state: state = state(measured_angels, setpoints, endeffector_to_object_,
-                                   endeffector_to_droppoint_, tx, ty)  # launch state machine
+        while state: state = state(measured_angels, setpoints, tx, ty)  # launch state machine
         print("Done with states")
         #
         # sleep(time)

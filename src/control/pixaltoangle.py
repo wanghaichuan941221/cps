@@ -104,6 +104,33 @@ def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,calibrati
     distance_to_object_in_cm =  phytagoras(x_distance_to_object_in_side1_view, y_distance_to_object_in_side1_view, pixal_cordinates_side1[6], pixal_cordinates_side1[7])/multi2
     return distance_to_object_in_cm, tx, ty
 
+def get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right):
+    inverse_angles = False
+    if inverse_angles == True:
+        print("error: inverse_angles should be False")
+
+    if theta1 >= -(1/4)*math.pi and theta1< (1/4)*math.pi:
+        correct_pixal_coords = pixel_coords_side
+    elif theta1 >= (1/4)*math.pi and theta1 < (3/4)*math.pi:
+        correct_pixal_coords = pixel_coords_right
+        inverse_angles = True
+    elif theta1 >= (3/4)*math.pi and theta1 < -(3/4)*math.pi:
+        correct_pixal_coords = pixel_coords_side
+        inverse_angles = True
+    elif theta1 >= -(3/4)*math.pi and theta1 < -(1/4)*math.pi:
+        correct_pixal_coords = pixel_coords_right
+    else:
+        print"error: Theta1 should be between [-pi, pi]"
+
+    if inverse_angles == True:
+        theta2, theta3, theta4 = get_theta234(correct_pixal_coords)
+        theta2 = (-1)*theta2
+        theta3 = (-1)*theta3
+        theta4 = (-1)*theta4
+    else:
+        theta2, theta3, theta4 = get_theta234(correct_pixal_coords)
+    return theta2, theta3, theta4
+
 
 def forward_kinematics(t2, t3, t4):
     L1 = 9
