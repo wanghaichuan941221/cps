@@ -18,14 +18,14 @@ yellow_top_lower = np.array([29, 172, 80])
 yellow_top_upper = np.array([36, 255, 201])
 
 # side view
-red_side_lower = np.array([154, 98, 185])
-red_side_upper = np.array([179, 228, 255])
-green_side_lower = np.array([53, 200, 33])
-green_side_upper = np.array([81, 255, 184])
-blue_side_lower = np.array([85, 7, 1])
-blue_side_upper = np.array([138, 153, 135])
-yellow_side_lower = np.array([21, 232, 161])
-yellow_side_upper = np.array([48, 255, 199])
+red_side_lower = np.array([149, 134, 100])
+red_side_upper = np.array([169, 217, 176])
+green_side_lower = np.array([38, 199, 41])
+green_side_upper = np.array([70, 255, 150])
+blue_side_lower = np.array([102, 158, 39])
+blue_side_upper = np.array([116, 237, 125])
+yellow_side_lower = np.array([28, 167, 98])
+yellow_side_upper = np.array([38, 255, 195])
 
 
 imgWidth = 640
@@ -106,6 +106,10 @@ class ImageProcessor(Thread):
                 mask_blue = self.filter_hsv_image(img, blue_side_lower, blue_side_upper)
                 cal_points = self.find_circles(mask_red)
                 cal_points.sort()
+
+                if len(cal_points) > 2:
+                    cal_points = [cal_points[0], cal_points[len(cal_points) - 1]]
+
                 p2 = self.find_one_circle(mask_yellow)
                 p3 = self.find_one_circle(mask_green)
                 p4 = self.find_one_circle(mask_blue)
