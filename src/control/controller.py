@@ -35,7 +35,7 @@ class Controller(Thread):
 
     def run(self):
         while self.running:
-            timer = Timer(0.5, self.kill_switch)
+            timer = Timer(2, self.kill_switch)
             timer.start()
             self.control()
             timer.cancel()
