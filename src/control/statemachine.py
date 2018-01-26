@@ -8,7 +8,7 @@ import math
 from control.inverseKinematics import inverse_kinematics
 
 setpoints_initial = [0,0,(1/2)*math.pi,0]
-setpoints_droppoint = [0,(1/4)*math.pi,(1/2)*math.pi,0]
+setpoints_droppoint = [0,(1/4)*math.pi,(1/2)*math.pi,-(1/4)*math.pi]
 buffer = 0.1*math.pi
 state_counter = 0
 buffer_endeffector_to_box = 3
@@ -25,6 +25,8 @@ def state0(angles, setpoints, tx, ty):
         return state9
     elif state_counter == 3:
         return state13
+    elif state_counter == 4:
+        return state17
     else:
         return None
 
@@ -64,7 +66,6 @@ def state4(angles, setpoints, tx, ty):
     usbarm.stop_motors()
     usbarm.open_close_gripper(1)
     state_counter = 1
-    usbarm.open_close_gripper(2)
     return state0
 
 
@@ -106,7 +107,6 @@ def state8(angles, setpoints, tx, ty):
     global state_counter
     print("state8 control gripper to grab object and set state counter to 2")
     usbarm.stop_motors()
-    usbarm.open_close_gripper(1)
     state_counter = 2
     usbarm.open_close_gripper(2)
     return state0
@@ -194,9 +194,59 @@ def state16(angles, setpoints, tx, ty):
     print("state16 open gripper and set state counter to 0")
     usbarm.stop_motors()
     usbarm.open_close_gripper(1)
+    state_counter = 4
+    return None
+
+
+
+
+
+def state17(angles, setpoints, tx, ty):
+    print("state9 determine rotational setpoint for box")
+    error = usbarm.get_error(setpoints_droppoint, angles)
+    if abs(error[0])>=buffer:
+        return state18
+    if abs(error[0])<buffer:
+        return state19
+
+def state18(angles, setpoints, tx, ty):
+    print("state10 control motor1 for setpoint")
+    usb_direction =  usbarm.get_usb_direction(setpoints_droppoint, angles)
+    usbarm.ctrl(usb_direction[0])
+    return None
+
+def state19(angles, setpoints, tx, ty):
+    print("state11 motor1 fine control angle motor234 for setpoints initial")
+    # delay and decision path to simulate some application logic
+    new_setpoints = [0]*4
+    new_setpoints[0] = setpoints_droppoint[0]
+    new_setpoints[1] = setpoints_initial[1]
+    new_setpoints[2] = setpoints_initial[2]
+    new_setpoints[3] = setpoints_initial[3]
+
+    print("check", new_setpoints)
+    error = usbarm.get_error(new_setpoints, angles)
+
+
+    if abs(error[1])<buffer and abs(error[2])< buffer and abs(error[3])< buffer:
+        return state20
+    else:
+        usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
+        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        usbarm.ctrl(total_movement)
+        return None
+
+def state20(angles, setpoints, tx, ty):
+    global state_counter
+    print("state12 go to droppoint and set state counter to 3")
+    usbarm.stop_motors()
     state_counter = 0
     usbarm.open_close_gripper(2)
-    return None
+    return state0
+
+
+
+
 
 
 
