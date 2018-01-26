@@ -1,5 +1,5 @@
 import math
-from threading import Thread, Condition, Timer
+from threading import Thread, Condition, Timer, RLock
 
 import time
 
@@ -27,53 +27,45 @@ class Controller(Thread):
 
     def __init__(self):
         Thread.__init__(self)
-        self.new_data = Condition()
+        self.new_data = Condition(RLock())
         self.top_view_data = []
         self.left_view_data = []
         self.right_view_data = []
-        self.timer = Timer(0.2, self.kill_switch)
         self.running = True
 
     def run(self):
         while self.running:
-            self.timer = Timer(0.5, self.kill_switch)
-            self.timer.start()
+            self.control()
 
-            self.new_data.acquire()
-            self.new_data.wait()
-            tv_data = self.top_view_data.copy()
-            lv_data = self.left_view_data.copy()
-            rv_data = self.right_view_data.copy()
-            self.new_data.release()
-
-            self.timer.cancel()
-
-            self.timer = Timer(0.2, self.kill_switch)
-            self.timer.start()
-
-            self.control(tv_data, lv_data, rv_data)
-
-            self.timer.cancel()
-
-
-    def update_data(self, top_vew_data, left_view_data, right_view_data):
+    def control(self):
         self.new_data.acquire()
+        while True:
+            if len(self.top_view_data) > 0:
+                theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(self.top_view_data)
+                use_left, inverse = pixaltoangle.get_coords_side_or_right(theta1)
+                if use_left and len(self.left_view_data) > 0:
+                    pixel_coords_top = self.top_view_data.copy()
+                    pixel_coords_side = self.left_view_data.copy()
+                    self.top_view_data = []
+                    self.left_view_data = []
+                    break
+                elif use_left and len(self.left_view_data) > 0:
+                    pixel_coords_top = self.top_view_data.copy()
+                    pixel_coords_side = self.right_view_data.copy()
+                    self.top_view_data = []
+                    self.right_view_data = []
+                    break
 
-        self.top_view_data = top_vew_data
-        self.left_view_data = left_view_data
-        self.right_view_data = right_view_data
+            self.new_data.wait()
 
-        self.new_data.notify()
         self.new_data.release()
 
-    def control(self, pixel_coords_top, pixel_coords_side, pixel_coords_right):
-        print("CONTROLLER start control with ", str(pixel_coords_top))
-
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
+        theta2, theta3, theta4 = pixaltoangle.get_theta234(pixel_coords_side)
+        if inverse:
+            theta2, theta3, theta4 = pixaltoangle.invserse_angles(theta2, theta3, theta4)
 
-        theta2, theta3, theta4 = pixaltoangle.get_coords_side_or_right(theta1, pixel_coords_side, pixel_coords_right)
-        endeffector_to_object, tx, ty = pixaltoangle.get_distance_to_object(pixel_coords_top, pixel_coords_side, calibration_distance_in_cm,
-                                           height_object_in_cm)
+        tx, ty = pixaltoangle.get_x_y_object(pixel_coords_top, calibration_distance_in_cm, height_object_in_cm)
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
         print("CONTROLLER tx ty = ", tx, ty)
@@ -85,9 +77,30 @@ class Controller(Thread):
         setpoints = [setpoint1, 0, 0, 0]
         while state: state = state(measured_angels, setpoints, tx, ty)  # launch state machine
         print("Done with states")
-        #
-        # sleep(time)
-        # stopmotors = usbarm.stop_motors()
+
+    def update_top_view_data(self, data):
+        self.new_data.acquire()
+
+        self.top_view_data = data
+
+        self.new_data.notify()
+        self.new_data.release()
+
+    def update_left_view_data(self, data):
+        self.new_data.acquire()
+
+        self.left_view_data = data
+
+        self.new_data.notify()
+        self.new_data.release()
+
+    def update_right_view_data(self, data):
+        self.new_data.acquire()
+
+        self.right_view_data = data
+
+        self.new_data.notify()
+        self.new_data.release()
 
     def connect_usb_arm(self):
         usbarm.connect_usb_arm()

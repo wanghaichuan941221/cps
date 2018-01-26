@@ -110,7 +110,7 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 8):
                 res.append(self.bytes2_to_int(values, i*2))
-            # TODO con recieve top
+            self.con.update_top_view_data(res)
         elif header == b'\x03':
             res = []
             values = data[1:]
@@ -118,9 +118,9 @@ class ServerProtocol(Protocol):
                 res.append(self.bytes2_to_int(values, i * 2))
 
             if self.nwh.connections[addr].name == 'CPS1-4':
-                # TODO con recieve top
+                self.con.update_left_view_data(res)
             elif self.nwh.connections[addr].name == 'CPS1-1':
-                # TODO con recieve top
+                self.con.update_right_view_data(res)
             else:
                 self.nwh.log.print('UNKNOWN SIDE VIEW CAMERA: ' + self.nwh.connections[addr].name)
 

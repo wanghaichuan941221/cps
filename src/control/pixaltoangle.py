@@ -84,25 +84,15 @@ def get_theta234(pixal_cordinates):
     return theta2, theta3, theta4
 
 
-def get_distance_to_object(pixal_cordinates_top,pixal_cordinates_side1,calibration_distance_in_cm,height_object_in_cm):
+def get_x_y_object(pixal_cordinates_top,calibration_distance_in_cm,height_object_in_cm):
     x4, y4 = get_xy_between_two_points(pixal_cordinates_top[4],pixal_cordinates_top[5],pixal_cordinates_top[0],pixal_cordinates_top[1])
-    x6, y6 = get_xy_between_two_points(pixal_cordinates_side1[8], pixal_cordinates_side1[9], pixal_cordinates_side1[0], pixal_cordinates_side1[1])
 
     multi1 = calibration_distance_in_cm/phytagoras(pixal_cordinates_top[0],pixal_cordinates_top[1],pixal_cordinates_top[4],pixal_cordinates_top[5])
-    multi2 = phytagoras(pixal_cordinates_side1[0],pixal_cordinates_side1[1],pixal_cordinates_side1[8],pixal_cordinates_side1[9])/calibration_distance_in_cm
 
     tx = phytagoras(x4,y4,pixal_cordinates_top[6],pixal_cordinates_top[7])*multi1
-
-    x_distance_to_object_in_side1_view = x6 + tx*multi2
-
-    a,b = get_linear_line(pixal_cordinates_side1[0],pixal_cordinates_side1[1],pixal_cordinates_side1[8],pixal_cordinates_side1[9])
-
     ty = height_object_in_cm
 
-    y_distance_to_object_in_side1_view = a*x_distance_to_object_in_side1_view + b - ty*multi2
-
-    distance_to_object_in_cm =  phytagoras(x_distance_to_object_in_side1_view, y_distance_to_object_in_side1_view, pixal_cordinates_side1[6], pixal_cordinates_side1[7])/multi2
-    return distance_to_object_in_cm, tx, ty
+    return tx, ty
 
 def get_coords_side_or_right(theta1):
     inverse_angles = False
