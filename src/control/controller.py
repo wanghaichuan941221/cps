@@ -20,7 +20,7 @@ endeffector_to_object_ = 2
 endeffector_to_droppoint_ = 2
 
 calibration_distance_in_cm = 60
-height_object_in_cm = -3
+height_object_in_cm = -4
 
 
 class Controller(Thread):
