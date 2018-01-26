@@ -35,7 +35,10 @@ class Controller(Thread):
 
     def run(self):
         while self.running:
+            timer = Timer(0.1, self.kill_switch)
+            timer.start()
             self.control()
+            timer.cancel()
 
     def control(self):
         self.new_data.acquire()
