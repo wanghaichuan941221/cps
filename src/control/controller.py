@@ -69,6 +69,8 @@ class Controller(Thread):
             theta2, theta3, theta4 = pixaltoangle.invserse_angles(theta2, theta3, theta4)
 
         tx, ty = pixaltoangle.get_x_y_object(pixel_coords_top, calibration_distance_in_cm, height_object_in_cm)
+        tx += 2
+
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
         print("CONTROLLER tx ty = ", tx, ty)
