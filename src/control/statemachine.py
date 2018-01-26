@@ -8,7 +8,7 @@ import math
 from control.inverseKinematics import inverse_kinematics
 
 setpoints_initial = [0,0,(1/2)*math.pi,0]
-setpoints_droppoint = [0,(1/4)*math.pi,(1/2)*math.pi,0]
+setpoints_droppoint = [0,(1/4)*math.pi,(1/2)*math.pi,-(1/4)*math.pi]
 buffer = 0.1*math.pi
 state_counter = 0
 buffer_endeffector_to_box = 3
