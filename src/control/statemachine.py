@@ -254,7 +254,6 @@ def state20(angles, setpoints, tx, ty):
     print("state12 go to droppoint and set state counter to 3")
     usbarm.stop_motors()
     state_counter = 0
-    usbarm.open_close_gripper(2)
     return state0
 
 
