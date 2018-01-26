@@ -20,7 +20,7 @@ endeffector_to_object_ = 2
 endeffector_to_droppoint_ = 2
 
 calibration_distance_in_cm = 60
-height_object_in_cm = 0
+height_object_in_cm = -3
 
 
 class Controller(Thread):
@@ -35,7 +35,7 @@ class Controller(Thread):
 
     def run(self):
         while self.running:
-            timer = Timer(0.2, self.kill_switch)
+            timer = Timer(0.3, self.kill_switch)
             timer.start()
             self.control()
             timer.cancel()
