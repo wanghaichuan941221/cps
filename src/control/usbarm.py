@@ -216,7 +216,7 @@ def stop_motors():
 
 def open_close_gripper(_grip):
     ctrl(grip(_grip))
-    sleep(1)
+    sleep(1.5)
     stop_motors()
 
     if _grip == 1:
