@@ -60,9 +60,10 @@ class ImageProcessor(Thread):
         imgNr = 0
         if self.is_top_view:
             while self.running:
-                img = self.capture_hsv_image()
-                mask_red = self.filter_hsv_image(img, red_top_lower, red_top_upper)
-                mask_yellow_obj = self.filter_hsv_image(img, yellow_top_lower, yellow_top_upper)
+                img = self.capture_image()
+                hsv = self.convert_to_hsv(img)
+                mask_red = self.filter_hsv_image(hsv, red_top_lower, red_top_upper)
+                mask_yellow_obj = self.filter_hsv_image(hsv, yellow_top_lower, yellow_top_upper)
                 circles = self.find_circles(mask_red)
                 circles_object = self.find_one_circle(mask_yellow_obj)
 
@@ -99,11 +100,12 @@ class ImageProcessor(Thread):
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
             while self.running:
-                img = self.capture_hsv_image()
-                mask_red = self.filter_hsv_image(img, red_side_lower, red_side_upper)
-                mask_yellow = self.filter_hsv_image(img, yellow_side_lower, yellow_side_upper)
-                mask_green = self.filter_hsv_image(img, green_side_lower, green_side_upper)
-                mask_blue = self.filter_hsv_image(img, blue_side_lower, blue_side_upper)
+                img = self.capture_image()
+                hsv = self.convert_to_hsv(img)
+                mask_red = self.filter_hsv_image(hsv, red_side_lower, red_side_upper)
+                mask_yellow = self.filter_hsv_image(hsv, yellow_side_lower, yellow_side_upper)
+                mask_green = self.filter_hsv_image(hsv, green_side_lower, green_side_upper)
+                mask_blue = self.filter_hsv_image(hsv, blue_side_lower, blue_side_upper)
                 cal_points = self.find_circles(mask_red)
                 cal_points.sort()
 
@@ -140,11 +142,12 @@ class ImageProcessor(Thread):
                 else:
                     self.log.log('ImageProcessor', '5 data points are required, found: cal=' + str(cal_points) + ' and arm=' + str(arm_points))
 
-    def capture_hsv_image(self):
+    def capture_image(self):
         self.rawCapture.truncate(0)
         self.camera.capture(self.rawCapture, format="bgr", use_video_port=True)
-        frame = self.rawCapture.array
-        # blurred = cv2.GaussianBlur(frame, (11, 11), 0) TODO maybe do blur
+        return self.rawCapture.array  # TODO maybe do blur
+
+    def convert_to_hsv(self, frame):
         return cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     def filter_hsv_image(self, img, lower_bounds, upper_bounds):
