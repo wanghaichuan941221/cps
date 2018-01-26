@@ -14,6 +14,7 @@ state_counter = 0
 buffer_endeffector_to_box = 3
 buffer_endeffector_to_droppoint = 3
 setpoints_inv_kin = [0]*4
+need_inv_kin = True
 
 def state0(angles, setpoints, tx, ty):
     print("state0 start")
@@ -89,11 +90,12 @@ def state6(angles, setpoints, tx, ty):
 def state7(angles, setpoints, tx, ty):
     print("state7 motor1 fine control angle motor234 for the box")
     global setpoints_inv_kin
+    global need_inv_kin
     # delay and decision path to simulate some application logic
     start_time = time.time()
 
     setpoints_inv_kin[0] = setpoints[0]
-    if need_inv_kin == True:
+    if need_inv_kin:
         setpoints_inv_kin[1], setpoints_inv_kin[2], setpoints_inv_kin[3] = inverse_kinematics(angles[1], angles[2], angles[3], tx, ty)
         need_inv_kin = False
 
