@@ -49,7 +49,7 @@ class Controller(Thread):
                     self.top_view_data = []
                     self.left_view_data = []
                     break
-                elif use_left and len(self.left_view_data) > 0:
+                elif not use_left and len(self.right_view_data) > 0:
                     pixel_coords_top = self.top_view_data.copy()
                     pixel_coords_side = self.right_view_data.copy()
                     self.top_view_data = []
