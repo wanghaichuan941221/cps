@@ -27,6 +27,9 @@ class Controller(Thread):
 
     def __init__(self):
         Thread.__init__(self)
+        self.need_new_object = True
+        self.object_x = 0
+        self.object_y = 0
         self.new_data = Condition(RLock())
         self.top_view_data = []
         self.left_view_data = []
@@ -63,6 +66,14 @@ class Controller(Thread):
 
         self.new_data.release()
 
+        if self.need_new_object:
+            self.object_x = pixel_coords_top[6]
+            self.object_y = pixel_coords_top[7]
+            self.need_new_object = False
+
+        pixel_coords_top[6] = self.object_x
+        pixel_coords_top[7] = self.object_y
+
         theta1, setpoint1 = pixaltoangle.get_theta1_setpoint1(pixel_coords_top)
         theta2, theta3, theta4 = pixaltoangle.get_theta234(pixel_coords_side)
         if inverse:
@@ -75,13 +86,15 @@ class Controller(Thread):
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
         print("CONTROLLER tx ty = ", tx, ty)
 
-
         state = statemachine.state0  # initial state
 
         measured_angels = [theta1, theta2, theta3, theta4]
         setpoints = [setpoint1, 0, 0, 0]
-        while state: state = state(measured_angels, setpoints, tx, ty)  # launch state machine
+        while state: state = state(measured_angels, setpoints, tx, ty, self)  # launch state machine
         print("Done with states")
+
+    def request_new_object(self):
+        self.need_new_object = True
 
     def update_top_view_data(self, data):
         self.new_data.acquire()
