@@ -13,6 +13,7 @@ buffer = 0.05*math.pi
 state_counter = 0
 buffer_endeffector_to_box = 3
 buffer_endeffector_to_droppoint = 3
+setpoints_inv_kin = [0]*4
 
 def state0(angles, setpoints, tx, ty):
     print("state0 start")
@@ -87,18 +88,25 @@ def state6(angles, setpoints, tx, ty):
 
 def state7(angles, setpoints, tx, ty):
     print("state7 motor1 fine control angle motor234 for the box")
+    global setpoints_inv_kin
     # delay and decision path to simulate some application logic
     start_time = time.time()
-    setpoints[1], setpoints[2], setpoints[3] = inverse_kinematics(angles[1], angles[2], angles[3], tx, ty)
-    print("CONTROLLER setpoints: ", setpoints[1], setpoints[2], setpoints[3])
+
+    setpoints_inv_kin[0] = setpoints[0]
+    if need_inv_kin == True:
+        setpoints_inv_kin[1], setpoints_inv_kin[2], setpoints_inv_kin[3] = inverse_kinematics(angles[1], angles[2], angles[3], tx, ty)
+        need_inv_kin = False
+
+    print("CONTROLLER setpoints: ", setpoints_inv_kin[1], setpoints_inv_kin[2], setpoints_inv_kin[3])
     print("CONTROLLER INVERSE KIN TOOK ", (time.time() - start_time), "seconds")
 
-    error = usbarm.get_error(setpoints, angles)
+    error = usbarm.get_error(setpoints_inv_kin, angles)
 
     if abs(error[1])<buffer and abs(error[2])< buffer and abs(error[3])< buffer :
+        need_inv_kin = True
         return state8
     else:
-        usb_direction = usbarm.get_usb_direction(setpoints, angles)
+        usb_direction = usbarm.get_usb_direction(setpoints_inv_kin, angles)
         total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
