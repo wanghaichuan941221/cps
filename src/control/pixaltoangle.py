@@ -139,9 +139,9 @@ def forward_kinematics(t2, t3, t4):
 
     x1 = L1 * math.sin(t2)
     y1 = L1 * math.cos(t2)
-    x2 = P1x + L2 * math.sin(t2 + t3)
-    y2 = P1y + L2 * math.cos(t2 + t3)
-    x3 = P2x + L3 * math.sin(t2 + t3 + t4)
-    y3 = P2y + L3 * math.cos(t2 + t3 + t4)
+    x2 = x1 + L2 * math.sin(t2 + t3)
+    y2 = y1 + L2 * math.cos(t2 + t3)
+    x3 = x2 + L3 * math.sin(t2 + t3 + t4)
+    y3 = y2 + L3 * math.cos(t2 + t3 + t4)
 
     return [[x1, y1], [x2, y2], [x3, y3]]
