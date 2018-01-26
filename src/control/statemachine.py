@@ -83,8 +83,10 @@ def state5(angles, setpoints, tx, ty):
 
 def state6(angles, setpoints, tx, ty):
     print("state6 control motor1 for setpoint")
+    global need_inv_kin
     usb_direction =  usbarm.get_usb_direction(setpoints, angles)
     usbarm.ctrl(usb_direction[0])
+    need_inv_kin = True
     return None
 
 def state7(angles, setpoints, tx, ty):
