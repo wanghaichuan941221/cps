@@ -7,7 +7,7 @@ class DataHandler:
 
     def __init__(self, con: 'Controller'):
         self.con = con
-        self.timer = Timer(0.5, self.con.stop_motors)
+        self.timer = Timer(0.1, self.kill_switch)
         self.top_view_data = None
         self.side_view_data = None
         self.lock = RLock()
@@ -38,3 +38,7 @@ class DataHandler:
         self.side_view_data = None
         self.timer = Timer(0.5, self.con.stop_motors)
         self.timer.start()
+
+    def kill_switch(self):
+        self.con.stop_motors()
+        print('HIT KILL SWITCH')

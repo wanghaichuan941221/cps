@@ -60,17 +60,16 @@ class Controller(Thread):
                                            height_object_in_cm)
         print("CONTROLLER theta1 and setpoint1 = ", theta1, setpoint1)
         print("CONTROLLER theta2, theta3, theta4 = ", theta2, theta3, theta4)
-        print("CONTROLLER endeffector_to_object", endeffector_to_object)
-        start_time = time.time()
-        setpoint2, setpoint3, setpoint4 = inverse_kinematics(theta2, theta3, theta4, tx, ty)
-        print("CONTROLLER INVERSE KIN TOOK ", (time.time() - start_time), "seconds")
+        print("CONTROLLER endeffector_to_object = ", endeffector_to_object)
+        print("CONTROLLER tx ty = ", endeffector_to_object)
+
 
         state = statemachine.state0  # initial state
 
         measured_angels = [theta1, theta2, theta3, theta4]
-        setpoints = [setpoint1, setpoint2, setpoint3, setpoint4]
-        while state: state = state(measured_angels, setpoints, endeffector_to_object,
-                                   endeffector_to_droppoint_)  # launch state machine
+        setpoints = [setpoint1, 0, 0, 0]
+        while state: state = state(measured_angels, setpoints, endeffector_to_object_,
+                                   endeffector_to_droppoint_, tx, ty)  # launch state machine
         print("Done with states")
         #
         # sleep(time)
