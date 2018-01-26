@@ -24,11 +24,11 @@ def state0(angles, setpoints, tx, ty):
     elif state_counter == 1:
         return state5
     elif state_counter == 2:
-        return state9
+        return state11
     elif state_counter == 3:
         return state13
     elif state_counter == 4:
-        return state17
+        return state19
     else:
         return None
 
@@ -129,19 +129,19 @@ def state8(angles, setpoints, tx, ty):
 
 
 
-def state9(angles, setpoints, tx, ty):
-    print("state9 determine rotational setpoint for box")
-    error = usbarm.get_error(setpoints, angles)
-    if abs(error[0])>=buffer:
-        return state10
-    if abs(error[0])<buffer:
-        return state11
-
-def state10(angles, setpoints, tx, ty):
-    print("state10 control motor1 for setpoint")
-    usb_direction =  usbarm.get_usb_direction(setpoints, angles)
-    usbarm.ctrl(usb_direction[0])
-    return None
+# def state9(angles, setpoints, tx, ty):
+#     print("state9 determine rotational setpoint for box")
+#     error = usbarm.get_error(setpoints, angles)
+#     if abs(error[0])>=buffer:
+#         return state10
+#     if abs(error[0])<buffer:
+#         return state11
+#
+# def state10(angles, setpoints, tx, ty):
+#     print("state10 control motor1 for setpoint")
+#     usb_direction =  usbarm.get_usb_direction(setpoints, angles)
+#     usbarm.ctrl(usb_direction[0])
+#     return None
 
 def state11(angles, setpoints, tx, ty):
     print("state11 motor1 fine control angle motor234 for setpoints initial")
@@ -204,7 +204,7 @@ def state15(angles, setpoints, tx, ty):
 
 def state16(angles, setpoints, tx, ty):
     global state_counter
-    print("state16 open gripper and set state counter to 0")
+    print("state16 open gripper and set state counter to 4")
     usbarm.stop_motors()
     usbarm.open_close_gripper(1)
     state_counter = 4
@@ -214,19 +214,19 @@ def state16(angles, setpoints, tx, ty):
 
 
 
-def state17(angles, setpoints, tx, ty):
-    print("state9 determine rotational setpoint for box")
-    error = usbarm.get_error(setpoints_droppoint, angles)
-    if abs(error[0])>=buffer:
-        return state18
-    if abs(error[0])<buffer:
-        return state19
-
-def state18(angles, setpoints, tx, ty):
-    print("state10 control motor1 for setpoint")
-    usb_direction =  usbarm.get_usb_direction(setpoints_droppoint, angles)
-    usbarm.ctrl(usb_direction[0])
-    return None
+# def state17(angles, setpoints, tx, ty):
+#     print("state9 determine rotational setpoint for box")
+#     error = usbarm.get_error(setpoints_droppoint, angles)
+#     if abs(error[0])>=buffer:
+#         return state18
+#     if abs(error[0])<buffer:
+#         return state19
+#
+# def state18(angles, setpoints, tx, ty):
+#     print("state10 control motor1 for setpoint")
+#     usb_direction =  usbarm.get_usb_direction(setpoints_droppoint, angles)
+#     usbarm.ctrl(usb_direction[0])
+#     return None
 
 def state19(angles, setpoints, tx, ty):
     print("state11 motor1 fine control angle motor234 for setpoints initial")
