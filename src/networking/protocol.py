@@ -117,4 +117,11 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 10):
                 res.append(self.bytes2_to_int(values, i * 2))
-            self.dh.on_side_view_data(res)
+
+            if self.nwh.connections[addr].name == 'CPS1-4':
+                self.dh.on_left_view_data(res)
+            elif self.nwh.connections[addr].name == 'CPS1-1':
+                self.dh.on_right_view_data(res)
+            else:
+                self.nwh.log.print('UNKNOWN SIDE VIEW CAMERA: ' + self.nwh.connections[addr].name)
+
