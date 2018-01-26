@@ -96,6 +96,7 @@ def state7(angles, setpoints, tx, ty):
 
     setpoints_inv_kin[0] = setpoints[0]
     if need_inv_kin:
+        usbarm.stop_motors()
         setpoints_inv_kin[1], setpoints_inv_kin[2], setpoints_inv_kin[3] = inverse_kinematics(angles[1], angles[2], angles[3], tx, ty)
         need_inv_kin = False
 
