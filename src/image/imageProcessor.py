@@ -68,6 +68,9 @@ class ImageProcessor(Thread):
 
                 if self.write_img:
                     imgNr += 1
+                    if imgNr == 10:
+                        self.write_img = False
+                        self.log.print('Done writing images')
                     for cir in circles:
                         cv2.circle(img, cir, 10, (255, 0, 0), 3)
                     if circles_object is not None:
@@ -110,6 +113,9 @@ class ImageProcessor(Thread):
 
                 if self.write_img:
                     imgNr += 1
+                    if imgNr == 10:
+                        self.write_img = False
+                        self.log.print('Done writing images')
                     for point in cal_points:
                         cv2.circle(img, point, 10, (0, 0, 255), 3)
                     for point in arm_points:
@@ -170,7 +176,8 @@ class ImageProcessor(Thread):
             res.append(y)
         return res
 
-    def toggle_write_img(self):
-        self.write_img = not self.write_img
+    def write_images(self):
+        if not self.write_img:
+            self.write_img = True
 
 

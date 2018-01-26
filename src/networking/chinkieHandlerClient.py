@@ -103,11 +103,8 @@ class ChinkieHandlerClient(Thread):
             else:
                 self.nwh.multisend(self.nwh.protocol.wrap_msg(line))
         elif command == 'img':
-            self.img_proc.toggle_write_img()
-            if self.img_proc.write_img:
-                self.log.print('Enabled image writing')
-            else:
-                self.log.print('Disabled image writing')
+            self.img_proc.write_images()
+            self.log.print('Writing the next 10 images to files')
         elif command == 'help':
             # If the command is "help", show a list of possible commands and their usages.
             self.log.print('COMMANDS:')
@@ -119,7 +116,7 @@ class ChinkieHandlerClient(Thread):
             self.log.print('     Usage: /connections')
             self.log.print('  /remote or /r  execute a command on any other connected device')
             self.log.print('     Usage: /remote(/r) <host_name> <command> [<arguments>]')
-            self.log.print('  /img           toggles the writing of images')
+            self.log.print('  /img           writes the next 10 images to files')
             self.log.print('     Usage: /img')
             self.log.print('  /help          show list of commands')
             self.log.print('     Usage: /help')
