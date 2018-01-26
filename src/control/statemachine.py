@@ -58,7 +58,7 @@ def state3(angles, setpoints, tx, ty):
         return state4
     else:
         usb_direction = usbarm.get_usb_direction(setpoints_initial, angles)
-        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
 
@@ -110,7 +110,7 @@ def state7(angles, setpoints, tx, ty):
         return state8
     else:
         usb_direction = usbarm.get_usb_direction(setpoints_inv_kin, angles)
-        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
 
@@ -158,7 +158,7 @@ def state11(angles, setpoints, tx, ty):
         return state12
     else:
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
-        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
 
@@ -196,7 +196,7 @@ def state15(angles, setpoints, tx, ty):
         return state16
     else:
         usb_direction = usbarm.get_usb_direction(setpoints_droppoint, angles)
-        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
 
@@ -243,7 +243,7 @@ def state19(angles, setpoints, tx, ty):
         return state20
     else:
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
-        total_movement = usbarm.get_total_movement(usb_direction[0], usb_direction[1], usb_direction[2], usb_direction[3])
+        total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
         return None
 
