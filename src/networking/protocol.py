@@ -112,15 +112,16 @@ class ServerProtocol(Protocol):
                 res.append(self.bytes2_to_int(values, i*2))
             self.con.update_top_view_data(res)
         elif header == b'\x03':
-            res = []
-            values = data[1:]
-            for i in range(0, 10):
-                res.append(self.bytes2_to_int(values, i * 2))
+            if addr in self.nwh.connections.keys():
+                res = []
+                values = data[1:]
+                for i in range(0, 10):
+                    res.append(self.bytes2_to_int(values, i * 2))
 
-            if self.nwh.connections[addr].name == 'CPS1-4':
-                self.con.update_left_view_data(res)
-            elif self.nwh.connections[addr].name == 'CPS1-1':
-                self.con.update_right_view_data(res)
-            else:
-                self.nwh.log.print('UNKNOWN SIDE VIEW CAMERA: ' + self.nwh.connections[addr].name)
+                if self.nwh.connections[addr].name == 'CPS1-4':
+                    self.con.update_left_view_data(res)
+                elif self.nwh.connections[addr].name == 'CPS1-1':
+                    self.con.update_right_view_data(res)
+                else:
+                    self.nwh.log.print('UNKNOWN SIDE VIEW CAMERA: ' + self.nwh.connections[addr].name)
 
