@@ -84,17 +84,17 @@ class ImageProcessor(Thread):
                     if circles_object is not None:
                         points = self.unzip_list(circles) + circles_object
                     else:
-                        points = self.unzip_list(circles) + [(imgWidth, imgHeight)]
-                    try:
-                        self.nwh.multisend(self.nwh.protocol.wrap_top_view(points))
-                    except ValueError:
-                        print("WEIRD ERROR ================================================")
-                        print("WEIRD ERROR ================================================")
-                        print("WEIRD ERROR circles =", circles)
-                        print("WEIRD ERROR points =", points)
-                        print("WEIRD ERROR circles_object =", circles_object)
-                        print("WEIRD ERROR ================================================")
-                        print("WEIRD ERROR ================================================")
+                        points = self.unzip_list(circles) + [imgWidth, imgHeight]
+                    # try:
+                    self.nwh.multisend(self.nwh.protocol.wrap_top_view(points))
+                    # except ValueError:
+                    #     print("WEIRD ERROR ================================================")
+                    #     print("WEIRD ERROR ================================================")
+                    #     print("WEIRD ERROR circles =", circles)
+                    #     print("WEIRD ERROR points =", points)
+                    #     print("WEIRD ERROR circles_object =", circles_object)
+                    #     print("WEIRD ERROR ================================================")
+                    #     print("WEIRD ERROR ================================================")
                 else:
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
