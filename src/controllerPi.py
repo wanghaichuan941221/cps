@@ -1,6 +1,5 @@
 from logger import Logger
 from networking.chinkieHandlerServer import ChinkieHandlerServer
-from networking.dataHandler import DataHandler
 from networking.heartbeat import HeartbeatChecker
 from networking.networkHandlerUDP import NetworkHandlerUDP
 from networking.protocol import ServerProtocol
@@ -31,11 +30,9 @@ chinkie.setName('Chinkie Server')
 hbc = HeartbeatChecker(3, net_hand_udp)
 hbc.setName('Heartbeat Checker')
 
-# Create the data handler
-dh = DataHandler(controller)
 
 # Add a protocol to the network handler.
-net_hand_udp.add_protocol(ServerProtocol(net_hand_udp, chinkie, hbc, dh))
+net_hand_udp.add_protocol(ServerProtocol(net_hand_udp, chinkie, hbc, controller))
 
 # Start the several threads.
 controller.start()

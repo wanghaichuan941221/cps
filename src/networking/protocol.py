@@ -1,7 +1,6 @@
 from control.controller import Controller
 from networking.chinkieHandlerClient import ChinkieHandlerClient
 from networking.chinkieHandlerServer import ChinkieHandlerServer
-from networking.dataHandler import DataHandler
 from networking.heartbeat import Heartbeat, HeartbeatChecker
 from networking.networkHandlerUDP import NetworkHandlerUDP
 
@@ -90,14 +89,14 @@ class ClientProtocol(Protocol):
 
 
 class ServerProtocol(Protocol):
-    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker', dh: 'DataHandler'):
+    def __init__(self, nwh: 'NetworkHandlerUDP', chinkie: 'ChinkieHandlerServer', hb: 'HeartbeatChecker', con: 'Controller'):
         # Run constructor of parent
         Protocol.__init__(self)
 
         self.nwh = nwh
         self.chinkie = chinkie
         self.hb = hb
-        self.dh = dh
+        self.con = con
 
     def rec_prot(self, data, addr):
         header = self.get_byte(data, 0)
@@ -111,7 +110,7 @@ class ServerProtocol(Protocol):
             values = data[1:]
             for i in range(0, 8):
                 res.append(self.bytes2_to_int(values, i*2))
-            self.dh.on_top_view_data(res)
+            # TODO con recieve top
         elif header == b'\x03':
             res = []
             values = data[1:]
@@ -119,9 +118,9 @@ class ServerProtocol(Protocol):
                 res.append(self.bytes2_to_int(values, i * 2))
 
             if self.nwh.connections[addr].name == 'CPS1-4':
-                self.dh.on_left_view_data(res)
+                # TODO con recieve top
             elif self.nwh.connections[addr].name == 'CPS1-1':
-                self.dh.on_right_view_data(res)
+                # TODO con recieve top
             else:
                 self.nwh.log.print('UNKNOWN SIDE VIEW CAMERA: ' + self.nwh.connections[addr].name)
 
