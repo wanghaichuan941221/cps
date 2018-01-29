@@ -25,7 +25,7 @@ green_side_upper = np.array([70, 255, 150])
 blue_side_lower = np.array([102, 158, 39])
 blue_side_upper = np.array([116, 237, 125])
 yellow_side_lower = np.array([21, 221, 110])
-yellow_side_upper = np.array([33, 255, 157])
+yellow_side_upper = np.array([33, 255, 180])
 # old yellow
 # yellow_side_lower = np.array([28, 167, 98])
 # yellow_side_upper = np.array([38, 255, 195])
