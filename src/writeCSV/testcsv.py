@@ -2,8 +2,8 @@ import csv
 import time
 
 myFile = open('countries.csv', 'w')
-countries = ['France', 'Italy', 'Spain, Russia']
-capital = ['Paris', 'Rome', 'Madrid', 'Moscow']
+setpoints = ['France', 'Italy', 'Spain, Russia']
+angles = ['Paris', 'Rome', 'Madrid', 'Moscow']
 
 with myFile:
     myFields = ['country', 'capital']
