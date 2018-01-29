@@ -8,16 +8,6 @@ import control.pixaltoangle as pixaltoangle
 from control import usbarm
 from control.inverseKinematics import inverse_kinematics
 import writeCSV.writeresults as writeresutls
-# setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
-# angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
-#  pixalcordinates = [0,300,450,450,600,300,450,450]
-#  pixalcordinates = [150,150,450,300,450,450,300,600]
-
-#  pixalcordinates = [0,300,450,450,600,300,450,150]
-#  pixalcordinates = [150,450,300,0,450,150,300,600]
-
-endeffector_to_object_ = 2
-endeffector_to_droppoint_ = 2
 
 calibration_distance_in_cm = 60
 height_object_in_cm = -4

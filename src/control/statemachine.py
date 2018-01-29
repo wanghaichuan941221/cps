@@ -2,7 +2,7 @@ import time
 from threading import Timer
 import control.usbarm as usbarm
 import math
-
+import writeCSV.writeresults as writeresults
 # Each of the state functions below performs some action and then implements
 # logic to choose next state.  Each state function returns the next state.
 from control.inverseKinematics import inverse_kinematics
