@@ -5,17 +5,18 @@ setpoints = ['1', '2', '3', '4']
 angles = ['5', '6', '7', '8']
 
 
-myFile = open('countries.csv', 'w')
-with myFile:
-    myFields = ['country', 'capital']
-    writer = csv.DictWriter(myFile, fieldnames=myFields)
-    writer.writeheader()
-    writer.writerow({'country' : 'France', 'capital': 'Paris'})
-    writer.writerow({'country' : 'Italy', 'capital': 'Rome'})
-    writer.writerow({'country' : 'Spain', 'capital': 'Madrid'})
-    writer.writerow({'country' : 'Russia', 'capital': 'Moscow'})
 
-# def write_to_csv(setpoint, angle):
+def write_to_csv(setpoint, angle):
+    myFile = open('countries.csv', 'w')
+    with myFile:
+        myFields = ['country', 'capital']
+        writer = csv.DictWriter(myFile, fieldnames=myFields)
+        writer.writeheader()
+        writer.writerow({'country': 'France', 'capital': 'Paris'})
+        writer.writerow({'country': 'Italy', 'capital': 'Rome'})
+        writer.writerow({'country': 'Spain', 'capital': 'Madrid'})
+        writer.writerow({'country': 'Russia', 'capital': 'Moscow'})
+
 #     myFile = open('results.csv', 'w')
 #     with myFile:
 #         myFields = ['time', 'setpoints', 'angles']
@@ -34,6 +35,6 @@ with myFile:
 #             print(row['time'])
 #
 # # for i in range(0, len(setpoints)):
-#     write_to_csv(setpoints, angles)
+write_to_csv(setpoints, angles)
 #
 # read_results()
