@@ -19,8 +19,8 @@ def read_results():
     with open('results.csv') as myFile:
         reader = csv.DictReader(myFile)
         for row in reader:
-            print(row['setpoint'])
-            print(row['angle'])
+            print(row['setpoints'])
+            print(row['angles'])
             print(row['time'])
 
 for i in range(0, len(setpoints)):
