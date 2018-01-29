@@ -9,10 +9,6 @@ from control import usbarm
 from control.inverseKinematics import inverse_kinematics
 import writeCSV.writeresults as writeresutls
 
-
-endeffector_to_object_ = 2
-endeffector_to_droppoint_ = 2
-
 calibration_distance_in_cm = 60
 height_object_in_cm = -4
 
