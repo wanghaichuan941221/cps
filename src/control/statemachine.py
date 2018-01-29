@@ -51,6 +51,7 @@ def state2(angles, setpoints, tx, ty, con):
     usb_direction =  usbarm.get_usb_direction(setpoints_initial, angles)
 
     usbarm.ctrl(usb_direction[0])
+    writeresults.write_to_csv_motor1(setpoints_initial[0],angles[0])
 
     if reached_object:
         Timer(rot_alarm_time,usbarm.stop_motors).start()
@@ -68,6 +69,7 @@ def state3(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_initial, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        writeresults.write_to_csv_motor234(setpoints_initial[1:4], angles[1:4])
         return None
 
 def state4(angles, setpoints, tx, ty, con):
@@ -101,6 +103,8 @@ def state6(angles, setpoints, tx, ty, con):
     global need_inv_kin
     usb_direction =  usbarm.get_usb_direction(setpoints, angles)
     usbarm.ctrl(usb_direction[0])
+    writeresults.write_to_csv_motor1(setpoints[0],angles[0])
+
     need_inv_kin = True
 
     if reached_object:
@@ -132,6 +136,8 @@ def state7(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_inv_kin, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        writeresults.write_to_csv_motor234(setpoints_inv_kin[1:4], angles[1:4])
+
         return None
 
 
@@ -169,6 +175,8 @@ def state11(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        writeresults.write_to_csv_motor234(new_setpoints[1:4], angles[1:4])
+
         return None
 
 def state12(angles, setpoints, tx, ty, con):
@@ -196,6 +204,8 @@ def state14(angles, setpoints, tx, ty, con):
     print("state14 control motor1 for droppoint")
     usb_direction =  usbarm.get_usb_direction(setpoints_droppoint, angles)
     usbarm.ctrl(usb_direction[0])
+    writeresults.write_to_csv_motor1(setpoints_droppoint[0],angles[0])
+
 
     if reached_object:
         Timer(rot_alarm_time,usbarm.stop_motors).start()
@@ -213,6 +223,8 @@ def state15(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_droppoint, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        writeresults.write_to_csv_motor234(setpoints_droppoint[1:4], angles[1:4])
+
         return None
 
 def state16(angles, setpoints, tx, ty, con):
@@ -251,6 +263,8 @@ def state19(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        writeresults.write_to_csv_motor234(new_setpoints[1:4], angles[1:4])
+
         return None
 
 def state20(angles, setpoints, tx, ty, con):
