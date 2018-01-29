@@ -19,6 +19,8 @@ class NetworkHandlerUDP(Thread):
 
     def run(self):
         while self.running:
+            if self.counter % 500000 == 0:
+                print(self.counter)
             self.sock.recvfrom(1024)
             self.counter += 1
 
