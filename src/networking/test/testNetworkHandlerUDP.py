@@ -1,6 +1,5 @@
 import socket
 from threading import Thread, RLock
-from logger import Logger
 
 # Wi-Fi
 # SSID: CPSRSACRPU
@@ -10,14 +9,13 @@ from logger import Logger
 
 class NetworkHandlerUDP(Thread):
 
-    def __init__(self, port, log: 'Logger'):
+    def __init__(self, port):
         Thread.__init__(self)
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind(('', port))
         self.running = True
         self.counter = 0
-        self.log = log
 
     def run(self):
         while self.running:
