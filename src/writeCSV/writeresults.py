@@ -5,12 +5,14 @@ myFile = open('results.csv', 'w')
 setpoints = ['1', '2', '3', '4']
 angles = ['5', '6', '7', '8']
 
-with myFile:
-    myFields = ['setpoints', 'angles', 'time']
-    writer = csv.DictWriter(myFile, fieldnames=myFields)
-    writer.writeheader()
+
 
 def write_to_csv(setpoint, angle):
+    with myFile:
+        myFields = ['setpoints', 'angles', 'time']
+        writer = csv.DictWriter(myFile, fieldnames=myFields)
+        writer.writeheader()
+
     cur_time = time.time()
     writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
 
