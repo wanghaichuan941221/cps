@@ -15,7 +15,7 @@ net_hand_udp.join()
 
 
 def exit_handler():
-    log.log('EXIT', net_hand_udp.counter)
+    print(net_hand_udp.counter)
 
 
 atexit.register(exit_handler)
