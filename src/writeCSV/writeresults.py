@@ -22,7 +22,7 @@ def read_results():
             print(row['angle'])
             print(row['time'])
 
-for i in range(0, len(setpoints)):
-    write_to_csv(setpoints[i], angles[i])
+# for i in range(0, len(setpoints)):
+    write_to_csv(setpoints, angles)
 
 read_results()
