@@ -19,12 +19,12 @@ class NetworkHandlerUDP(Thread):
 
     def run(self):
         while self.running:
-            print('cereivning')
-            if self.counter % 500000 == 0:
+            # print('cereivning')
+            if self.counter % 1000 == 0:
                 print(self.counter)
             self.sock.recvfrom(1024)
             self.counter += 1
 
     def send_msg(self, msg, ip, port):
-        print('sendeded')
+        # print('sendeded')
         self.sock.sendto(msg, (ip, port))
