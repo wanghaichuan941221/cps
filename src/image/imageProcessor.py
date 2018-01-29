@@ -14,8 +14,8 @@ from networking.networkHandlerUDP import NetworkHandlerUDP
 # top view
 red_top_lower = np.array([154, 98, 185])
 red_top_upper = np.array([179, 228, 255])
-yellow_top_lower = np.array([29, 172, 80])
-yellow_top_upper = np.array([36, 255, 201])
+yellow_top_lower = np.array([24, 137, 98])
+yellow_top_upper = np.array([40, 199, 207])
 
 # side view
 red_side_lower = np.array([149, 134, 100])
@@ -24,8 +24,11 @@ green_side_lower = np.array([38, 199, 41])
 green_side_upper = np.array([70, 255, 150])
 blue_side_lower = np.array([102, 158, 39])
 blue_side_upper = np.array([116, 237, 125])
-yellow_side_lower = np.array([28, 167, 98])
-yellow_side_upper = np.array([38, 255, 195])
+yellow_side_lower = np.array([21, 221, 110])
+yellow_side_upper = np.array([33, 255, 180])
+# old yellow
+# yellow_side_lower = np.array([28, 167, 98])
+# yellow_side_upper = np.array([38, 255, 195])
 
 
 imgWidth = 640
