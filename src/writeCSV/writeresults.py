@@ -38,3 +38,5 @@ def write_to_csv_motor234(setpoint234, theta234):
 
 write_to_csv_intial_motor234()
 write_to_csv_motor234([1,2,3],[4,5,6])
+write_to_csv_intial_motor1()
+write_to_csv_motor1(1,2)
