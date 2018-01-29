@@ -1,20 +1,22 @@
 import csv
 import time
 
-myFile = open('countries.csv', 'w')
-setpoints = ['France', 'Italy', 'Spain, Russia']
-angles = ['Paris', 'Rome', 'Madrid', 'Moscow']
+initial_csv():
+myFile = open('results.csv', 'w')
+setpoints = ['1', '2', '3', '4']
+angles = ['5', '6', '7', '8']
 
 with myFile:
-    myFields = ['setpoint', 'angle', 'time']
-    writer = csv.DictWriter(myFile, fieldnames=myFields)
-    writer.writeheader()
+     myFields = ['setpoints', 'angles', 'time']
+     writer = csv.DictWriter(myFile, fieldnames=myFields)
+     writer.writeheader()
 
-    for i in range(0,len(setpoints)):
+def write_to_csv(setpoint, angle):
         cur_time = time.time()
+        writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
 
-        writer.writerow({'setpoint': setpoints[i], 'angle': angles[i], 'time': cur_time} )
-
+    for i in range(0, len(setpoints)):
+        write_to_csv(setpoints[i], angles[i])
 
 with open('countries.csv') as myFile:
     reader = csv.DictReader(myFile)
