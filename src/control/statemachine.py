@@ -1,5 +1,5 @@
 import time
-
+from threading import Timer
 import control.usbarm as usbarm
 import math
 
@@ -10,10 +10,13 @@ from control.inverseKinematics import inverse_kinematics
 setpoints_initial = [0,0,(1/2)*math.pi,0]
 setpoints_droppoint = [-(1/2)*math.pi,(1/4)*math.pi,(1/2)*math.pi,-(1/4)*math.pi]
 buffer = 0.04*math.pi
+buffer_rot = 0.02*math.pi
 state_counter = 0
 setpoints_inv_kin = [0]*4
 need_inv_kin = True
 open_gripper = True
+reached_object = False
+rot_alarm_time = 0.1
 
 def state0(angles, setpoints, tx, ty, con):
     print("state0 start")
@@ -32,12 +35,15 @@ def state0(angles, setpoints, tx, ty, con):
         return None
 
 def state1(angles, setpoints, tx, ty, con):
+    global reached_object
     print("state1 determine angle motor1 for initial setpoint")
     # delay and decision path to simulate some application logic
+
     error = usbarm.get_error(setpoints_initial, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state2
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
+        reached_object = True
         return state3
 
 def state2(angles, setpoints, tx, ty, con):
@@ -45,6 +51,9 @@ def state2(angles, setpoints, tx, ty, con):
     usb_direction =  usbarm.get_usb_direction(setpoints_initial, angles)
 
     usbarm.ctrl(usb_direction[0])
+
+    if reached_object:
+        Timer(rot_alarm_time,usbarm.stop_motors).start()
     return None
 
 def state3(angles, setpoints, tx, ty, con):
@@ -64,8 +73,10 @@ def state3(angles, setpoints, tx, ty, con):
 def state4(angles, setpoints, tx, ty, con):
     global state_counter
     global open_gripper
+    global reached_object
     print("state4 motor1234 are fine open and close gripper and set state counter to 1")
     usbarm.stop_motors()
+    reached_object = False
     if open_gripper == True:
         usbarm.open_close_gripper(1)
         open_gripper = False
@@ -76,11 +87,13 @@ def state4(angles, setpoints, tx, ty, con):
 
 
 def state5(angles, setpoints, tx, ty, con):
+    global reached_object
     print("state5 determine rotational setpoint for box")
     error = usbarm.get_error(setpoints, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state6
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
+        reached_object = True
         return state7
 
 def state6(angles, setpoints, tx, ty, con):
@@ -89,6 +102,9 @@ def state6(angles, setpoints, tx, ty, con):
     usb_direction =  usbarm.get_usb_direction(setpoints, angles)
     usbarm.ctrl(usb_direction[0])
     need_inv_kin = True
+
+    if reached_object:
+        Timer(rot_alarm_time,usbarm.stop_motors).start()
     return None
 
 def state7(angles, setpoints, tx, ty, con):
@@ -121,6 +137,8 @@ def state7(angles, setpoints, tx, ty, con):
 
 def state8(angles, setpoints, tx, ty, con):
     global state_counter
+    global reached_object
+    reached_object = False
     print("state8 control gripper to grab object and set state counter to 2")
     usbarm.stop_motors()
     state_counter = 2
@@ -166,16 +184,22 @@ def state12(angles, setpoints, tx, ty, con):
 
 def state13(angles, setpoints, tx, ty, con):
     print("state13 determine rotational setpoint for droppoint")
+    global reached_object
     error = usbarm.get_error(setpoints_droppoint, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state14
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
+        reached_object = True
         return state15
 
 def state14(angles, setpoints, tx, ty, con):
     print("state14 control motor1 for droppoint")
     usb_direction =  usbarm.get_usb_direction(setpoints_droppoint, angles)
     usbarm.ctrl(usb_direction[0])
+
+    if reached_object:
+        Timer(rot_alarm_time,usbarm.stop_motors).start()
+
     return None
 
 def state15(angles, setpoints, tx, ty, con):
@@ -193,7 +217,9 @@ def state15(angles, setpoints, tx, ty, con):
 
 def state16(angles, setpoints, tx, ty, con):
     global state_counter
+    global reached_object
     print("state16 open gripper and set state counter to 4")
+    reached_object = False
     usbarm.stop_motors()
     usbarm.open_close_gripper(1)
     state_counter = 4

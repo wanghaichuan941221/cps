@@ -7,7 +7,7 @@ import control.statemachine as statemachine
 import control.pixaltoangle as pixaltoangle
 from control import usbarm
 from control.inverseKinematics import inverse_kinematics
-
+import writeCSV.writeresults as writeresutls
 # setpoints_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 # angles_ = [0*math.pi, 0*math.pi, 0*math.pi, 0*math.pi]
 #  pixalcordinates = [0,300,450,450,600,300,450,450]
