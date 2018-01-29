@@ -14,9 +14,6 @@ def write_to_csv(setpoint, angle):
     cur_time = time.time()
     writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
 
-    for i in range(0, len(setpoints)):
-        write_to_csv(setpoints[i], angles[i])
-
 def read_results():
     with open('results.csv') as myFile:
         reader = csv.DictReader(myFile)
@@ -24,3 +21,8 @@ def read_results():
             print(row['setpoint'])
             print(row['angle'])
             print(row['time'])
+
+for i in range(0, len(setpoints)):
+    write_to_csv(setpoints[i], angles[i])
+
+read_results()
