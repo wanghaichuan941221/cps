@@ -8,6 +8,7 @@ angles = ['5', '6', '7', '8']
 
 
 def write_to_csv(setpoint, angle):
+    myFile = open('results.csv', 'w')
     with myFile:
         myFields = ['setpoints', 'angles', 'time']
         writer = csv.DictWriter(myFile, fieldnames=myFields)
