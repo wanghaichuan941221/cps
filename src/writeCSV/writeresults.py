@@ -13,7 +13,7 @@ def write_to_csv(setpoint, angle):
         writer = csv.DictWriter(myFile, fieldnames=myFields)
         writer.writeheader()
         cur_time = time.time()
-        writer.writerow({'time': cur_time, 'setpoints': setpoint[1], 'angles': angle[1]} )
+        writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
 
 def read_results():
     with open('results.csv') as myFile:
