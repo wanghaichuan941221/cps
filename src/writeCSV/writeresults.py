@@ -1,7 +1,7 @@
 import csv
 import time
 
-need_to_write = True
+need_to_write = False
 time_at_start = time.time()
 
 def write_to_csv_intial_motor1():
