@@ -13,6 +13,7 @@ buffer = 0.04*math.pi
 state_counter = 0
 setpoints_inv_kin = [0]*4
 need_inv_kin = True
+open_gripper = True
 
 def state0(angles, setpoints, tx, ty, con):
     print("state0 start")
@@ -62,9 +63,12 @@ def state3(angles, setpoints, tx, ty, con):
 
 def state4(angles, setpoints, tx, ty, con):
     global state_counter
+    global open_gripper
     print("state4 motor1234 are fine open and close gripper and set state counter to 1")
     usbarm.stop_motors()
-    usbarm.open_close_gripper(1)
+    if open_gripper == True:
+        usbarm.open_close_gripper(1)
+        open_gripper = False
     state_counter = 1
     return state0
 
