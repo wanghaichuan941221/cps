@@ -6,11 +6,11 @@ setpoints = ['France', 'Italy', 'Spain, Russia']
 angles = ['Paris', 'Rome', 'Madrid', 'Moscow']
 
 with myFile:
-    myFields = ['country', 'capital']
+    myFields = ['setpoint', 'angle', 'time']
     writer = csv.DictWriter(myFile, fieldnames=myFields)
     writer.writeheader()
 
-    for i in range(0,len(countries)):
+    for i in range(0,len(setpoints)):
         cur_time = time.time()
 
         writer.writerow({'setpoint': setpoints[i], 'angle': angles[i], 'time': cur_time} )
