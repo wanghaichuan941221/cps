@@ -69,6 +69,7 @@ def state3(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_initial, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        write_to_csv_motor1(setpoints_initial[1:3], angles[1:3])
         return None
 
 def state4(angles, setpoints, tx, ty, con):
@@ -135,6 +136,8 @@ def state7(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_inv_kin, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        write_to_csv_motor1(setpoints_inv_kin[1:3], angles[1:3])
+
         return None
 
 
@@ -172,6 +175,8 @@ def state11(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        write_to_csv_motor1(new_setpoints[1:3], angles[1:3])
+
         return None
 
 def state12(angles, setpoints, tx, ty, con):
@@ -218,6 +223,8 @@ def state15(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_droppoint, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        write_to_csv_motor1(setpoints_droppoint[1:3], angles[1:3])
+
         return None
 
 def state16(angles, setpoints, tx, ty, con):
@@ -256,6 +263,8 @@ def state19(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(new_setpoints, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
+        write_to_csv_motor1(new_setpoints[1:3], angles[1:3])
+
         return None
 
 def state20(angles, setpoints, tx, ty, con):
