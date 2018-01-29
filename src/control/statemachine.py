@@ -11,8 +11,6 @@ setpoints_initial = [0,0,(1/2)*math.pi,0]
 setpoints_droppoint = [-(1/2)*math.pi,(1/4)*math.pi,(1/2)*math.pi,-(1/4)*math.pi]
 buffer = 0.04*math.pi
 state_counter = 0
-buffer_endeffector_to_box = 3
-buffer_endeffector_to_droppoint = 3
 setpoints_inv_kin = [0]*4
 need_inv_kin = True
 
