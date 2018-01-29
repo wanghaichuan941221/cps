@@ -1,7 +1,6 @@
 import csv
 import time
 
-initial_csv():
 myFile = open('results.csv', 'w')
 setpoints = ['1', '2', '3', '4']
 angles = ['5', '6', '7', '8']
