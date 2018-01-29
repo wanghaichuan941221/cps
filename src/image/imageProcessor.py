@@ -108,6 +108,8 @@ class ImageProcessor(Thread):
                     self.log.log('ImageProcessor', '3 data points are required, found: ' + str(circles))
         else:
             while self.running:
+                start_time = time.time()
+
                 img = self.capture_image()
                 hsv = self.convert_to_hsv(img)
                 mask_red = self.filter_hsv_image(hsv, red_side_lower, red_side_upper)
@@ -149,6 +151,8 @@ class ImageProcessor(Thread):
                     self.nwh.multisend(self.nwh.protocol.wrap_side_view(points))
                 else:
                     self.log.log('ImageProcessor', '5 data points are required, found: cal=' + str(cal_points) + ' and arm=' + str(arm_points))
+                end_time = time.time()
+                print("IMG TOOK: ", start_time - end_time, "s")
 
     def capture_image(self):
         self.rawCapture.truncate(0)
