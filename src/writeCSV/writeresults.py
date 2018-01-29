@@ -17,9 +17,10 @@ def write_to_csv(setpoint, angle):
     for i in range(0, len(setpoints)):
         write_to_csv(setpoints[i], angles[i])
 
-with open('countries.csv') as myFile:
-    reader = csv.DictReader(myFile)
-    for row in reader:
-        print(row['setpoint'])
-        print(row['angle'])
-        print(row['time'])
+def read_results():
+    with open('results.csv') as myFile:
+        reader = csv.DictReader(myFile)
+        for row in reader:
+            print(row['setpoint'])
+            print(row['angle'])
+            print(row['time'])
