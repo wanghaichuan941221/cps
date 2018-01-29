@@ -8,7 +8,7 @@ def angle(x1,y1,x2,y2,x3,y3):
     l2 = phytagoras(x1,y1,x2,y2)
     l3 = phytagoras(x1,y1,x3,y3)
     try:
-        omega = math.acos((math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))
+        omega = math.acos(min(1,max(-1,(math.pow(l2,2)+math.pow(l3,2)-math.pow(l1,2))/(2*l2*l3))))
     except ValueError:
         print("VERY STRANGE ERROR =============================================")
         print("VERY STRANGE ERROR =============================================")
