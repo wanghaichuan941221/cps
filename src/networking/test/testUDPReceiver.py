@@ -1,4 +1,4 @@
-from networking.test.testNetworkHandlerUDP import NetworkHandlerUDP
+from testNetworkHandlerUDP import NetworkHandlerUDP
 import atexit
 
 
