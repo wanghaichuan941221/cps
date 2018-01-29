@@ -6,13 +6,13 @@ setpoints = ['1', '2', '3', '4']
 angles = ['5', '6', '7', '8']
 
 with myFile:
-     myFields = ['setpoints', 'angles', 'time']
-     writer = csv.DictWriter(myFile, fieldnames=myFields)
-     writer.writeheader()
+    myFields = ['setpoints', 'angles', 'time']
+    writer = csv.DictWriter(myFile, fieldnames=myFields)
+    writer.writeheader()
 
 def write_to_csv(setpoint, angle):
-        cur_time = time.time()
-        writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
+    cur_time = time.time()
+    writer.writerow({'time': cur_time, 'setpoints': setpoint, 'angles': angle} )
 
     for i in range(0, len(setpoints)):
         write_to_csv(setpoints[i], angles[i])
