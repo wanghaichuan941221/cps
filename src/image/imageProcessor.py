@@ -14,8 +14,10 @@ from networking.networkHandlerUDP import NetworkHandlerUDP
 # top view
 red_top_lower = np.array([154, 98, 185])
 red_top_upper = np.array([179, 228, 255])
-yellow_top_lower = np.array([24, 137, 98])
-yellow_top_upper = np.array([40, 199, 207])
+# yellow_top_lower = np.array([24, 137, 98])
+# yellow_top_upper = np.array([40, 199, 207])
+orange_top_lower = np.array([10, 163, 129])
+orange_top_upper = np.array([19, 219, 195])
 
 # side view
 red_side_lower = np.array([149, 134, 100])
@@ -69,7 +71,7 @@ class ImageProcessor(Thread):
                 img = self.capture_image()
                 hsv = self.convert_to_hsv(img)
                 mask_red = self.filter_hsv_image(hsv, red_top_lower, red_top_upper)
-                mask_yellow_obj = self.filter_hsv_image(hsv, yellow_top_lower, yellow_top_upper)
+                mask_yellow_obj = self.filter_hsv_image(hsv, orange_top_lower, orange_top_upper)
                 circles = self.find_circles(mask_red)
                 circles_object = self.find_one_circle(mask_yellow_obj)
 
