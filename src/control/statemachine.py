@@ -10,6 +10,7 @@ from control.inverseKinematics import inverse_kinematics
 setpoints_initial = [0,0,(1/2)*math.pi,0]
 setpoints_droppoint = [-(1/2)*math.pi,(1/4)*math.pi,(1/2)*math.pi,-(1/4)*math.pi]
 buffer = 0.04*math.pi
+buffer_rot = 0.02*math.pi
 state_counter = 0
 setpoints_inv_kin = [0]*4
 need_inv_kin = True
@@ -35,9 +36,9 @@ def state1(angles, setpoints, tx, ty, con):
     print("state1 determine angle motor1 for initial setpoint")
     # delay and decision path to simulate some application logic
     error = usbarm.get_error(setpoints_initial, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state2
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
         return state3
 
 def state2(angles, setpoints, tx, ty, con):
@@ -78,9 +79,9 @@ def state4(angles, setpoints, tx, ty, con):
 def state5(angles, setpoints, tx, ty, con):
     print("state5 determine rotational setpoint for box")
     error = usbarm.get_error(setpoints, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state6
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
         return state7
 
 def state6(angles, setpoints, tx, ty, con):
@@ -167,9 +168,9 @@ def state12(angles, setpoints, tx, ty, con):
 def state13(angles, setpoints, tx, ty, con):
     print("state13 determine rotational setpoint for droppoint")
     error = usbarm.get_error(setpoints_droppoint, angles)
-    if abs(error[0])>=buffer:
+    if abs(error[0])>=buffer_rot:
         return state14
-    if abs(error[0])<buffer:
+    if abs(error[0])<buffer_rot:
         return state15
 
 def state14(angles, setpoints, tx, ty, con):
