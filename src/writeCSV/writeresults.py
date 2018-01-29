@@ -1,9 +1,6 @@
 import csv
 import time
 
-setpoints = ['1', '2', '3']
-angles = ['5', '6', '7']
-
 def write_to_csv_intial():
     myFile = open('results.csv', 'w+')
     with myFile:
@@ -29,9 +26,3 @@ def read_results():
             print(row['setpoints'])
             print(row['angles'])
             print(row['time'])
-
-write_to_csv_intial()
-for i in range(0, len(setpoints)):
-    write_to_csv(setpoints[i], angles[i])
-
-read_results()
