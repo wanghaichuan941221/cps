@@ -69,7 +69,7 @@ def state3(angles, setpoints, tx, ty, con):
         usb_direction = usbarm.get_usb_direction(setpoints_initial, angles)
         total_movement = usbarm.get_total_movement([0,0,0], usb_direction[1], usb_direction[2], usb_direction[3])
         usbarm.ctrl(total_movement)
-        write_to_csv_motor1(setpoints_initial[1:3], angles[1:3])
+        writeresults.write_to_csv_motor1(setpoints_initial[1:3], angles[1:3])
         return None
 
 def state4(angles, setpoints, tx, ty, con):
