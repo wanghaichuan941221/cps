@@ -1,8 +1,8 @@
 import csv
 import time
 
-setpoints = ['1', '2', '3', '4']
-angles = ['5', '6', '7', '8']
+setpoints = ['1', '2', '3']
+angles = ['5', '6', '7']
 
 def write_to_csv_intial():
     myFile = open('results.csv', 'w+')
@@ -10,6 +10,8 @@ def write_to_csv_intial():
         myFields = ['time', 'setpoints', 'angles']
         writer = csv.DictWriter(myFile, fieldnames=myFields)
         writer.writeheader()
+    myFile.close()
+
 
 def write_to_csv(setpoint, angle):
     myFile = open('results.csv', 'a')
