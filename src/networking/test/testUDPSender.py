@@ -12,7 +12,7 @@ net_hand_udp.setName('UDP Server')
 
 net_hand_udp.start()
 
-for i in range(0, 10000):
+for i in range(0, 100000):
     net_hand_udp.send_msg(b'\x00', T_IP, UDP_PORT)
 
 net_hand_udp.send_msg(b'\x01', T_IP, UDP_PORT)
