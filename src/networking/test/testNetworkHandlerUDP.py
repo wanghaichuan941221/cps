@@ -27,7 +27,7 @@ class NetworkHandlerUDP(Thread):
             data, addr = self.sock.recvfrom(1024)
             if not self.received:
                 start_time = time.time()
-
+                self.received = True
             self.counter += 1
             if data == b'\x01':
                 print(self.counter)
