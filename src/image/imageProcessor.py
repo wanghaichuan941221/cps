@@ -150,6 +150,7 @@ class ImageProcessor(Thread):
                 else:
                     self.log.log('ImageProcessor', '5 data points are required, found: cal=' + str(cal_points) + ' and arm=' + str(arm_points))
 
+
     def capture_image(self):
         self.rawCapture.truncate(0)
         self.camera.capture(self.rawCapture, format="bgr", use_video_port=True)
