@@ -34,6 +34,10 @@ def state0(angles, setpoints, tx, ty, con):
     else:
         return None
 
+
+
+# ___________________________________________________________branch 1_______________________________________________________________
+
 def state1(angles, setpoints, tx, ty, con):
     global reached_object
     print("state1 determine angle motor1 for initial setpoint")
@@ -85,6 +89,7 @@ def state4(angles, setpoints, tx, ty, con):
     state_counter = 1
     return state0
 
+# ___________________________________________________________branch 2_______________________________________________________________
 
 
 
@@ -153,6 +158,7 @@ def state8(angles, setpoints, tx, ty, con):
 
 
 
+# ___________________________________________________________branch 3_______________________________________________________________
 
 
 
@@ -188,6 +194,7 @@ def state12(angles, setpoints, tx, ty, con):
 
 
 
+# ___________________________________________________________branch 4_______________________________________________________________
 
 
 def state13(angles, setpoints, tx, ty, con):
@@ -242,10 +249,10 @@ def state16(angles, setpoints, tx, ty, con):
 
 
 
-
+# ___________________________________________________________branch 5_______________________________________________________________
 
 def state19(angles, setpoints, tx, ty, con):
-    print("state11 motor1 fine control angle motor234 for setpoints initial")
+    print("state19")
     # delay and decision path to simulate some application logic
     new_setpoints = [0]*4
     new_setpoints[0] = setpoints_droppoint[0]
@@ -269,7 +276,7 @@ def state19(angles, setpoints, tx, ty, con):
 
 def state20(angles, setpoints, tx, ty, con):
     global state_counter
-    print("state12 go to droppoint and set state counter to 3")
+    print("state20")
     usbarm.stop_motors()
     state_counter = 0
     return state0
