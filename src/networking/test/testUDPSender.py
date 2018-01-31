@@ -12,10 +12,11 @@ net_hand_udp.setName('UDP Server')
 
 net_hand_udp.start()
 
-for i in range(0, 10000):
-    net_hand_udp.send_msg('1000000'.encode('utf-8'), T_IP, UDP_PORT)
+for i in range(0, 1000000):
+    net_hand_udp.send_msg(b'\x00', T_IP, UDP_PORT)
 
-print('===================================================================================DONE')
+net_hand_udp.send_msg(b'\x01', T_IP, UDP_PORT)
+print('==========DONE==========')
 
 net_hand_udp.join()
 
