@@ -24,11 +24,12 @@ red_side_lower = np.array([149, 134, 100])
 red_side_upper = np.array([169, 217, 176])
 green_side_lower = np.array([38, 199, 41])
 green_side_upper = np.array([70, 255, 150])
-blue_side_lower = np.array([109, 111, 32])
-blue_side_upper = np.array([126, 253, 98])
-# Niet lokaal
-# blue_side_lower = np.array([102, 158, 39])
-# blue_side_upper = np.array([116, 237, 125])
+blue_side_lower = np.array([105, 168, 32])
+blue_side_upper = np.array([121, 255, 83])
+# semi werkend in lokaal
+# blue_side_lower = np.array([109, 111, 32])
+# blue_side_upper = np.array([126, 253, 98])
+
 yellow_side_lower = np.array([21, 221, 110])
 yellow_side_upper = np.array([33, 255, 180])
 # old yellow
